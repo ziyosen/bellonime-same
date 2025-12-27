@@ -4,31 +4,27 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
-import type { Anime } from '../../types/anime'; // Gunakan tipe gabungan
+import type { Anime } from '../../types/anime';
 
-// Komponen Skeleton terpisah untuk kebersihan kode
 function MovieCardSkeleton() {
   return (
-    <div className="flex items-center gap-3 p-2 animate-pulse">
-      <div className="w-20 h-28 rounded bg-gray-700/50"></div>
+    <div className="flex items-center gap-3 p-3 rounded-lg animate-pulse">
+      <div className="w-16 h-24 rounded-lg animate-shimmer flex-shrink-0" />
       <div className="flex-1 space-y-2">
-        <div className="h-4 bg-gray-700/50 rounded w-full"></div>
-        <div className="h-4 bg-gray-700/50 rounded w-3/4"></div>
-        <div className="h-3 bg-gray-700/50 rounded w-1/2 mt-1"></div>
+        <div className="h-4 w-3/4 rounded animate-shimmer" />
+        <div className="h-3 w-1/2 rounded animate-shimmer" />
       </div>
     </div>
   );
 }
 
-// Tambahkan isLoading ke props
 export default function MovieCard({ anime, isLoading }: { anime?: Partial<Anime>, isLoading?: boolean }) {
-  // Jika loading, tampilkan skeleton
   const [isImageLoaded, setIsImageLoaded] = useState(false);
+
   if (isLoading) {
     return <MovieCardSkeleton />;
   }
 
-  // Jika tidak loading tapi tidak ada data, jangan tampilkan apa-apa
   if (!anime?.animeId) {
     return null;
   }
@@ -36,29 +32,36 @@ export default function MovieCard({ anime, isLoading }: { anime?: Partial<Anime>
   return (
     <Link
       href={`/anime/${anime.animeId}`}
-      className="flex items-center gap-3 p-2 rounded-lg bg-white/10 dark:bg-black/30 hover:bg-white/20 transition-all border border-white/10"
+      className="group flex items-center gap-3 p-3 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 transition-all"
     >
-      <motion.div 
-      animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-      className="relative w-20 h-28 rounded overflow-hidden flex-shrink-0">
-        {/* Placeholder saat gambar belum termuat */}
+      <motion.div
+        whileHover={{ scale: 1.05 }}
+        className="relative w-16 h-24 rounded-lg overflow-hidden flex-shrink-0 bg-slate-200 dark:bg-slate-800 shadow-soft"
+      >
         {!isImageLoaded && (
-          <div className="absolute inset-0 bg-gray-800 animate-pulse"></div>
+          <div className="absolute inset-0 animate-shimmer" />
         )}
         <Image
           src={anime.poster || ''}
           alt={anime.title || 'Movie Poster'}
           fill
-          className={`object-cover transition-all duration-300 group-hover:scale-105 ${isImageLoaded ? 'opacity-100' : 'opacity-0'}`}
-            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
-            quality={85}
-            onLoad={() => setIsImageLoaded(true)}
+          className={`object-cover transition-opacity duration-500 ${isImageLoaded ? 'opacity-100' : 'opacity-0'
+            }`}
+          sizes="64px"
+          quality={85}
+          onLoad={() => setIsImageLoaded(true)}
         />
       </motion.div>
-      <div className="flex-1">
-        <h3 className="text-sm font-semibold line-clamp-2">{anime.title}</h3>
-        <p className="text-xs text-gray-400 mt-1">{anime.releaseDate}</p>
+
+      <div className="flex-1 min-w-0">
+        <h3 className="text-sm font-semibold line-clamp-2 text-slate-800 dark:text-slate-100 group-hover:text-accent transition-colors">
+          {anime.title}
+        </h3>
+        {anime.releaseDate && (
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+            {anime.releaseDate}
+          </p>
+        )}
       </div>
     </Link>
   );

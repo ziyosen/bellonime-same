@@ -1,13 +1,11 @@
 'use client';
 
-import { useState, useEffect, useMemo,useRef } from 'react';
+import { useState, useMemo } from 'react';
 import type { DownloadFormat } from '@/types/anime';
-import { Download, Link as LinkIcon } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { Download, ExternalLink } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export default function DownloadSection({ formats = [] }: { formats?: DownloadFormat[] }) {
-
-
   // Kumpulkan semua kualitas unik sebagai tab
   const allQualities = useMemo(
     () => Array.from(new Set(formats.flatMap(f => f.qualities.map(q => q.title.trim())))),
@@ -15,15 +13,9 @@ export default function DownloadSection({ formats = [] }: { formats?: DownloadFo
   );
   const [activeTab, setActiveTab] = useState(allQualities[0] || '');
 
-  
-  const bottomRef = useRef<HTMLDivElement>(null);
-  const [didClickTab, setDidClickTab] = useState(false);
-
-
-
   // Filter link berdasarkan tab kualitas yang aktif
-  const downloadLinks = useMemo(() => 
-    formats.flatMap(format => 
+  const downloadLinks = useMemo(() =>
+    formats.flatMap(format =>
       format.qualities
         .filter(q => q.title.trim() === activeTab)
         .flatMap(q => q.urls.map(url => ({
@@ -34,52 +26,35 @@ export default function DownloadSection({ formats = [] }: { formats?: DownloadFo
     ),
     [activeTab, formats]
   );
- useEffect(() => {
-  if (!didClickTab) return;
-
-  const timeout = setTimeout(() => {
-    bottomRef.current?.scrollIntoView({
-      behavior: 'smooth',
-      block: 'end',
-    });
-    setDidClickTab(false); // reset supaya gak scroll lagi
-  }, 200);
-
-  return () => clearTimeout(timeout);
-}, [activeTab, didClickTab]);
 
   if (!formats || formats.length === 0) {
     return null;
   }
 
-
-
   return (
-    <section className="bg-gradient-to-br from-gray-800/20 to-gray-900/20 dark:from-black/20 dark:to-gray-900/30 p-4 rounded-xl border border-white/20 shadow-lg">
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4">
-        <h3 className="flex items-center gap-2 text-lg font-bold">
+    <section className="bg-white dark:bg-slate-900 rounded-2xl shadow-soft-lg border border-slate-200 dark:border-slate-800 p-6">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
+        <h3 className="flex items-center gap-2 text-lg font-semibold text-slate-900 dark:text-slate-100">
           <Download size={20} />
-          Link Download
+          <span>Link Download</span>
         </h3>
+
         {/* Tab Pilihan Kualitas */}
-        <div className="flex items-center bg-gray-700/50 p-1 rounded-lg flex-wrap">
+        <div className="flex items-center gap-2 flex-wrap">
           {allQualities.map(quality => (
             <button
               key={quality}
-              onClick={() => {
-  setActiveTab(quality);
-  setDidClickTab(true);
-}}
-
-              className={`relative px-3 py-1 text-xs font-semibold transition-colors rounded-md ${
-                activeTab === quality ? 'text-white' : 'text-gray-400 hover:text-white'
-              }`}
+              onClick={() => setActiveTab(quality)}
+              className={`relative px-4 py-2 text-sm font-medium rounded-lg transition-colors ${activeTab === quality
+                  ? 'text-white'
+                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100'
+                }`}
             >
               {activeTab === quality && (
                 <motion.div
-                  layoutId="download-quality-highlight"
-                  className="absolute inset-0 bg-pink-500 rounded-md"
-                  transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+                  layoutId="download-quality-bg"
+                  className="absolute inset-0 bg-accent rounded-lg -z-10"
+                  transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                 />
               )}
               <span className="relative z-10">{quality}</span>
@@ -87,34 +62,39 @@ export default function DownloadSection({ formats = [] }: { formats?: DownloadFo
           ))}
         </div>
       </div>
-      
-      {/* Daftar Link dalam Grid */}
-      <motion.div 
-  className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3"
-  initial={false} // supaya gak animasi ulang tiap tab
-  animate={{ opacity: 1, y: 0 }}
-  transition={{ duration: 0.3 }}
->
 
-        {downloadLinks.map(link => (
-          <a
-            key={link.title + link.format}
-            href={link.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group flex flex-col items-center justify-center gap-2 p-3 bg-gray-800/50 rounded-lg text-gray-300 hover:bg-pink-500 hover:text-white text-center transition-all duration-300 transform hover:-translate-y-1"
-          >
-            <LinkIcon size={24} className="transition-transform group-hover:scale-110" />
-            <div className="text-xs font-bold leading-tight">
-              <p>{link.title}</p>
-              <p className="text-gray-400 group-hover:text-pink-100">{link.format}</p>
-            </div>
-          </a>
-        ))}
-        
-      </motion.div>
-      <div ref={bottomRef} className="h-1" /> {/* ini penanda akhir */}
+      {/* Daftar Link dalam Grid - WITH ANIMATION */}
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={activeTab}
+          className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          transition={{ duration: 0.3, ease: 'easeInOut' }}
+        >
+          {downloadLinks.map((link, index) => (
+            <motion.a
+              key={link.title + link.format}
+              href={link.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex flex-col items-center justify-center gap-2 p-4 bg-slate-100 dark:bg-slate-800 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-accent hover:text-white dark:hover:bg-accent text-center transition-all duration-200"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: index * 0.05, duration: 0.2 }}
+            >
+              <ExternalLink size={24} className="transition-transform group-hover:scale-110" />
+              <div className="text-xs font-medium leading-tight">
+                <p className="font-semibold">{link.title}</p>
+                <p className="text-slate-500 dark:text-slate-400 group-hover:text-white/80 mt-1">
+                  {link.format}
+                </p>
+              </div>
+            </motion.a>
+          ))}
+        </motion.div>
+      </AnimatePresence>
     </section>
-    
   );
 }

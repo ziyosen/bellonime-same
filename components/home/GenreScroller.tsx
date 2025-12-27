@@ -1,4 +1,3 @@
-// src/components/GenreScroller.tsx
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
@@ -12,8 +11,8 @@ export default function GenreScroller({ genres, isLoading }: { genres: GenresLin
   const [emblaRef, emblaApi] = useEmblaCarousel({
     align: 'start',
     containScroll: 'trimSnaps',
-    dragFree: true, // Membuat scroll terasa lebih bebas saat di-drag
-    loop: true,
+    dragFree: true,
+    loop: false,
   });
 
   const [canScrollPrev, setCanScrollPrev] = useState(false);
@@ -21,7 +20,6 @@ export default function GenreScroller({ genres, isLoading }: { genres: GenresLin
 
   const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
   const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
-
 
   const onSelect = useCallback(() => {
     if (!emblaApi) return;
@@ -35,28 +33,29 @@ export default function GenreScroller({ genres, isLoading }: { genres: GenresLin
     emblaApi.on('select', onSelect).on('reInit', onSelect);
   }, [emblaApi, onSelect]);
 
-  
   if (isLoading) {
     return <GenreScrollerSkeleton />;
   }
 
   return (
-    <div className="relative group fade-edges">
-      {/* Tombol Panah Kiri */}
+    <div className="relative group">
+      {/* Left Arrow */}
       {canScrollPrev && (
-        <button onClick={scrollPrev} className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 p-1 bg-card/80 backdrop-blur-sm border border-border rounded-full text-text-bright z-10 opacity-0 group-hover:opacity-100 transition-all hover:bg-glow">
-          <ChevronLeft size={20} />
+        <button
+          onClick={scrollPrev}
+          className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-3 p-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-full text-slate-700 dark:text-slate-300 z-10 opacity-0 group-hover:opacity-100 transition-all hover:bg-slate-50 dark:hover:bg-slate-700 shadow-soft"
+        >
+          <ChevronLeft size={18} />
         </button>
       )}
-      
+
       <div className="overflow-hidden" ref={emblaRef}>
-        <div className="flex gap-3">
+        <div className="flex gap-2">
           {genres.map((genre) => (
             <Link
               href={`/genres/${genre.genreId}`}
               key={genre.genreId}
-              // Style Tombol Outline
-              className="flex-shrink-0 px-4 py-2 border-1 border-border text-text-dim rounded-full text-sm font-semibold transition-colors duration-200 hover:bg-pink-500 hover:text-white hover:border-pink-500"
+              className="flex-shrink-0 px-4 py-2 border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-800 rounded-full text-sm font-medium transition-all hover:bg-accent hover:text-white hover:border-accent"
             >
               {genre.title}
             </Link>
@@ -64,10 +63,13 @@ export default function GenreScroller({ genres, isLoading }: { genres: GenresLin
         </div>
       </div>
 
-      {/* Tombol Panah Kanan */}
+      {/* Right Arrow */}
       {canScrollNext && (
-         <button onClick={scrollNext} className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 p-1 bg-card/80 backdrop-blur-sm border border-border rounded-full text-text-bright z-10 opacity-0 group-hover:opacity-100 transition-all hover:bg-glow">
-          <ChevronRight size={20} />
+        <button
+          onClick={scrollNext}
+          className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-3 p-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-full text-slate-700 dark:text-slate-300 z-10 opacity-0 group-hover:opacity-100 transition-all hover:bg-slate-50 dark:hover:bg-slate-700 shadow-soft"
+        >
+          <ChevronRight size={18} />
         </button>
       )}
     </div>

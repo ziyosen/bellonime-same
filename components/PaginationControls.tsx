@@ -1,88 +1,101 @@
 'use client';
 
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { FC } from 'react';
-import { Pagination } from '@/types/anime';
-import { generatePaginationNumbers } from '@/lib/services/PaginationService';
-import { ChevronLeft, ChevronRight } from 'lucide-react'; // Impor ikon
+import { useRouter, useSearchParams } from 'next/navigation';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import type { Pagination } from '@/types/anime';
 
 interface PaginationControlsProps {
-  pagination: Pagination | null;
+  pagination: Pagination;
 }
 
-const PaginationControls: FC<PaginationControlsProps> = ({ pagination }) => {
+export default function PaginationControls({ pagination }: PaginationControlsProps) {
   const router = useRouter();
-  const pathname = usePathname();
   const searchParams = useSearchParams();
+  const currentPage = Number(searchParams.get('page')) || 1;
 
-  if (!pagination || pagination.totalPages <= 1) {
-    return null;
-  }
-
-  const { currentPage, hasNextPage, hasPrevPage } = pagination;
-  const pageNumbers = generatePaginationNumbers(pagination);
-
-const handlePageChange = (page: number) => {
-  if (page < 1 || page > pagination.totalPages) return;
-
-  const params = new URLSearchParams(searchParams);
-  params.set('page', page.toString());
-
-  // 1. Ganti halaman TANPA scroll otomatis
-  router.push(`${pathname}?${params.toString()}`, { scroll: false });
-
-  // 2. Lakukan scroll manual dengan animasi smooth
-  window.scrollTo({
-    top: 0,
-    behavior: 'smooth',
-  });
-};
-
-  const baseButtonClass = "flex items-center justify-center h-10 w-10 rounded-lg transition-colors duration-200";
-  const disabledClass = "disabled:opacity-50 disabled:cursor-not-allowed";
-  const activeClass = "bg-pink-500 text-white font-bold shadow-lg";
-  const inactiveClass = "bg-white/10 dark:bg-black/70 hover:bg-pink-500";
+  const handlePageChange = (newPage: number) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set('page', newPage.toString());
+    router.push(`?${params.toString()}`);
+  };
 
   return (
-    <div className="flex justify-center items-center space-x-2 my-8">
-      {/* Tombol Previous */}
+    <div className="flex items-center justify-center gap-3 mt-8">
+      {/* Previous Button */}
       <button
         onClick={() => handlePageChange(currentPage - 1)}
-        disabled={!hasPrevPage}
-        className={`${baseButtonClass} ${inactiveClass} ${disabledClass}`}
-        aria-label="Halaman Sebelumnya"
+        disabled={!pagination.hasPrevPage}
+        className="p-2.5 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+        aria-label="Previous page"
       >
         <ChevronLeft size={20} />
       </button>
 
-      {/* Nomor Halaman */}
-      {pageNumbers.map((page, index) =>
-        typeof page === 'string' ? (
-          <span key={`ellipsis-${index}`} className="flex items-center justify-center h-10 w-10 text-gray-400">
-            ...
-          </span>
-        ) : (
-          <button
-            key={page}
-            onClick={() => handlePageChange(page)}
-            className={`${baseButtonClass} ${currentPage === page ? activeClass : inactiveClass}`}
-          >
-            {page}
-          </button>
-        )
-      )}
+      {/* Page Numbers */}
+      <div className="flex items-center gap-2">
+        {currentPage > 2 && (
+          <>
+            <button
+              onClick={() => handlePageChange(1)}
+              className="min-w-[2.5rem] px-3 py-2 text-sm font-medium bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 transition-all"
+            >
+              1
+            </button>
+            {currentPage > 3 && (
+              <span className="text-slate-500 dark:text-slate-400">...</span>
+            )}
+          </>
+        )}
 
-      {/* Tombol Next */}
+        {currentPage > 1 && (
+          <button
+            onClick={() => handlePageChange(currentPage - 1)}
+            className="min-w-[2.5rem] px-3 py-2 text-sm font-medium bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 transition-all"
+          >
+            {currentPage - 1}
+          </button>
+        )}
+
+        {/* Current Page */}
+        <div className="min-w-[2.5rem] px-3 py-2 text-sm font-bold bg-accent text-white rounded-lg">
+          {currentPage}
+        </div>
+
+        {pagination.hasNextPage && (
+          <button
+            onClick={() => handlePageChange(currentPage + 1)}
+            className="min-w-[2.5rem] px-3 py-2 text-sm font-medium bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 transition-all"
+          >
+            {currentPage + 1}
+          </button>
+        )}
+
+        {pagination.hasNextPage && currentPage + 1 < (pagination.totalPages || currentPage + 2) && (
+          <>
+            {currentPage + 2 < (pagination.totalPages || currentPage + 2) && (
+              <span className="text-slate-500 dark:text-slate-400">...</span>
+            )}
+            {pagination.totalPages && (
+              <button
+                onClick={() => handlePageChange(pagination.totalPages!)}
+                className="min-w-[2.5rem] px-3 py-2 text-sm font-medium bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 transition-all"
+              >
+                {pagination.totalPages}
+              </button>
+            )}
+          </>
+        )}
+      </div>
+
+      {/* Next Button */}
       <button
         onClick={() => handlePageChange(currentPage + 1)}
-        disabled={!hasNextPage}
-        className={`${baseButtonClass} ${inactiveClass} ${disabledClass}`}
-        aria-label="Halaman Selanjutnya"
+        disabled={!pagination.hasNextPage}
+        className="p-2.5 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+        aria-label="Next page"
       >
         <ChevronRight size={20} />
       </button>
     </div>
   );
-};
-
-export default PaginationControls;
+}

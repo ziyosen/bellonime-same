@@ -3,10 +3,17 @@
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import type { EpisodeInfo } from '@/types/anime';
-import { ListVideo, ArrowDownUp } from 'lucide-react';
+import Image from 'next/image';
+import type { EpisodeInfo, Episode, AnimeDetail } from '@/types/anime';
+import { ChevronLeft, ChevronRight, ListVideo, ArrowDownUp } from 'lucide-react';
 
-export default function EpisodeSidebar({ episodes }: { episodes: EpisodeInfo[] }) {
+interface EpisodeSidebarProps {
+  episodes: EpisodeInfo[];
+  episode: Episode;
+  anime: AnimeDetail;
+}
+
+export default function EpisodeSidebar({ episodes, episode, anime }: EpisodeSidebarProps) {
   const pathname = usePathname();
   const [sortOrder, setSortOrder] = useState<'desc' | 'asc'>('desc');
 
@@ -19,44 +26,106 @@ export default function EpisodeSidebar({ episodes }: { episodes: EpisodeInfo[] }
   }, [episodes, sortOrder]);
 
   return (
-    <aside className="hidden lg:block space-y-4">
-      <div className="p-4 bg-white/5 dark:bg-black/20 rounded-lg border border-white/20">
+    <aside className="space-y-4 sticky top-20">
+      {/* Anime Info Card with Poster */}
+      <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-soft-lg border border-slate-200 dark:border-slate-800 overflow-hidden">
+        {/* Poster Image */}
+        <div className="relative aspect-[3/4] w-full">
+          <Image
+            src={anime.poster}
+            alt={anime.title}
+            fill
+            className="object-cover"
+            sizes="360px"
+          />
+        </div>
+
+        {/* Info Section */}
+        <div className="p-4 space-y-3">
+          
+
+          {/* Episode Title */}
+          <h1 className="text-lg font-bold text-slate-900 dark:text-slate-100 line-clamp-2">
+            {episode.title}
+          </h1>
+
+          {/* Navigation Buttons */}
+          <div className="flex items-center gap-2">
+            {episode.hasPrevEpisode && episode.prevEpisode ? (
+              <Link
+                href={`/episode/${episode.prevEpisode.episodeId}`}
+                className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-sm font-medium rounded-lg hover:bg-accent hover:text-white dark:hover:bg-accent transition-colors"
+                title="Episode Sebelumnya"
+              >
+                <ChevronLeft size={16} />
+                <span>Prev</span>
+              </Link>
+            ) : (
+              <button
+                disabled
+                className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-600 text-sm rounded-lg cursor-not-allowed opacity-50"
+              >
+                <ChevronLeft size={16} />
+                <span>Prev</span>
+              </button>
+            )}
+
+            {episode.hasNextEpisode && episode.nextEpisode ? (
+              <Link
+                href={`/episode/${episode.nextEpisode.episodeId}`}
+                className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-sm font-medium rounded-lg hover:bg-accent hover:text-white dark:hover:bg-accent transition-colors"
+                title="Episode Selanjutnya"
+              >
+                <span>Next</span>
+                <ChevronRight size={16} />
+              </Link>
+            ) : (
+              <button
+                disabled
+                className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-600 text-sm rounded-lg cursor-not-allowed opacity-50"
+              >
+                <span>Next</span>
+                <ChevronRight size={16} />
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Episode List */}
+      <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-soft-lg border border-slate-200 dark:border-slate-800 p-4">
         <div className="flex justify-between items-center mb-4">
-          <h3 className="flex items-center gap-2 text-xl font-bold">
-            <ListVideo size={24} />
-            Daftar Episode
+          <h3 className="flex items-center gap-2 text-lg font-semibold text-slate-900 dark:text-slate-100">
+            <ListVideo size={20} />
+            <span>Episodes</span>
           </h3>
           <button
             onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}
-            className="flex items-center gap-2 px-3 py-1.5 bg-gray-700/50 text-gray-300 text-xs rounded-full hover:bg-pink-500 hover:text-white transition-colors"
+            className="flex items-center gap-2 px-3 py-1.5 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
           >
             <ArrowDownUp size={14} />
             <span>{sortOrder === 'asc' ? 'Terbaru' : 'Terlama'}</span>
           </button>
         </div>
-        
-        {/* --- BAGIAN YANG DIUBAH --- */}
-        <div className="max-h-[500px] overflow-y-auto pr-2 grid grid-cols-4 gap-2">
+
+        {/* Episode Grid */}
+        <div className="max-h-[400px] overflow-y-auto pr-2 grid grid-cols-4 gap-2">
           {sortedEpisodes.map(ep => {
             const isActive = pathname === `/episode/${ep.episodeId}`;
             return (
               <Link
                 key={ep.episodeId}
                 href={`/episode/${ep.episodeId}`}
-                className={`block w-full text-center p-2 text-sm rounded-md transition-colors ${
-                  isActive 
-                    ? 'bg-pink-500 text-white font-semibold' 
-                    // Tampilan tombol untuk grid
-                    : 'bg-gray-700/50 hover:bg-gray-700'
-                }`}
+                className={`block w-full text-center p-2 text-sm rounded-lg transition-colors font-medium ${isActive
+                    ? 'bg-accent text-white'
+                    : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
+                  }`}
               >
-                {/* Hanya tampilkan nomor episodenya saja agar compact */}
                 {String(ep.title).replace(/Episode /i, '')}
               </Link>
             )
           })}
         </div>
-        {/* --------------------------- */}
       </div>
     </aside>
   );

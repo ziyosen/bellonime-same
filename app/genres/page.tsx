@@ -1,12 +1,11 @@
 import { getGenresData } from '@/lib/services';
-import Breadcrumb from '@/components/Breadcrumb';
 import Link from 'next/link';
 import { Tags } from 'lucide-react';
 import type { Genres } from '@/types/anime';
 
 // Fungsi untuk SEO
 export const metadata = {
-  title: 'Daftar Genre - AniWeb',
+  title: 'Daftar Genre - Bellonime',
   description: 'Jelajahi semua genre anime yang tersedia.',
 };
 
@@ -19,41 +18,59 @@ export default async function GenresPage() {
     genresData = response.data;
   } catch {
     return (
-      <div className="text-center text-red-500 p-8">
-        Gagal memuat daftar genre.
+      <div className="min-h-screen flex items-center justify-center px-4">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-red-600 dark:text-red-400 mb-2">Error</h1>
+          <p className="text-slate-600 dark:text-slate-400">Gagal memuat daftar genre.</p>
+        </div>
       </div>
     );
   }
 
   if (!genresData || genresData.genreList.length === 0) {
-    return <div className="text-center p-8">Tidak ada genre yang ditemukan.</div>;
+    return (
+      <div className="min-h-screen flex items-center justify-center px-4">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-2">Tidak Ada Genre</h1>
+          <p className="text-slate-600 dark:text-slate-400">Tidak ada genre yang ditemukan.</p>
+        </div>
+      </div>
+    );
   }
 
   return (
-    <main className="min-h-screen py-6 px-2 md:px-4">
-      <Breadcrumb dynamicRoutes={{ genres: 'Genres' }} />
-      
-      <div className="container mx-auto px-4 py-8 bg-white/5 dark:bg-black/30 border border-white/10 dark:border-white/20 rounded-xl p-4 md:p-6 backdrop-blur-xl shadow-lg">
-        <div className="flex items-center gap-3 mb-6">
-          <Tags size={32} className="text-pink-500" />
-          <h1 className="text-3xl md:text-4xl font-bold">
-            Daftar Genre
-          </h1>
+    <main className="min-h-screen bg-slate-50 dark:bg-slate-950 py-6 px-4">
+      <div className="max-w-7xl mx-auto space-y-6">
+        {/* Page Title */}
+        <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-soft-lg border border-slate-200 dark:border-slate-800 p-6">
+          <div className="flex items-center gap-3">
+            <div className="p-3 bg-accent/10 dark:bg-accent/20 rounded-xl">
+              <Tags size={28} className="text-accent" />
+            </div>
+            <div>
+              <h1 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-slate-100">
+                Daftar Genre
+              </h1>
+              <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
+                {genresData.genreList.length} genre tersedia
+              </p>
+            </div>
+          </div>
         </div>
 
-        {/* Grid untuk daftar genre */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-          {genresData.genreList.map((genre) => (
-            <Link
-              key={genre.genreId}
-              href={`/genres/${genre.genreId}`}
-              className="block p-4 bg-white/5 dark:bg-black/20 border border-white/10 rounded-lg text-center font-semibold
-                         hover:bg-pink-500 hover:text-white hover:border-pink-500 
-                         transition-all duration-300 transform hover:-translate-y-1"
-            >
-              {genre.title}
-            </Link>
-          ))}
+        {/* Genre Grid */}
+        <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-soft-lg border border-slate-200 dark:border-slate-800 p-6">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+            {genresData.genreList.map((genre) => (
+              <Link
+                key={genre.genreId}
+                href={`/genres/${genre.genreId}`}
+                className="block p-4 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-center font-medium text-slate-700 dark:text-slate-300 hover:bg-accent hover:text-white hover:border-accent dark:hover:bg-accent transition-all duration-200"
+              >
+                {genre.title}
+              </Link>
+            ))}
+          </div>
         </div>
       </div>
     </main>

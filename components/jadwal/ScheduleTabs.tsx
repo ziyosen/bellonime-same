@@ -1,9 +1,8 @@
 "use client";
 
-import { useState,useRef,useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import type { Schedule } from '@/types/anime';
 import AnimeCard from '../AnimeCard';
-// 👉 1. Impor AnimatePresence
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface ScheduleTabsProps {
@@ -11,34 +10,41 @@ interface ScheduleTabsProps {
 }
 
 export default function ScheduleTabs({ scheduleData }: ScheduleTabsProps) {
-  const [activeTab, setActiveTab] = useState(0) ;
+  const [activeTab, setActiveTab] = useState(0);
   const activeDayData = scheduleData.days[activeTab];
   const sectionRef = useRef<HTMLElement>(null);
-    const scrollToTop = () => {
-    sectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  const scrollToTop = () => {
+    if (sectionRef.current) {
+      const yOffset = -100; // Offset 100px dari top
+      const y = sectionRef.current.getBoundingClientRect().top + window.pageYOffset + yOffset;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    }
   };
+
   useEffect(() => {
     scrollToTop();
   }, [activeTab]);
 
   return (
-    <section ref={sectionRef}  className='bg-white/5 dark:bg-black/40 border border-white/10 dark:border-white/20 rounded-xl p-4 md:p-6 backdrop-blur-xl shadow-lg'>
-      {/* Container untuk Tab yang bisa di-scroll */}
-      <div className="mb-10 overflow-x-auto no-scrollbar sticky top-0 md:top-16 z-20 py-4  mx-auto w-full md:w-max bg-white/10 dark:bg-black/60 border border-white/20 dark:border-white/30 rounded-xl p-4 backdrop-blur-xl shadow-md">
-        <div className="flex items-center space-x-2 border-b border-gray-500/30 pb-2 min-w-max">
+    <section ref={sectionRef}>
+      {/* Day Tabs */}
+      <div className="mb-6 overflow-x-auto no-scrollbar sticky top-0 md:top-16 z-20 bg-slate-50 dark:bg-slate-950 py-4">
+        <div className="flex items-center gap-2 min-w-max">
           {scheduleData.days.map((day, index) => (
             <button
               key={day.day}
               onClick={() => setActiveTab(index)}
-              className={`relative px-3 py-2 text-sm sm:text-base font-medium transition-colors rounded-md ${
-                activeTab === index ? 'text-white' : 'text-gray-400 hover:text-white'
-              }`}
+              className={`relative px-4 py-2 text-sm font-medium rounded-lg transition-colors ${activeTab === index
+                  ? 'text-white'
+                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100'
+                }`}
             >
               {activeTab === index && (
                 <motion.div
-                  layoutId="schedule-tab-highlight"
-                  className="absolute inset-0 bg-pink-500 rounded-md z-0"
-                  transition={{ type: 'spring', stiffness: 350, damping: 30 }}
+                  layoutId="schedule-tab-bg"
+                  className="absolute inset-0 bg-accent rounded-lg -z-10"
+                  transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                 />
               )}
               <span className="relative z-10">{day.day}</span>
@@ -47,21 +53,17 @@ export default function ScheduleTabs({ scheduleData }: ScheduleTabsProps) {
         </div>
       </div>
 
-      {/* Konten Tab */}
-      <div className="relative">
-        {/* 👉 2. Bungkus konten dengan AnimatePresence */}
+      {/* Anime Grid */}
+      <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-soft-lg border border-slate-200 dark:border-slate-800 p-6">
         <AnimatePresence mode="wait">
-          {/* Ganti div menjadi motion.div dan gunakan props animasi.
-            Hapus kelas `animate-fade-in` dari sini.
-          */}
           <motion.div
-            key={activeTab} // `key` tetap penting untuk AnimatePresence
+            key={activeTab}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
           >
-            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-6 gap-x-4 gap-y-8">
+            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-4">
               {activeDayData.animeList.map((anime) => {
                 const transformedAnime = {
                   ...anime,

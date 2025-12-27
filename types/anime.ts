@@ -2,24 +2,29 @@
 // types/anime.ts
 // Definisikan tipe data untuk Anime sesuai dengan struktur API Bellonime
 
-
-
 export interface ApiResponse<T> {
-  statusCode: number;
-  statusMessage: string;
-  message: string;
-  ok: boolean;
-  data: T;
-  pagination: Pagination | null;
+    statusCode: number;
+    statusMessage: string;
+    message: string;
+    ok: boolean;
+    data: T;
+    pagination: Pagination | null;
 }
- 
+
 export interface Pagination {
-  currentPage: number;
-  hasPrevPage: boolean;
-  prevPage: number | null;
-  hasNextPage: boolean;
-  nextPage: number | null;
-  totalPages: number;
+    currentPage: number;
+    hasPrevPage: boolean;
+    prevPage: number | null;
+    hasNextPage: boolean;
+    nextPage: number | null;
+    totalPages: number;
+}
+
+export interface Genre {
+    title: string;
+    genreId: string;
+    href: string;
+    samehadakuUrl: string;
 }
 
 export interface Anime {
@@ -27,24 +32,23 @@ export interface Anime {
     poster: string;
     episodes: string;
     releasedOn: string;
-    releaseDate	: string;
+    releaseDate: string;
     animeId: string;
     href: string;
     samehadakuUrl: string;
-    genreList: Genres [];
+    genreList: Genre[];
     type: string;
     score: string;
     estimation: string;
-    genres:string [];
+    genres: string[];
     status: string;
-
 }
 
 export interface EpisodeInfo {
-  title: string;
-  episodeId: string;
-  href: string;
-  samehadakuUrl: string;
+    title: string;
+    episodeId: string;
+    href: string;
+    samehadakuUrl: string;
 }
 
 
@@ -52,7 +56,7 @@ export interface Home {
     recent: {
         href: string;
         samehadakuUrl: string;
-        animeList: Anime [];
+        animeList: Anime[];
     };
     batch: {
         href: string;
@@ -74,68 +78,63 @@ export interface Home {
 }
 
 export interface Genres {
-    genreList: {
-        title: string;
-        genreId: string;
-        href: string;
-        samehadakuUrl: string;
-    }[];
+    genreList: Genre[];
 }
 
 export interface GenresLink {
-        title: string;
-        genreId: string;
-        href: string;
-        samehadakuUrl: string;
+    title: string;
+    genreId: string;
+    href: string;
+    samehadakuUrl: string;
 }
 
 export interface AnimeList {
     list: {
         startWith: string;
         animeList: {
-            title:string;
-            animeId:string;
-            href:string;
-            samehadakuUrl:string;
+            title: string;
+            animeId: string;
+            href: string;
+            samehadakuUrl: string;
         }[];
-    } [];
+    }[];
 }
 
 export interface Schedule {
     days: {
         day: string;
-        animeList:{
+        animeList: {
             title: string;
             poster: string;
             type: string;
             score: string;
-            estimation:string;
-            genres:string;
-            animeId:string;
-            href:string;
-            samehadakuUrl:string;
+            estimation: string;
+            genres: string;
+            animeId: string;
+            href: string;
+            samehadakuUrl: string;
         }[];
     }[];
 }
 
 export interface Recent {
-    animeList: Anime [];
+    animeList: Anime[];
 }
 
 export interface Ongoing {
-    animeList: Anime [] ;
+    animeList: Anime[];
 }
 
 export interface Completed {
-    animeList: Anime [];
+    animeList: Anime[];
 }
 
 export interface Popular {
-    animeList: Anime [] ;
+    animeList: Anime[];
 }
 
 export interface Movies {
-    animeList: Anime [] ;
+    animeList: Anime[];
 }
 
 export interface Batch {
@@ -148,12 +147,7 @@ export interface Batch {
         batchId: string;
         href: string;
         samehadakuUrl: string;
-        genreList: {
-            title: string;
-            genreId: string;
-            href: string;
-            samehadakuUrl: string;
-        }[];
+        genreList: Genre[];
     }[];
     pagination: Pagination | null;
 }
@@ -168,12 +162,7 @@ export interface Search {
         animeId: string;
         href: string;
         samehadakuUrl: string;
-        genreList: {
-            title: string;
-            genreId: string;
-            href: string;
-            samehadakuUrl: string;
-        }[];
+        genreList: Genre[];
     }[];
     pagination: Pagination | null;
 }
@@ -182,11 +171,11 @@ export interface GenresDetail {
     animeList: Anime[];
 }
 
-export interface connectionsanime{
+export interface connectionsanime {
     title: string;
-    animeId:string;
-    href:string;
-    samehadakuUrl:string;
+    animeId: string;
+    href: string;
+    samehadakuUrl: string;
 }
 
 export interface AnimeDetail {
@@ -213,12 +202,7 @@ export interface AnimeDetail {
         paragraphs: string;
         connections: connectionsanime[];
     }
-    genreList: {
-        title: string;
-        genreId: string;
-        href: string;
-        samehadakuUrl: string;
-    }[];
+    genreList: Genre[];
     batchList: {
         title: string;
         batchId: string;
@@ -235,9 +219,9 @@ export interface AnimeDetail {
 // types/anime.ts
 
 export interface ServerInfo {
-  title: string;
-  serverId: string;
-  href: string;
+    title: string;
+    serverId: string;
+    href: string;
 }
 export interface Episode {
     title: string;
@@ -263,12 +247,7 @@ export interface Episode {
         paragraphs: string;
         connections: string[];
     }
-    genreList: {
-        title: string;
-        genreId: string;
-        href: string;
-        samehadakuUrl: string;
-    }[];
+    genreList: Genre[];
     server: {
         qualities: {
             title: string;
@@ -276,6 +255,7 @@ export interface Episode {
                 title: string;
                 serverId: string;
                 href: string;
+                samehadakuUrl?: string;
             }[];
         }[];
     };
@@ -298,7 +278,7 @@ export interface Episode {
         episodeId: string;
         href: string;
         samehadakuUrl: string;
-    } [];
+    }[];
     movie: {
         href: string;
         samehadakuUrl: string;
@@ -309,12 +289,7 @@ export interface Episode {
             animeId: string;
             href: string;
             samehadakuUrl: string;
-            genreList: {
-                title: string;
-                genreId: string;
-                href: string;
-                samehadakuUrl: string;
-            } [];
+            genreList: Genre[];
         }[];
     };
 }
@@ -344,12 +319,7 @@ export interface Batchdetail {
         paragraphs: string;
         connections: string[];
     }
-    genreList: {
-        title: string;
-        genreId: string;
-        href: string;
-        samehadakuUrl: string;
-    }[];
+    genreList: Genre[];
     downloadUrl: {
         formats: {
             title: string;
@@ -375,18 +345,18 @@ export interface Batchdetail {
 
 // Tipe untuk satu link download (misal: Gofile, Acefile)
 export interface DownloadUrl {
-  title: string;
-  url: string;
+    title: string;
+    url: string;
 }
 
 // Tipe untuk satu grup kualitas (misal: 720p)
 export interface DownloadQuality {
-  title: string;
-  urls: DownloadUrl[];
+    title: string;
+    urls: DownloadUrl[];
 }
 
 // Tipe untuk satu format (misal: MKV)
 export interface DownloadFormat {
-  title: string;
-  qualities: DownloadQuality[];
+    title: string;
+    qualities: DownloadQuality[];
 }

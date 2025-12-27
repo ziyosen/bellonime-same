@@ -15,7 +15,7 @@ export default function GenreSection() {
         const response = await getGenresData();
         setGenres(response.data.genreList);
       } catch (error) {
-        console.error('Gagal memuat data genre:', error);
+        console.error('Failed to load genres:', error);
       } finally {
         setIsLoading(false);
       }
@@ -24,8 +24,8 @@ export default function GenreSection() {
   }, []);
 
   return (
-    <section className="mb-2 bg-white/10 dark:bg-black/30 border border-white/20 dark:border-white/10 rounded-xl p-2 backdrop-blur-md shadow-md">
+    <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-soft-lg border border-slate-200 dark:border-slate-800 p-4">
       <GenreScroller genres={genres} isLoading={isLoading} />
-    </section>
+    </div>
   );
 }

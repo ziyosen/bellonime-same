@@ -1,7 +1,5 @@
-// app/jadwal/page.tsx
-import { getScheduleData } from '@/lib/services/ScheduleService'; // Sesuaikan path
-import ScheduleTabs from '@/components/jadwal/ScheduleTabs'; // Komponen baru yang akan kita buat
-import Breadcrumb from '@/components/Breadcrumb';
+import { getScheduleData } from '@/lib/services/ScheduleService';
+import ScheduleTabs from '@/components/jadwal/ScheduleTabs';
 
 export const metadata = {
   title: 'Jadwal Rilis Anime',
@@ -15,22 +13,27 @@ export default async function SchedulePage() {
     if (!scheduleData || scheduleData.days.length === 0) {
       return (
         <div className="container mx-auto px-4 py-8 text-center">
-          <h1 className="text-2xl font-bold">Jadwal Tidak Ditemukan</h1>
+          <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">Jadwal Tidak Ditemukan</h1>
         </div>
       );
     }
-    
+
     return (
-      <main className="min-h-screen py-6 px-2 md:px-4">
-        <Breadcrumb  />
-        <div className=" items-center text-center-between mb-2 bg-white/5 dark:bg-black/40 border border-white/10 dark:border-white/20 rounded-xl  md:p-6 backdrop-blur-xl shadow-lg">
-           <h1 className="text-3xl font-extrabold text-center tracking-tight text-gray-900 dark:text-white sm:text-4xl">
-             Jadwal
-           </h1>
+      <main className="min-h-screen pb-28 md:pb-8 md:pt-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Header */}
+          <div className="mb-8">
+            <h1 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-slate-100 tracking-tight">
+              Jadwal Rilis Anime
+            </h1>
+            <p className="mt-2 text-slate-600 dark:text-slate-400">
+              Jadwal anime terbaru setiap harinya
+            </p>
+          </div>
+
+          {/* Schedule Tabs */}
+          <ScheduleTabs scheduleData={scheduleData} />
         </div>
-        
-        {/* Melempar data ke komponen client yang handle tab */}
-        <ScheduleTabs scheduleData={scheduleData} />
       </main>
     );
 

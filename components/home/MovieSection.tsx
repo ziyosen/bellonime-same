@@ -5,6 +5,7 @@ import { getHomeData } from '@/lib/services';
 import type { Anime } from '@/types/anime';
 import MovieCard from './MovieCard';
 import Link from 'next/link';
+import { ArrowRight } from 'lucide-react';
 
 export default function MovieSection() {
   const [movies, setMovies] = useState<Anime[]>([]);
@@ -16,7 +17,7 @@ export default function MovieSection() {
         const response = await getHomeData();
         setMovies(response.movie.animeList.slice(0, 8));
       } catch (error) {
-        console.error('Gagal memuat data movie:', error);
+        console.error('Failed to load movies:', error);
       } finally {
         setIsLoading(false);
       }
@@ -25,28 +26,33 @@ export default function MovieSection() {
   }, []);
 
   return (
-<aside className="space-y-4">
-          <section className="bg-white/10 dark:bg-black/30 border border-white/20 dark:border-white/30 rounded-xl p-2 backdrop-blur-md shadow-md">
-            <div className="flex items-center justify-between mb-3 p-2">
-              <h2 className="text-lg sm:text-xl font-semibold text-foreground">Movie</h2>
-              <Link href="/movies" className="flex-shrink-0 px-4 py-1 border-1 border-border text-text-dim rounded-full text-sm font-semibold transition-colors duration-200 hover:bg-pink-500 hover:text-white hover:border-pink-500">
-                Lihat Semua
-              </Link>
-            </div>
+    <aside className="sticky top-20">
+      <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-soft-lg border border-slate-200 dark:border-slate-800 p-6">
+        {/* Header */}
+        <div className="flex items-center justify-between mb-4 pb-4 border-b border-slate-200 dark:border-slate-800">
+          <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100">Movies</h2>
+          <Link
+            href="/movies"
+            className="flex items-center gap-1.5 text-sm font-medium text-accent hover:text-accent-hover transition-colors group"
+          >
+            <span>Lihat Semua</span>
+            <ArrowRight size={14} className="group-hover:translate-x-0.5 transition-transform" />
+          </Link>
+        </div>
+
+        {/* Movie List */}
         <div className="space-y-3">
           {isLoading ? (
-            // Jika loading, render beberapa skeleton
             Array.from({ length: 5 }).map((_, i) => (
               <MovieCard key={i} isLoading />
             ))
           ) : (
-            // Jika tidak, render data asli
             movies.map((movie) => (
               <MovieCard key={movie.animeId} anime={movie} />
             ))
           )}
         </div>
-      </section>
+      </div>
     </aside>
   );
 }

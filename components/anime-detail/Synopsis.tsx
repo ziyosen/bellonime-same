@@ -8,15 +8,14 @@ export default function Synopsis({ text }: { text: string }) {
   return (
     <div>
       <p
-        className={`text-gray-300 leading-relaxed whitespace-pre-line transition-all duration-300 ${
-          isExpanded ? 'line-clamp-none' : 'line-clamp-5'
-        }`}
+        className={`text-slate-700 dark:text-slate-300 leading-relaxed whitespace-pre-line transition-all duration-300 ${isExpanded ? 'line-clamp-none' : 'line-clamp-5'
+          }`}
       >
         {text}
       </p>
       <button
         onClick={() => setIsExpanded(!isExpanded)}
-        className="text-pink-500 font-semibold mt-2 text-sm hover:underline"
+        className="text-accent hover:text-accent-hover font-semibold mt-3 text-sm transition-colors"
       >
         {isExpanded ? 'Lebih Sedikit' : 'Selengkapnya'}
       </button>

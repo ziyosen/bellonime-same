@@ -1,40 +1,249 @@
-/* src/app/globals.css */@import "slick-carousel/slick/slick.css";
+@import "slick-carousel/slick/slick.css";
 @import "tailwindcss";
 
 html {
   scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* Supaya carousel smooth & overflow hidden */
+/* ===== MANUAL DARK MODE STYLES ===== */
+/* Karena Tailwind v4 dark: variant ga work, gw buat manual */
+
+/* Body background & text */
+body {
+  background-color: #f8fafc;
+  color: #1e293b;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.dark body {
+  background-color: #0f172a;
+  color: #f1f5f9;
+}
+
+/* Navbar */
+nav {
+  background-color: white;
+  border-color: #e2e8f0;
+}
+
+.dark nav {
+  background-color: #1e293b;
+  border-color: #334155;
+}
+
+/* Navbar hover states */
+nav a:hover,
+nav button:hover {
+  background-color: #f1f5f9 !important;
+}
+
+.dark nav a:hover,
+.dark nav button:hover {
+  background-color: #334155 !important;
+}
+
+/* Cards & Sections */
+.bg-white {
+  background-color: white !important;
+}
+
+.dark .bg-white {
+  background-color: #1e293b !important;
+}
+
+/* Borders */
+.border-slate-200 {
+  border-color: #e2e8f0 !important;
+}
+
+.dark .border-slate-200 {
+  border-color: #475569 !important;
+}
+
+.border-slate-300 {
+  border-color: #cbd5e1 !important;
+}
+
+.dark .border-slate-300 {
+  border-color: #475569 !important;
+}
+
+/* Text colors */
+.text-slate-600,
+.text-slate-700 {
+  color: #334155 !important;
+  /* Made darker for better contrast in light mode */
+}
+
+.dark .text-slate-600,
+.dark .text-slate-700 {
+  color: #cbd5e1 !important;
+}
+
+.text-slate-800,
+.text-slate-900 {
+  color: #1e293b !important;
+}
+
+.dark .text-slate-800,
+.dark .text-slate-900 {
+  color: #f1f5f9 !important;
+}
+
+.text-slate-400 {
+  color: #94a3b8 !important;
+}
+
+.dark .text-slate-400 {
+  color: #cbd5e1 !important;
+}
+
+.text-slate-100 {
+  color: #f1f5f9 !important;
+}
+
+/* Backgrounds */
+.bg-slate-50 {
+  background-color: #f8fafc !important;
+}
+
+.dark .bg-slate-50 {
+  background-color: #0f172a !important;
+}
+
+.bg-slate-100 {
+  background-color: #f1f5f9 !important;
+}
+
+.dark .bg-slate-100 {
+  background-color: #334155 !important;
+}
+
+.bg-slate-800 {
+  background-color: #334155 !important;
+}
+
+.dark .bg-slate-800 {
+  background-color: #334155 !important;
+}
+
+.bg-slate-900 {
+  background-color: #1e293b !important;
+}
+
+.dark .bg-slate-900 {
+  background-color: #1e293b !important;
+}
+
+.bg-slate-950 {
+  background-color: #0f172a !important;
+}
+
+/* Accent color */
+.bg-accent {
+  background-color: #243049 !important;
+  /* Blue-500 */
+}
+
+.dark .bg-accent {
+  background-color: #243049 !important;
+  /* Same in dark mode */
+}
+
+/* Hover states */
+.hover\:bg-slate-50:hover {
+  background-color: #f1f5f9 !important;
+}
+
+.dark .hover\:bg-slate-50:hover {
+  background-color: #475569 !important;
+}
+
+.hover\:bg-slate-700:hover {
+  background-color: #334155 !important;
+}
+
+.dark .hover\:bg-slate-700:hover {
+  background-color: #475569 !important;
+}
+
+.hover\:bg-slate-800:hover {
+  background-color: #334155 !important;
+}
+
+.dark .hover\:bg-slate-800:hover {
+  background-color: #475569 !important;
+}
+
+/* ===== END MANUAL DARK MODE ===== */
+
+/* Carousel */
 .slick-track {
-  /* Memberi ruang atas-bawah agar kartu yang membesar tidak kepotong */
-  padding-top: 2rem;
-  padding-bottom: 2rem;
+  padding: 1.5rem 0;
+  display: flex !important;
+  align-items: center;
 }
 
-.slick-slide .group {
-  /* Transisi untuk semua animasi */
-  transition: all 0.4s ease-in-out;
-  
-  /* Style default untuk slide samping (kecil, redup) */
-  transform: scale(0.85);
-  opacity: 0.6;
+.slick-slide {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 0.5;
+  transform: scale(0.9);
 }
 
-/* Style khusus untuk slide yang di TENGAH */
-.slick-center .group {
-  transform: scale(1.1); /* Sedikit lebih besar dari normal untuk efek pop-out */
+.slick-slide.slick-active {
+  opacity: 0.75;
+}
+
+.slick-slide.slick-center {
   opacity: 1;
+  transform: scale(1);
+  z-index: 10;
 }
 
-/* ... (kode css kamu yang lain) ... */
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
 
-/* Tambahkan ini di bagian paling bawah */
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+.dark ::-webkit-scrollbar-track {
+  background: #1e293b;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #475569;
+}
+
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
 
 .no-scrollbar {
-  -ms-overflow-style: none; /* Untuk Internet Explorer dan Edge */
-  scrollbar-width: none; /* Untuk Firefox */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Hero gradient - manual dark mode */
+.hero-gradient {
+  background: linear-gradient(to top, #f8fafc 0%, rgba(248, 250, 252, 0.8) 50%, transparent 100%);
+}
+
+.dark .hero-gradient {
+  background: linear-gradient(to top, #0f172a 0%, rgba(15, 23, 42, 0.8) 50%, transparent 100%);
+}
+
+/* Hover transitions */
+.group:hover .group-hover\:scale-105 {
+  transform: scale(1.05);
 }

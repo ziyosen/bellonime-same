@@ -1,5 +1,4 @@
 import { getAnimeDetail } from '@/lib/services';
-import Breadcrumb from '@/components/Breadcrumb';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Star, PlayCircle, Film, Calendar, Tv, Tag } from 'lucide-react';
@@ -7,48 +6,24 @@ import type { AnimeDetail } from '@/types/anime';
 import Synopsis from '@/components/anime-detail/Synopsis';
 import EpisodeList from '@/components/anime-detail/EpisodeList';
 import SectionWrapper from '@/components/anime-detail/SectionWrapper';
-import SkeletonHeader from '@/components/anime-detail/SkeletonHeader';
 import SkeletonSynopsis from '@/components/anime-detail/SkeletonSynopsis';
-import SkeletonBatch from '@/components/anime-detail/SkeletonBatch';
 import SkeletonEpisodes from '@/components/anime-detail/SkeletonEpisodes';
-import SkeletonSidebar from '@/components/anime-detail/SkeletonSidebar';
+import BatchSection from '@/components/anime-detail/BatchSection';
 
-// Komponen Section dengan judul
-
-
-// Sidebar Detail
-function DetailSidebar({ anime }: { anime: AnimeDetail }) {
-  const details = [
-    { icon: <Tv size={16} />, label: 'Tipe', value: anime.type },
-    { icon: <Film size={16} />, label: 'Episode', value: anime.episodes },
-    { icon: <Calendar size={16} />, label: 'Musim', value: anime.season },
-    { icon: <Star size={16} />, label: 'Skor', value: anime.score.value },
-  ];
-
+// Stats Card Component
+function StatCard({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) {
   return (
-    <aside className="space-y-4  p-2  shadow-md">
-      <div className="relative aspect-[2/3] w-full rounded-lg overflow-hidden shadow-2xl">
-        <Image src={anime.poster} alt={`Poster ${anime.english}`} fill className="object-cover" sizes="(max-width: 768px) 100vw, 25vw" />
+    <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-4 shadow-soft-md">
+      <div className="flex items-center gap-3">
+        <div className="p-2 bg-slate-100 dark:bg-slate-800 rounded-lg text-slate-700 dark:text-slate-300">
+          {icon}
+        </div>
+        <div>
+          <p className="text-xs text-slate-500 dark:text-slate-400">{label}</p>
+          <p className="font-semibold text-slate-900 dark:text-slate-100">{value}</p>
+        </div>
       </div>
-      <div className="space-y-3 text-sm">
-        {details.map(detail => (
-          <div key={detail.label} className="flex items-center gap-3">
-            <div className="p-1.5 bg-gray-700/50 rounded-md">{detail.icon}</div>
-            <div>
-              <strong className="block text-gray-400">{detail.label}</strong>
-              <span className="font-medium">{detail.value}</span>
-            </div>
-          </div>
-        ))}
-      </div>
-      <div className="flex flex-wrap gap-2">
-        {anime.genreList.map(genre => (
-          <Link key={genre.genreId} href={`/genres/${genre.genreId}`} className="flex items-center gap-1 px-2 py-1 bg-gray-700/50 text-gray-300 text-xs rounded-full hover:bg-pink-500 hover:text-white transition-colors">
-            <Tag size={12} /> {genre.title}
-          </Link>
-        ))}
-      </div>
-    </aside>
+    </div>
   );
 }
 
@@ -57,7 +32,7 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
   try {
     const anime = await getAnimeDetail(params.id);
     return {
-      title: `${anime.english} - AniWeb`,
+      title: `${anime.english} - Bellonime`,
       description: anime.synopsis?.paragraphs.slice(0, 160),
     };
   } catch {
@@ -65,7 +40,7 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
   }
 }
 
-// Halaman Detail Anime
+// Anime Detail Page
 export default async function AnimeDetailPage({ params }: { params: { id: string } }) {
   let anime: AnimeDetail | null = null;
   try {
@@ -76,75 +51,141 @@ export default async function AnimeDetailPage({ params }: { params: { id: string
 
   const isLoaded = Boolean(anime);
 
+  if (!anime) {
+    return (
+      <main className="min-h-screen py-6 px-4">
+        <div className="max-w-7xl mx-auto">
+          <p className="text-center text-slate-600 dark:text-slate-400">Anime tidak ditemukan</p>
+        </div>
+      </main>
+    );
+  }
+
   return (
-    <main className="min-h-screen py-6 px-2 md:px-4">
-      <Breadcrumb dynamicRoutes={{ [params.id]: anime?.title || '' }} />
-      <div className="container   px-4 grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-8">
-        {/* Konten Utama */}
-        <div className="space-y-2">
-          {/* Header */}
-          <SectionWrapper isLoaded={isLoaded}>
-            {anime ? (
-              
-                <div className="">
-                  <h1 className="text-4xl font-bold">{anime.english}</h1>
-                  <p className="text-lg text-gray-400">{anime.japanese}</p>
-                  {anime.trailer && (
-                    <Link href={anime.trailer} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-4 py-2 mt-2 bg-pink-500 text-white rounded-full hover:bg-pink-600 transition-colors">
-                      <PlayCircle size={20} />
-                      <span>Tonton Trailer</span>
-                    </Link>
-                  )}
-                </div>
-              
-            ) : (
-              <SkeletonHeader />
+    <main className="min-h-screen pb-28 md:pb-8">
+      {/* Hero Section */}
+      <div className="relative h-[40vh] md:h-[50vh] w-full overflow-hidden bg-slate-200">
+        {/* Loading Skeleton */}
+        <div className="absolute inset-0 animate-shimmer" />
+
+        {/* Backdrop Image */}
+        <Image
+          src={anime.poster}
+          alt={anime.english}
+          fill
+          className="object-cover"
+          priority
+        />
+        {/* Gradient Overlay - Manual dark mode */}
+        <div className="absolute inset-0 hero-gradient" />
+
+        {/* Hero Content */}
+        <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
+          <div className="max-w-7xl mx-auto">
+            <h1 className="text-3xl md:text-5xl font-bold text-slate-900 dark:text-white mb-2">
+              {anime.english}
+            </h1>
+            <p className="text-lg text-slate-600 dark:text-slate-300 mb-4">
+              {anime.japanese}
+            </p>
+            {anime.trailer && (
+              <Link
+                href={anime.trailer}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-accent hover:bg-accent-hover text-white rounded-xl transition-colors shadow-soft-lg"
+              >
+                <PlayCircle size={20} />
+                <span className="font-semibold">Tonton Trailer</span>
+              </Link>
             )}
-          </SectionWrapper>
+          </div>
+        </div>
+      </div>
 
-          {/* Sinopsis */}
-          <SectionWrapper isLoaded={isLoaded} >
-            {anime ? <Synopsis text={anime.synopsis.paragraphs} /> : <SkeletonSynopsis />}
-            {anime?.synopsis?.connections && anime.synopsis.connections.length > 0 ? (
-  <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-3">
-    {anime.synopsis.connections.slice(0).map((conn) => (
-      <Link
-        key={conn.animeId}
-        href={conn.animeId}
-        className="block p-3 bg-[#161616] rounded-md text-center text-sm font-medium hover:bg-pink-500 hover:text-white transition-colors"
-      >
-        {conn.title}
-      </Link>
-    ))}
-  </div>
-) : (
-  <SkeletonBatch />
-)}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-12 relative z-10">
+        {/* Stats Cards */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+          <StatCard icon={<Tv size={20} />} label="Tipe" value={anime.type} />
+          <StatCard icon={<Film size={20} />} label="Episode" value={anime.episodes} />
+          <StatCard icon={<Calendar size={20} />} label="Musim" value={anime.season} />
+          <StatCard icon={<Star size={20} />} label="Skor" value={anime.score.value} />
+        </div>
 
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-8">
+          {/* Main Content */}
+          <div className="space-y-6">
+            {/* Synopsis */}
+            <SectionWrapper isLoaded={isLoaded}>
+              <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-4">Sinopsis</h2>
+              {anime ? <Synopsis text={anime.synopsis.paragraphs} /> : <SkeletonSynopsis />}
+            </SectionWrapper>
 
-            {anime && anime.batchList && anime.batchList.length > 0 ? (
-              <div className="space-y-3 mt-2">
-                {anime.batchList.map(batch => (
-                  <Link key={batch.batchId} href={batch.href} className="block p-3 bg-[#161616] rounded-md text-center text-sm font-medium hover:bg-pink-500 hover:text-white transition-colors">
-                    {batch.title}
+            {/* Connections */}
+            {anime?.synopsis?.connections && anime.synopsis.connections.length > 0 && (
+              <SectionWrapper isLoaded={isLoaded}>
+                <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-4">Musim Lainnya</h2>
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                  {anime.synopsis.connections.map((conn) => (
+                    <Link
+                      key={conn.animeId}
+                      href={conn.animeId}
+                      className="block p-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-center text-sm font-medium text-slate-900 dark:text-slate-100 hover:bg-accent hover:text-white hover:border-accent transition-all shadow-soft"
+                    >
+                      {conn.title}
+                    </Link>
+                  ))}
+                </div>
+              </SectionWrapper>
+            )}
+
+            {/* Batch Downloads */}
+            {anime && anime.batchList && anime.batchList.length > 0 && (
+              <SectionWrapper isLoaded={isLoaded}>
+                <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-4">Batch Download</h2>
+                <BatchSection batches={anime.batchList} />
+              </SectionWrapper>
+            )}
+
+            {/* Episodes */}
+            <SectionWrapper isLoaded={isLoaded}>
+              {anime ? <EpisodeList episodes={anime.episodeList} /> : <SkeletonEpisodes />}
+            </SectionWrapper>
+          </div>
+
+          {/* Sidebar */}
+          <aside className="space-y-6">
+            {/* Poster */}
+            <SectionWrapper isLoaded={isLoaded}>
+              <div className="relative aspect-[2/3] w-full rounded-xl overflow-hidden shadow-soft-xl">
+                <Image
+                  src={anime.poster}
+                  alt={`Poster ${anime.english}`}
+                  fill
+                  className="object-cover"
+                  sizes="320px"
+                />
+              </div>
+            </SectionWrapper>
+
+            {/* Genres */}
+            <SectionWrapper isLoaded={isLoaded}>
+              <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100 mb-3">Genre</h3>
+              <div className="flex flex-wrap gap-2">
+                {anime.genreList.map(genre => (
+                  <Link
+                    key={genre.genreId}
+                    href={`/genres/${genre.genreId}`}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-sm rounded-lg hover:bg-accent hover:text-white transition-colors border border-slate-200 dark:border-slate-700"
+                  >
+                    <Tag size={14} />
+                    {genre.title}
                   </Link>
                 ))}
               </div>
-            ) : (
-              <SkeletonBatch />
-            )}
-          </SectionWrapper>
-
-          {/* Episodes */}
-          <SectionWrapper isLoaded={isLoaded} >
-            {anime ? <EpisodeList episodes={anime.episodeList} /> : <SkeletonEpisodes />}
-          </SectionWrapper>
+            </SectionWrapper>
+          </aside>
         </div>
-
-        {/* Sidebar */}
-        <SectionWrapper isLoaded={isLoaded}>
-          {anime ? <DetailSidebar anime={anime} /> : <SkeletonSidebar />}
-        </SectionWrapper>
       </div>
     </main>
   );

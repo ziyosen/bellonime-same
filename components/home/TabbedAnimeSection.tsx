@@ -1,9 +1,8 @@
 'use client';
 
-// 👉 1. Impor useRef
 import { useState, useEffect, useRef } from 'react';
 import AnimeCard from '../AnimeCard';
-import type { Recent, Popular, Completed, Ongoing, Pagination} from '@/types/anime';
+import type { Recent, Popular, Completed, Ongoing, Pagination } from '@/types/anime';
 import { getRecentData, getPopularData, getCompletedData } from '@/lib/services';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -18,8 +17,7 @@ export default function TabbedAnimeSection() {
   const [paginationInfo, setPaginationInfo] = useState<Pagination | null>(null);
   const [data, setData] = useState<AnimeItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  
-  // 👉 2. Buat ref untuk menunjuk ke elemen section utama
+
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -30,11 +28,11 @@ export default function TabbedAnimeSection() {
         if (activeTab === 'Terbaru') response = await getRecentData(currentPage);
         else if (activeTab === 'Populer') response = await getPopularData(currentPage);
         else if (activeTab === 'Tamat') response = await getCompletedData(currentPage);
-        
+
         setData(response?.data?.animeList ?? []);
         setPaginationInfo(response?.pagination ?? null);
       } catch (error) {
-        console.error(`Gagal memuat data untuk tab ${activeTab}:`, error);
+        console.error(`Failed to load data for ${activeTab}:`, error);
         setData([]);
       } finally {
         setIsLoading(false);
@@ -43,52 +41,48 @@ export default function TabbedAnimeSection() {
 
     fetchData();
   }, [activeTab, currentPage]);
-  
-  // Fungsi untuk scroll ke atas
+
   const scrollToTop = () => {
     sectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
   const handleTabClick = (tab: string) => {
-    // Jika klik tab yang sama, cukup scroll ke atas
     if (tab === activeTab) {
       scrollToTop();
       return;
     }
     setActiveTab(tab);
     setCurrentPage(1);
-    scrollToTop(); // 👉 3. Panggil fungsi scroll saat ganti tab
+    scrollToTop();
   };
-  
+
   const handlePageChange = (newPage: number) => {
     if (newPage < 1) return;
     setCurrentPage(newPage);
-    scrollToTop(); // 👉 3. Panggil fungsi scroll saat ganti halaman
+    scrollToTop();
   };
 
   return (
-    // Beri ref ke elemen section
-    
-    <section ref={sectionRef} className="bg-white/10 dark:bg-black/30 border border-white/20 dark:border-white/30 rounded-xl p-4 backdrop-blur-xl shadow-md">
-      
-      {/* 👉 4. Jadikan header ini STICKY */}
-      <div  className="sticky top-0 z-20   py-4 mt-4 mb-4 bg-white/10 dark:bg-black/60 border border-white/20 dark:border-white/30 rounded-xl p-4 backdrop-blur-xl shadow-md">
-        <div className="flex items-center justify-between">
-          {/* Kumpulan Tombol Tab */}
-          <div className="flex items-center space-x-2">
+    <section ref={sectionRef}>
+      {/* STICKY HEADER - Outside card, matchs page background */}
+      <div className="sticky top-0 md:top-16 z-20 bg-slate-50 dark:bg-slate-950">
+        <div className="flex items-center justify-between gap-4 flex-wrap bg-white dark:bg-slate-900 rounded-xl shadow-soft-lg border border-slate-200 dark:border-slate-800 px-6 py-4">
+          {/* Tabs Left */}
+          <div className="flex items-center gap-2">
             {TABS.map((tab) => (
               <button
                 key={tab}
                 onClick={() => handleTabClick(tab)}
-                className={`relative px-4 py-2 text-sm sm:text-base font-medium transition-colors rounded-md ${
-                  activeTab === tab ? 'text-white' : 'text-gray-400 hover:text-white'
-                }`}
+                className={`relative px-4 py-2 text-sm font-medium rounded-lg transition-colors whitespace-nowrap ${activeTab === tab
+                  ? 'text-white'
+                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100'
+                  }`}
               >
                 {activeTab === tab && (
                   <motion.div
-                    layoutId="active-tab-highlight"
-                    className="absolute inset-0 bg-pink-500 rounded-md z-0"
-                    transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                    layoutId="home-active-tab-bg"
+                    className="absolute inset-0 bg-accent rounded-lg -z-10"
+                    transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                   />
                 )}
                 <span className="relative z-10">{tab}</span>
@@ -96,44 +90,51 @@ export default function TabbedAnimeSection() {
             ))}
           </div>
 
-          {/* Tombol Panah Navigasi Halaman */}
-          <div className="flex items-center space-x-2">
+          {/* Pagination Right */}
+          <div className="flex items-center gap-3">
             <button
               onClick={() => handlePageChange(currentPage - 1)}
-              disabled={isLoading || !paginationInfo?.hasPrevPage}
-              className="p-1 rounded-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-white/10"
+              disabled={isLoading || currentPage === 1}
+              className="p-2.5 rounded-lg bg-accent/10 dark:bg-accent/20 text-accent hover:bg-accent/20 dark:hover:bg-accent/30 disabled:opacity-30 disabled:cursor-not-allowed transition-all "
+              aria-label="Previous page"
             >
-              <ChevronLeft size={20} />
+              <ChevronLeft size={20} strokeWidth={2.5} />
             </button>
-            <span className="text-sm font-medium w-4 text-center">{currentPage}</span>
+            <span className="text-sm font-bold text-slate-900 dark:text-slate-100 min-w-[3rem] text-center px-4 py-2 bg-accent/10 dark:bg-accent/20 rounded-lg ">
+              {currentPage}
+            </span>
             <button
               onClick={() => handlePageChange(currentPage + 1)}
               disabled={isLoading || !paginationInfo?.hasNextPage}
-              className="p-1 rounded-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-white/10"
+              className="p-2.5 rounded-lg bg-accent/10 dark:bg-accent/20 text-accent hover:bg-accent/20 dark:hover:bg-accent/30 disabled:opacity-30 disabled:cursor-not-allowed transition-all "
+              aria-label="Next page"
             >
-              <ChevronRight size={20} />
+              <ChevronRight size={20} strokeWidth={2.5} />
             </button>
           </div>
         </div>
       </div>
-      
-      {/* Konten Anime */}
-      <div>
+
+      {/* Content Card */}
+      <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-soft-lg border border-slate-200 dark:border-slate-800 p-6">
         {isLoading ? (
           <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-4">
-            {Array.from({ length: 36 }).map((_, i) => (
+            {Array.from({ length: 24 }).map((_, i) => (
               <AnimeCard key={i} isLoading />
             ))}
           </div>
         ) : (
           <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-4">
             {data.map((anime: AnimeItem) => (
-              <AnimeCard key={anime.animeId} anime={anime} />
+              <AnimeCard
+                key={anime.animeId}
+                anime={anime}
+                linkTo={activeTab === 'Terbaru' ? 'latest-episode' : 'detail'}
+              />
             ))}
           </div>
         )}
       </div>
     </section>
-    
   );
 }
