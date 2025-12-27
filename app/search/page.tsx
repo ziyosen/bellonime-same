@@ -1,12 +1,14 @@
 import { getSearchData } from '@/lib/services/SearchService';
-
 import AnimeCard from '@/components/AnimeCard';
 import PaginationControls from '@/components/PaginationControls';
 import { Search, AlertCircle } from 'lucide-react';
 import { Suspense } from 'react';
 
-export async function generateMetadata({ searchParams }: { searchParams: { q?: string } }) {
-    const query = searchParams.q || '';
+export const dynamic = 'force-dynamic';
+
+export async function generateMetadata({ searchParams }: { searchParams: Promise<{ q?: string }> }) {
+    const { q } = await searchParams;
+    const query = q || '';
     return {
         title: query ? `Pencarian: ${query} - Bellonime` : 'Pencarian - Bellonime',
         description: `Hasil pencarian untuk ${query} di Bellonime`,
@@ -14,12 +16,13 @@ export async function generateMetadata({ searchParams }: { searchParams: { q?: s
 }
 
 type Props = {
-    searchParams: { q?: string; page?: string };
+    searchParams: Promise<{ q?: string; page?: string }>;
 };
 
 export default async function SearchPage({ searchParams }: Props) {
-    const query = searchParams.q || '';
-    const page = Number(searchParams.page) || 1;
+    const { q, page: pageParam } = await searchParams;
+    const query = q || '';
+    const page = Number(pageParam) || 1;
 
     if (!query) {
         return (

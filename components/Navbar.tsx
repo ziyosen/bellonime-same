@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Home, Sun, Moon, List, Film, CalendarDays, Search } from 'lucide-react';
@@ -15,7 +15,8 @@ export default function Navbar() {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
+  const searchParams = useSearchParams();
+  const [searchQuery, setSearchQuery] = useState(searchParams.get('q') || '');
   const [isVisible, setIsVisible] = useState(true);
   const lastScrollY = useRef(0);
 
@@ -24,7 +25,7 @@ export default function Navbar() {
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
-      
+
       // Desktop background logic
       setScrolled(currentScrollY > 20);
 
@@ -36,7 +37,7 @@ export default function Navbar() {
       } else {
         setIsVisible(true);
       }
-      
+
       lastScrollY.current = currentScrollY;
     };
 
@@ -86,14 +87,14 @@ export default function Navbar() {
                 group-hover:scale-105
               ">
                 <Image
-  src="/bellonime.png"
-  alt="Bellonime Logo"
-  width={40}
-  height={40}
-  priority
-  className="w-full h-full object-contain p-1"
-  draggable={false}
-/>
+                  src="/bellonime.png"
+                  alt="Bellonime Logo"
+                  width={40}
+                  height={40}
+                  priority
+                  className="w-full h-full object-contain p-1"
+                  draggable={false}
+                />
               </div>
 
               <span className="font-extrabold text-xl tracking-wide">
@@ -167,14 +168,14 @@ export default function Navbar() {
             <Link href="/" className="flex-shrink-0">
               <div className="w-8 h-8 rounded-full overflow-hidden bg-[#1e293b] ring-1 ring-white/10 shadow-md">
                 <Image
-  src="/bellonime.png"
-  alt="Bellonime Logo"
-  width={32}
-  height={32}
-  priority
-  className="w-full h-full object-contain p-1"
-  draggable={false}
-/>
+                  src="/bellonime.png"
+                  alt="Bellonime Logo"
+                  width={32}
+                  height={32}
+                  priority
+                  className="w-full h-full object-contain p-1"
+                  draggable={false}
+                />
 
               </div>
             </Link>
