@@ -1,4 +1,4 @@
-import { API_BASE_URL } from '@/lib/config';
+import { API_BASE_URL, API_HEADERS } from '@/lib/config';
 import type { ApiResponse, Ongoing } from '@/types/anime';
 
 /**
@@ -10,8 +10,9 @@ export async function getOngoingData(page?: number): Promise<ApiResponse<Ongoing
   if (page) {
     url.searchParams.append('page', page.toString());
   }
-  
+
   const response = await fetch(url.toString(), {
+    headers: API_HEADERS,
     next: { revalidate: 3600 },
   });
 

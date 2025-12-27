@@ -3,6 +3,7 @@ import type { Anime } from '@/types/anime';
 import AnimeCard from '@/components/AnimeCard';
 import PaginationControls from '@/components/PaginationControls';
 import { Film } from 'lucide-react';
+import { Suspense } from 'react';
 
 // Fungsi untuk SEO
 export const metadata = {
@@ -10,14 +11,10 @@ export const metadata = {
   description: 'Jelajahi semua film anime yang tersedia.',
 };
 
-// Tipe untuk props halaman, termasuk searchParams untuk pagination
-type Props = {
-  searchParams: { page?: string };
-};
-
 // Komponen Halaman
-export default async function MoviesPage({ searchParams }: Props) {
-  const page = Number(searchParams.page) || 1;
+export default async function MoviesPage({ searchParams }: { searchParams: Promise<{ page?: string }> }) {
+  const { page: pageParam } = await searchParams;
+  const page = Number(pageParam) || 1;
 
   try {
     const response = await getMoviesData(page);
@@ -65,7 +62,11 @@ export default async function MoviesPage({ searchParams }: Props) {
 
             {/* Pagination */}
             <div className="mt-6">
-              {pagination && <PaginationControls pagination={pagination} />}
+              {pagination && (
+                <Suspense fallback={null}>
+                  <PaginationControls pagination={pagination} />
+                </Suspense>
+              )}
             </div>
           </div>
         </div>

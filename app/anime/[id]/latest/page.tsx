@@ -1,11 +1,12 @@
 import { getAnimeDetail } from '@/lib/services';
 import { redirect } from 'next/navigation';
 
-export default async function LatestEpisodePage({ params }: { params: { id: string } }) {
-  let targetUrl = `/anime/${params.id}`; // Default fallback to detail page
+export default async function LatestEpisodePage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  let targetUrl = `/anime/${id}`; // Default fallback to detail page
 
   try {
-    const anime = await getAnimeDetail(params.id);
+    const anime = await getAnimeDetail(id);
 
     if (anime && anime.episodeList && anime.episodeList.length > 0) {
       // Assuming the first episode in the list is the latest one

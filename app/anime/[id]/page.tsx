@@ -28,9 +28,10 @@ function StatCard({ icon, label, value }: { icon: React.ReactNode; label: string
 }
 
 // SEO Metadata
-export async function generateMetadata({ params }: { params: { id: string } }) {
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
   try {
-    const anime = await getAnimeDetail(params.id);
+    const { id } = await params;
+    const anime = await getAnimeDetail(id);
     return {
       title: `${anime.english} - Bellonime`,
       description: anime.synopsis?.paragraphs.slice(0, 160),
@@ -41,10 +42,11 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
 }
 
 // Anime Detail Page
-export default async function AnimeDetailPage({ params }: { params: { id: string } }) {
+export default async function AnimeDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
   let anime: AnimeDetail | null = null;
   try {
-    anime = await getAnimeDetail(params.id);
+    anime = await getAnimeDetail(id);
   } catch {
     anime = null;
   }

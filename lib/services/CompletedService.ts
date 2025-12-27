@@ -1,4 +1,4 @@
-import { API_BASE_URL } from '@/lib/config';
+import { API_BASE_URL, API_HEADERS } from '@/lib/config';
 import type { ApiResponse, Completed } from '@/types/anime';
 
 /**
@@ -13,6 +13,7 @@ export async function getCompletedData(page?: number): Promise<ApiResponse<Compl
   }
 
   const response = await fetch(url.toString(), {
+    headers: API_HEADERS,
     next: { revalidate: 86400 }, // Cukup revalidasi sekali sehari
   });
 
@@ -20,5 +21,5 @@ export async function getCompletedData(page?: number): Promise<ApiResponse<Compl
     throw new Error('Gagal mengambil data anime yang telah selesai');
   }
 
-return response.json();
+  return response.json();
 }

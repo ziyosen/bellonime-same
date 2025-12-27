@@ -1,4 +1,4 @@
-import { API_BASE_URL } from '@/lib/config';
+import { API_BASE_URL, API_HEADERS } from '@/lib/config';
 import type { ApiResponse, Batch } from '@/types/anime';
 
 /**
@@ -13,6 +13,7 @@ export async function getBatchData(page?: number): Promise<ApiResponse<Batch>> {
   }
 
   const response = await fetch(url.toString(), {
+    headers: API_HEADERS,
     next: { revalidate: 86400 }, // Cukup revalidasi sekali sehari
   });
 

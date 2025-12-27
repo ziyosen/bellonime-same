@@ -1,4 +1,4 @@
-import { API_BASE_URL } from '@/lib/config';
+import { API_BASE_URL, API_HEADERS } from '@/lib/config';
 import type { ApiResponse, Movies } from '@/types/anime';
 
 /**
@@ -13,6 +13,7 @@ export async function getMoviesData(page?: number): Promise<ApiResponse<Movies>>
   }
 
   const response = await fetch(url.toString(), {
+    headers: API_HEADERS,
     next: { revalidate: 86400 }, // Revalidasi sekali sehari (24 jam)
   });
 

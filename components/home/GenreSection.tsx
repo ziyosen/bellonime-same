@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { getGenresData } from '@/lib/services';
+import { fetchGenres } from '@/app/actions/home';
 import type { GenresLink } from '@/types/anime';
 import GenreScroller from './GenreScroller';
 
@@ -10,17 +10,19 @@ export default function GenreSection() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const fetchGenres = async () => {
+    const fetchGenresData = async () => {
       try {
-        const response = await getGenresData();
-        setGenres(response.data.genreList);
+        const response = await fetchGenres();
+        if (response?.data?.genreList) {
+          setGenres(response.data.genreList);
+        }
       } catch (error) {
         console.error('Failed to load genres:', error);
       } finally {
         setIsLoading(false);
       }
     };
-    fetchGenres();
+    fetchGenresData();
   }, []);
 
   return (

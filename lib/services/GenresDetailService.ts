@@ -1,5 +1,5 @@
 import { ApiResponse, GenresDetail } from "@/types/anime";
-import { API_BASE_URL } from "@/lib/config";
+import { API_BASE_URL, API_HEADERS } from "@/lib/config";
 
 // Tambahkan 'page?: number' sebagai argumen kedua
 export async function getGenresDetailData(genreId: string, page?: number): Promise<ApiResponse<GenresDetail>> {
@@ -9,6 +9,7 @@ export async function getGenresDetailData(genreId: string, page?: number): Promi
   }
 
   const response = await fetch(url.toString(), {
+    headers: API_HEADERS,
     next: { revalidate: 3600 },
   });
 

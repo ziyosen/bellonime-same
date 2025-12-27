@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import AnimeCard from '../AnimeCard';
 import type { Recent, Popular, Completed, Ongoing, Pagination } from '@/types/anime';
-import { getRecentData, getPopularData, getCompletedData } from '@/lib/services';
+import { fetchRecentAnime, fetchPopularAnime, fetchCompletedAnime } from '@/app/actions/home';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -25,9 +25,9 @@ export default function TabbedAnimeSection() {
       setIsLoading(true);
       try {
         let response;
-        if (activeTab === 'Terbaru') response = await getRecentData(currentPage);
-        else if (activeTab === 'Populer') response = await getPopularData(currentPage);
-        else if (activeTab === 'Tamat') response = await getCompletedData(currentPage);
+        if (activeTab === 'Terbaru') response = await fetchRecentAnime(currentPage);
+        else if (activeTab === 'Populer') response = await fetchPopularAnime(currentPage);
+        else if (activeTab === 'Tamat') response = await fetchCompletedAnime(currentPage);
 
         setData(response?.data?.animeList ?? []);
         setPaginationInfo(response?.pagination ?? null);

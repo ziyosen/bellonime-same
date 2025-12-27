@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { getHomeData } from '@/lib/services';
+import { fetchHomeData } from '@/app/actions/home';
 import type { Anime } from '@/types/anime';
 import MovieCard from './MovieCard';
 import Link from 'next/link';
@@ -14,8 +14,10 @@ export default function MovieSection() {
   useEffect(() => {
     const fetchMovies = async () => {
       try {
-        const response = await getHomeData();
-        setMovies(response.movie.animeList.slice(0, 8));
+        const response = await fetchHomeData();
+        if (response?.movie?.animeList) {
+          setMovies(response.movie.animeList.slice(0, 8));
+        }
       } catch (error) {
         console.error('Failed to load movies:', error);
       } finally {

@@ -1,7 +1,6 @@
-import { API_BASE_URL } from '@/lib/config';
+import { API_BASE_URL, API_HEADERS } from '@/lib/config';
 import type { ApiResponse, Recent } from '@/types/anime';
 
-// Ubah tipe kembalian menjadi seluruh ApiResponse
 export async function getRecentData(page?: number): Promise<ApiResponse<Recent>> {
   const url = new URL(`${API_BASE_URL}/samehadaku/recent`);
   if (page) {
@@ -9,13 +8,13 @@ export async function getRecentData(page?: number): Promise<ApiResponse<Recent>>
   }
 
   const response = await fetch(url.toString(), {
-    next: { revalidate: 300 },
+    headers: API_HEADERS,
+    cache: 'no-store',
   });
 
   if (!response.ok) {
     throw new Error('Gagal mengambil data anime terbaru');
   }
 
-  // Langsung kembalikan seluruh hasil JSON
-  return response.json(); 
+  return response.json();
 }

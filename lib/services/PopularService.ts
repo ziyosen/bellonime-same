@@ -1,4 +1,4 @@
-import { API_BASE_URL } from '@/lib/config';
+import { API_BASE_URL, API_HEADERS } from '@/lib/config';
 import type { ApiResponse, Popular } from '@/types/anime';
 
 /**
@@ -13,6 +13,7 @@ export async function getPopularData(page?: number): Promise<ApiResponse<Popular
   }
 
   const response = await fetch(url, {
+    headers: API_HEADERS,
     next: { revalidate: 3600 },
   });
 
@@ -21,5 +22,5 @@ export async function getPopularData(page?: number): Promise<ApiResponse<Popular
   }
 
 
-   return response.json(); 
+  return response.json();
 }

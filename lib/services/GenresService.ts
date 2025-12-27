@@ -1,8 +1,9 @@
 import { ApiResponse, Genres } from "@/types/anime";
-import { API_BASE_URL } from "@/lib/config";
+import { API_BASE_URL, API_HEADERS } from "@/lib/config";
 
 export async function getGenresData(): Promise<ApiResponse<Genres>> {
   const response = await fetch(`${API_BASE_URL}/samehadaku/genres`, {
+    headers: API_HEADERS,
     next: { revalidate: 3600 },
   });
 

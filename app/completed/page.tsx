@@ -3,18 +3,16 @@ import type { Anime } from '@/types/anime';
 import AnimeCard from '@/components/AnimeCard';
 import PaginationControls from '@/components/PaginationControls';
 import { CheckCircle } from 'lucide-react';
+import { Suspense } from 'react';
 
 export const metadata = {
   title: 'Anime Tamat - Bellonime',
   description: 'Daftar anime yang sudah tamat.',
 };
 
-type Props = {
-  searchParams: { page?: string };
-};
-
-export default async function CompletedPage({ searchParams }: Props) {
-  const page = Number(searchParams.page) || 1;
+export default async function CompletedPage({ searchParams }: { searchParams: Promise<{ page?: string }> }) {
+  const { page: pageParam } = await searchParams;
+  const page = Number(pageParam) || 1;
 
   try {
     const response = await getCompletedData(page);
@@ -58,7 +56,11 @@ export default async function CompletedPage({ searchParams }: Props) {
               ))}
             </div>
             <div className="mt-6">
-              {pagination && <PaginationControls pagination={pagination} />}
+              {pagination && (
+                <Suspense fallback={null}>
+                  <PaginationControls pagination={pagination} />
+                </Suspense>
+              )}
             </div>
           </div>
         </div>

@@ -3,18 +3,16 @@ import type { Anime } from '@/types/anime';
 import AnimeCard from '@/components/AnimeCard';
 import PaginationControls from '@/components/PaginationControls';
 import { Play } from 'lucide-react';
+import { Suspense } from 'react';
 
 export const metadata = {
   title: 'Anime Ongoing - Bellonime',
   description: 'Daftar anime yang sedang tayang.',
 };
 
-type Props = {
-  searchParams: { page?: string };
-};
-
-export default async function OngoingPage({ searchParams }: Props) {
-  const page = Number(searchParams.page) || 1;
+export default async function OngoingPage({ searchParams }: { searchParams: Promise<{ page?: string }> }) {
+  const { page: pageParam } = await searchParams;
+  const page = Number(pageParam) || 1;
 
   try {
     const response = await getOngoingData(page);
@@ -58,7 +56,11 @@ export default async function OngoingPage({ searchParams }: Props) {
               ))}
             </div>
             <div className="mt-6">
-              {pagination && <PaginationControls pagination={pagination} />}
+              {pagination && (
+                <Suspense fallback={null}>
+                  <PaginationControls pagination={pagination} />
+                </Suspense>
+              )}
             </div>
           </div>
         </div>

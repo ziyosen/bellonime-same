@@ -3,18 +3,16 @@ import type { Anime } from '@/types/anime';
 import AnimeCard from '@/components/AnimeCard';
 import PaginationControls from '@/components/PaginationControls';
 import { TrendingUp } from 'lucide-react';
+import { Suspense } from 'react';
 
 export const metadata = {
   title: 'Anime Populer - Bellonime',
   description: 'Daftar anime paling populer.',
 };
 
-type Props = {
-  searchParams: { page?: string };
-};
-
-export default async function PopularPage({ searchParams }: Props) {
-  const page = Number(searchParams.page) || 1;
+export default async function PopularPage({ searchParams }: { searchParams: Promise<{ page?: string }> }) {
+  const { page: pageParam } = await searchParams;
+  const page = Number(pageParam) || 1;
 
   try {
     const response = await getPopularData(page);
@@ -58,7 +56,11 @@ export default async function PopularPage({ searchParams }: Props) {
               ))}
             </div>
             <div className="mt-6">
-              {pagination && <PaginationControls pagination={pagination} />}
+              {pagination && (
+                <Suspense fallback={null}>
+                  <PaginationControls pagination={pagination} />
+                </Suspense>
+              )}
             </div>
           </div>
         </div>

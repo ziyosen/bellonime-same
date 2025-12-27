@@ -6,9 +6,10 @@ import EpisodeListMobile from '@/components/episode/EpisodeListMobile';
 import DownloadSection from '@/components/episode/DownloadSection';
 
 // Fungsi untuk SEO
-export async function generateMetadata({ params }: { params: { id: string } }) {
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
   try {
-    const episode: Episode = await getEpisodeData(params.id);
+    const { id } = await params;
+    const episode: Episode = await getEpisodeData(id);
     return { title: `${episode.title} - Bellonime` };
   } catch {
     return { title: 'Episode Tidak Ditemukan' };
@@ -16,12 +17,13 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
 }
 
 // Komponen Halaman
-export default async function EpisodePage({ params }: { params: { id: string } }) {
+export default async function EpisodePage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
   let episode: Episode;
   let anime: AnimeDetail;
 
   try {
-    episode = await getEpisodeData(params.id);
+    episode = await getEpisodeData(id);
     if (!episode) throw new Error('Episode tidak ditemukan');
 
     anime = await getAnimeDetail(episode.animeId);

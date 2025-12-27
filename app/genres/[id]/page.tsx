@@ -4,25 +4,30 @@ import AnimeCard from '@/components/AnimeCard';
 import PaginationControls from '@/components/PaginationControls';
 import Link from 'next/link';
 import { Tags, ArrowLeft } from 'lucide-react';
-
-type Props = {
-  params: { id: string };
-  searchParams: { page?: string };
-};
+import { Suspense } from 'react';
 
 // Fungsi untuk SEO: Mengatur judul tab browser
-export async function generateMetadata({ params }: Props) {
-  const genreTitle = params.id.charAt(0).toUpperCase() + params.id.slice(1).replace(/-/g, ' ');
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const genreTitle = id.charAt(0).toUpperCase() + id.slice(1).replace(/-/g, ' ');
   return {
     title: `Genre: ${genreTitle} - Bellonime`,
   };
 }
 
-export default async function GenreDetailPage({ params, searchParams }: Props) {
-  const page = Number(searchParams.page) || 1;
+export default async function GenreDetailPage({
+  params,
+  searchParams
+}: {
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ page?: string }>;
+}) {
+  const { id } = await params;
+  const { page: pageParam } = await searchParams;
+  const page = Number(pageParam) || 1;
 
   try {
-    const response = await getGenresDetailData(params.id, page);
+    const response = await getGenresDetailData(id, page);
     const genreData = response.data;
     const pagination = response.pagination;
 
@@ -43,7 +48,7 @@ export default async function GenreDetailPage({ params, searchParams }: Props) {
       );
     }
 
-    const genreTitle = params.id.charAt(0).toUpperCase() + params.id.slice(1).replace(/-/g, ' ');
+    const genreTitle = id.charAt(0).toUpperCase() + id.slice(1).replace(/-/g, ' ');
 
     return (
       <main className="min-h-screen bg-slate-50 dark:bg-slate-950 py-6 px-4">
@@ -85,7 +90,11 @@ export default async function GenreDetailPage({ params, searchParams }: Props) {
 
             {/* Pagination */}
             <div className="mt-6">
-              {pagination && <PaginationControls pagination={pagination} />}
+              {pagination && (
+                <Suspense fallback={null}>
+                  <PaginationControls pagination={pagination} />
+                </Suspense>
+              )}
             </div>
           </div>
         </div>

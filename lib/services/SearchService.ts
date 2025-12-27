@@ -1,4 +1,4 @@
-import { API_BASE_URL } from '@/lib/config';
+import { API_BASE_URL, API_HEADERS } from '@/lib/config';
 import type { ApiResponse, Search } from '@/types/anime';
 
 /**
@@ -13,6 +13,7 @@ export async function getSearchData(query: string, page: number = 1): Promise<Ap
   url.searchParams.append('page', page.toString());
 
   const response = await fetch(url.toString(), {
+    headers: API_HEADERS,
     next: { revalidate: 3600 },
   });
 
