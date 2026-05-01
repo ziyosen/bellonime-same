@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Home, Sun, Moon, List, Film, CalendarDays, Search } from 'lucide-react';
+import { Home, Sun, Moon, List, Film, CalendarDays, Search, Send } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import Image from 'next/image';
 
@@ -30,8 +30,6 @@ export default function Navbar() {
       setScrolled(currentScrollY > 20);
 
       // Mobile hide/show logic
-      // Hide if scrolling down and passed 50px
-      // Show if scrolling up
       if (currentScrollY > lastScrollY.current && currentScrollY > 50) {
         setIsVisible(false);
       } else {
@@ -59,6 +57,7 @@ export default function Navbar() {
     { href: '/jadwal', icon: <CalendarDays size={20} />, label: 'Jadwal' },
     { href: '/movies', icon: <Film size={20} />, label: 'Movies' },
     { href: '/anime', icon: <List size={20} />, label: 'Anime' },
+    { href: 'https://t.me/Bleszh', icon: <Send size={20} />, label: 'Telegram' },
   ];
 
   return (
@@ -76,16 +75,7 @@ export default function Navbar() {
           <div className="flex items-center justify-between h-16 gap-8">
             {/* Logo */}
             <Link href="/" className="flex items-center gap-3 group flex-shrink-0">
-              <div className="
-                w-10 h-10
-                rounded-xl
-                overflow-hidden
-                bg-[#1e293b]
-                ring-1 ring-white/10
-                shadow-md
-                transition-transform duration-300
-                group-hover:scale-105
-              ">
+              <div className="w-10 h-10 rounded-xl overflow-hidden bg-[#1e293b] ring-1 ring-white/10 shadow-md transition-transform duration-300 group-hover:scale-105">
                 <Image
                   src="/bellonime.png"
                   alt="Bellonime Logo"
@@ -96,7 +86,6 @@ export default function Navbar() {
                   draggable={false}
                 />
               </div>
-
               <span className="font-extrabold text-xl tracking-wide">
                 BelloNime
               </span>
@@ -120,10 +109,13 @@ export default function Navbar() {
             <div className="flex items-center space-x-1">
               {navItems.map((item) => {
                 const isActive = pathname === item.href;
+                const isExternal = item.href.startsWith('http');
                 return (
                   <Link
                     key={item.href}
                     href={item.href}
+                    target={isExternal ? '_blank' : '_self'}
+                    rel={isExternal ? 'noopener noreferrer' : ''}
                     className={`relative px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center space-x-2 ${isActive
                       ? 'text-accent'
                       : 'text-slate-600 dark:text-slate-400 hover:text-accent hover:bg-slate-100 dark:hover:bg-slate-800'
@@ -164,7 +156,6 @@ export default function Navbar() {
           className="md:hidden fixed top-4 left-4 right-4 z-50 bg-white/90 dark:bg-slate-900/90 backdrop-blur-lg rounded-full shadow-soft-xl border border-slate-200 dark:border-slate-800 px-4 py-2"
         >
           <div className="flex items-center gap-3">
-            {/* Logo (Icon Only) */}
             <Link href="/" className="flex-shrink-0">
               <div className="w-8 h-8 rounded-full overflow-hidden bg-[#1e293b] ring-1 ring-white/10 shadow-md">
                 <Image
@@ -176,11 +167,9 @@ export default function Navbar() {
                   className="w-full h-full object-contain p-1"
                   draggable={false}
                 />
-
               </div>
             </Link>
 
-            {/* Search Bar */}
             <form onSubmit={handleSearch} className="flex-1 relative">
               <input
                 type="text"
@@ -192,7 +181,6 @@ export default function Navbar() {
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
             </form>
 
-            {/* Theme Toggle */}
             <button
               onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
               className="p-2 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400"
@@ -214,10 +202,13 @@ export default function Navbar() {
           <div className="flex items-center justify-around py-3 px-2">
             {navItems.map((item) => {
               const isActive = pathname === item.href;
+              const isExternal = item.href.startsWith('http');
               return (
                 <Link
                   key={item.href}
                   href={item.href}
+                  target={isExternal ? '_blank' : '_self'}
+                  rel={isExternal ? 'noopener noreferrer' : ''}
                   className={`flex flex-col items-center space-y-1 px-3 py-2 rounded-xl transition-all ${isActive
                     ? 'text-accent'
                     : 'text-slate-500 dark:text-slate-400'
@@ -243,9 +234,7 @@ export default function Navbar() {
         </motion.nav>
       </AnimatePresence>
 
-      {/* Spacer for fixed desktop navbar only */}
       <div className="h-16 hidden md:block" />
-      {/* Spacer for mobile top navbar */}
       <div className="h-20 md:hidden" />
     </>
   );
