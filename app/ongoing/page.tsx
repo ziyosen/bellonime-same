@@ -6,7 +6,7 @@ import { Play } from 'lucide-react';
 import { Suspense } from 'react';
 
 export const metadata = {
-  title: 'Anime Ongoing - Bellonime',
+  title: 'Sedang Tayang - Bellonime',
   description: 'Daftar anime yang sedang tayang.',
 };
 
@@ -40,7 +40,7 @@ export default async function OngoingPage({ searchParams }: { searchParams: Prom
               </div>
               <div>
                 <h1 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-slate-100">
-                  Anime Ongoing
+                  Sedang Tayang
                 </h1>
                 <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
                   Halaman {page}

@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import { getAnimeListData } from "@/lib/services";
 import Link from 'next/link';
 import LetterNav from "@/components/anime-list/LetterNav";

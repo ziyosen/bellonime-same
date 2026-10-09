@@ -1,85 +1,65 @@
-import { getMoviesData } from '@/lib/services';
-import type { Anime } from '@/types/anime';
-import AnimeCard from '@/components/AnimeCard';
-import PaginationControls from '@/components/PaginationControls';
-import { Film } from 'lucide-react';
+import Image from 'next/image';
+import Link from 'next/link';
 import { Suspense } from 'react';
+import { getMoviesData } from '@/lib/services';
+import PaginationControls from '@/components/PaginationControls';
 
-// Fungsi untuk SEO
 export const metadata = {
-  title: 'Daftar Film - Bellonime',
-  description: 'Jelajahi semua film anime yang tersedia.',
+  title: 'Movies',
+  description: 'Daftar film anime yang tersedia.',
 };
 
-// Komponen Halaman
 export default async function MoviesPage({ searchParams }: { searchParams: Promise<{ page?: string }> }) {
   const { page: pageParam } = await searchParams;
   const page = Number(pageParam) || 1;
 
+  let movies: Awaited<ReturnType<typeof getMoviesData>> | null = null;
   try {
-    const response = await getMoviesData(page);
-    const moviesData = response.data;
-    const pagination = response.pagination;
+    movies = await getMoviesData(page);
+  } catch {
+    movies = null;
+  }
 
-    if (!moviesData || moviesData.animeList.length === 0) {
-      return (
-        <div className="min-h-screen flex items-center justify-center px-4">
-          <div className="text-center">
-            <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-2">Tidak Ada Film</h1>
-            <p className="text-slate-600 dark:text-slate-400">Tidak ada film yang ditemukan.</p>
-          </div>
-        </div>
-      );
-    }
+  const animeList = movies?.data?.animeList || [];
+  const pagination = movies?.pagination;
 
-    return (
-      <main className="min-h-screen bg-slate-50 dark:bg-slate-950 py-6 px-4">
-        <div className="max-w-7xl mx-auto space-y-6">
-          {/* Page Title */}
-          <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-soft-lg border border-slate-200 dark:border-slate-800 p-6">
-            <div className="flex items-center gap-3">
-              <div className="p-3 bg-accent/10 dark:bg-accent/20 rounded-xl">
-                <Film size={28} className="text-accent" />
-              </div>
-              <div>
-                <h1 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-slate-100">
-                  Semua Film
-                </h1>
-                <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
-                  Halaman {page}
-                </p>
-              </div>
-            </div>
-          </div>
+  return (
+    <main className="min-h-screen bg-[#070b12] pb-28 pt-[84px] text-white md:pb-12 md:pt-24">
+      <div className="mx-auto max-w-7xl px-3 sm:px-6 lg:px-8">
+        <h1 className="text-2xl font-black tracking-tight sm:text-3xl">Movies</h1>
 
-          {/* Movies Grid */}
-          <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-soft-lg border border-slate-200 dark:border-slate-800 p-6">
-            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-4">
-              {moviesData.animeList.map((anime: Anime) => (
-                <AnimeCard key={anime.animeId} anime={anime} />
+        {animeList.length ? (
+          <>
+            <div className="mt-7 grid grid-cols-3 gap-x-3 gap-y-7 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6">
+              {animeList.map((anime) => (
+                <Link key={anime.animeId} href={`/anime/${anime.animeId}`} className="group">
+                  <div className="relative aspect-[2/3] overflow-hidden rounded-2xl bg-white/[0.06]">
+                    {anime.poster ? (
+                      <Image src={anime.poster} alt={anime.title} fill sizes="180px" className="object-cover transition duration-300 group-hover:scale-105" unoptimized />
+                    ) : (
+                      <div className="flex h-full items-center justify-center px-3 text-center text-xs text-slate-400">Tidak ada poster</div>
+                    )}
+                    <span className="absolute left-2 top-2 rounded-full bg-violet-500 px-2 py-1 text-[10px] font-extrabold text-white">Movie</span>
+                  </div>
+                  <h2 className="mt-2.5 line-clamp-2 h-[38px] overflow-hidden text-[13px] font-semibold leading-[1.45] text-slate-100">{anime.title}</h2>
+                  {anime.status ? <p className="mt-0.5 line-clamp-1 text-[11px] text-slate-400">{anime.status}</p> : null}
+                </Link>
               ))}
             </div>
-
-            {/* Pagination */}
-            <div className="mt-6">
-              {pagination && (
+            {pagination ? (
+              <div className="mt-8">
                 <Suspense fallback={null}>
                   <PaginationControls pagination={pagination} />
                 </Suspense>
-              )}
-            </div>
-          </div>
-        </div>
-      </main>
-    );
-  } catch {
-    return (
-      <div className="min-h-screen flex items-center justify-center px-4">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold text-red-600 dark:text-red-400 mb-2">Error</h1>
-          <p className="text-slate-600 dark:text-slate-400">Gagal memuat daftar film.</p>
-        </div>
+              </div>
+            ) : null}
+          </>
+        ) : (
+          <p className="mt-10 rounded-2xl bg-white/[0.05] px-5 py-6 text-sm text-slate-300">
+            Daftar film lagi kosong dari sumbernya. Coba lagi sebentar ya.
+          </p>
+        )}
       </div>
-    );
-  }
+    </main>
+  );
 }

@@ -66,7 +66,7 @@ export default async function AnimeDetailPage({ params }: { params: Promise<{ id
   return (
     <main className="min-h-screen pb-28 md:pb-8">
       {/* Hero Section */}
-      <div className="relative h-[40vh] md:h-[50vh] w-full overflow-hidden bg-slate-200">
+      <div className="relative h-[30vh] md:h-[38vh] w-full overflow-hidden bg-slate-200">
         {/* Loading Skeleton */}
         <div className="absolute inset-0 animate-shimmer" />
 
@@ -105,18 +105,18 @@ export default async function AnimeDetailPage({ params }: { params: Promise<{ id
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-12 relative z-10">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 -mt-6 relative z-10">
         {/* Stats Cards */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-10">
           <StatCard icon={<Tv size={20} />} label="Tipe" value={anime.type} />
           <StatCard icon={<Film size={20} />} label="Episode" value={anime.episodes} />
           <StatCard icon={<Calendar size={20} />} label="Musim" value={anime.season} />
           <StatCard icon={<Star size={20} />} label="Skor" value={anime.score.value} />
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_280px] gap-10">
           {/* Main Content */}
-          <div className="space-y-6">
+          <div className="space-y-8">
             {/* Synopsis */}
             <SectionWrapper isLoaded={isLoaded}>
               <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-4">Sinopsis</h2>
@@ -146,6 +146,43 @@ export default async function AnimeDetailPage({ params }: { params: Promise<{ id
               <SectionWrapper isLoaded={isLoaded}>
                 <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-4">Batch Download</h2>
                 <BatchSection batches={anime.batchList} />
+              </SectionWrapper>
+            )}
+
+            {/* Watch CTA + Info */}
+            {anime.episodeList.length > 0 && (
+              <SectionWrapper isLoaded={isLoaded}>
+                <div className="flex flex-wrap items-center gap-3">
+                  <Link
+                    href={`/episode/${[...anime.episodeList].sort((a, b) => {
+                      const an = Number(String(`${a.title} ${a.episodeId}`).match(/episode[-\s]*(\d+)/i)?.[1] || 0);
+                      const bn = Number(String(`${b.title} ${b.episodeId}`).match(/episode[-\s]*(\d+)/i)?.[1] || 0);
+                      return an - bn;
+                    })[0].episodeId}`}
+                    className="inline-flex items-center gap-2 rounded-xl bg-sky-500 px-5 py-3 text-sm font-bold text-white shadow hover:bg-sky-400"
+                  >
+                    <PlayCircle size={18} />
+                    Tonton Episode Pertama
+                  </Link>
+                  <span className="text-sm text-slate-500 dark:text-slate-400">
+                    {anime.episodeList.length} episode tersedia
+                  </span>
+                </div>
+                <dl className="mt-5 grid grid-cols-2 gap-x-6 gap-y-3 text-sm md:grid-cols-3">
+                  {[
+                    ['Status', anime.status],
+                    ['Studio', anime.studios.join(', ')],
+                    ['Durasi', anime.duration],
+                    ['Tayang', anime.aired],
+                    ['Season', anime.season],
+                    ['Sumber', anime.source],
+                  ].filter(([, value]) => value).map(([label, value]) => (
+                    <div key={label}>
+                      <dt className="text-xs font-semibold uppercase tracking-wide text-slate-400">{label}</dt>
+                      <dd className="mt-0.5 font-medium text-slate-800 dark:text-slate-100">{value}</dd>
+                    </div>
+                  ))}
+                </dl>
               </SectionWrapper>
             )}
 

@@ -1,23 +1,24 @@
-import { getGenresDetailData } from '@/lib/services';
-import type { Anime } from '@/types/anime';
-import AnimeCard from '@/components/AnimeCard';
-import PaginationControls from '@/components/PaginationControls';
+import Image from 'next/image';
 import Link from 'next/link';
-import { Tags, ArrowLeft } from 'lucide-react';
 import { Suspense } from 'react';
+import { getGenresDetailData } from '@/lib/services';
+import PaginationControls from '@/components/PaginationControls';
 
-// Fungsi untuk SEO: Mengatur judul tab browser
+function formatGenreTitle(id: string): string {
+  return id
+    .split('-')
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+}
+
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const genreTitle = id.charAt(0).toUpperCase() + id.slice(1).replace(/-/g, ' ');
-  return {
-    title: `Genre: ${genreTitle} - Bellonime`,
-  };
+  return { title: formatGenreTitle(id) };
 }
 
 export default async function GenreDetailPage({
   params,
-  searchParams
+  searchParams,
 }: {
   params: Promise<{ id: string }>;
   searchParams: Promise<{ page?: string }>;
@@ -25,89 +26,54 @@ export default async function GenreDetailPage({
   const { id } = await params;
   const { page: pageParam } = await searchParams;
   const page = Number(pageParam) || 1;
+  const genreTitle = formatGenreTitle(id);
 
+  let animeList: Awaited<ReturnType<typeof getGenresDetailData>>['data']['animeList'] = [];
+  let pagination: Awaited<ReturnType<typeof getGenresDetailData>>['pagination'] = null;
   try {
     const response = await getGenresDetailData(id, page);
-    const genreData = response.data;
-    const pagination = response.pagination;
+    animeList = response.data?.animeList || [];
+    pagination = response.pagination;
+  } catch {
+    animeList = [];
+  }
 
-    if (!genreData || genreData.animeList.length === 0) {
-      return (
-        <div className="min-h-screen flex items-center justify-center px-4">
-          <div className="text-center">
-            <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-2">Tidak Ada Anime</h1>
-            <p className="text-slate-600 dark:text-slate-400">Tidak ada anime untuk genre ini.</p>
-            <Link
-              href="/genres"
-              className="inline-block mt-4 px-4 py-2 bg-accent text-white rounded-lg hover:bg-accent-hover transition-colors"
-            >
-              Kembali ke Daftar Genre
-            </Link>
-          </div>
-        </div>
-      );
-    }
+  return (
+    <main className="min-h-screen bg-[#070b12] pb-28 pt-[84px] text-white md:pb-12 md:pt-24">
+      <div className="mx-auto max-w-7xl px-3 sm:px-6 lg:px-8">
+        <h1 className="text-2xl font-black tracking-tight sm:text-3xl">{genreTitle}</h1>
 
-    const genreTitle = id.charAt(0).toUpperCase() + id.slice(1).replace(/-/g, ' ');
-
-    return (
-      <main className="min-h-screen bg-slate-50 dark:bg-slate-950 py-6 px-4">
-        <div className="max-w-7xl mx-auto space-y-6">
-          {/* Header Section */}
-          <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-soft-lg border border-slate-200 dark:border-slate-800 p-6">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-              <div className="flex items-center gap-3">
-                <div className="p-3 bg-accent/10 dark:bg-accent/20 rounded-xl">
-                  <Tags size={28} className="text-accent" />
-                </div>
-                <div>
-                  <h1 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-slate-100">
-                    Genre: <span className="text-accent">{genreTitle}</span>
-                  </h1>
-                  <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
-                    Menampilkan anime dengan genre {genreTitle}
-                  </p>
-                </div>
-              </div>
-
-              <Link
-                href="/genres"
-                className="inline-flex items-center gap-2 px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-sm font-medium rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors self-start sm:self-center"
-              >
-                <ArrowLeft size={16} />
-                <span>Semua Genre</span>
-              </Link>
-            </div>
-          </div>
-
-          {/* Anime Grid */}
-          <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-soft-lg border border-slate-200 dark:border-slate-800 p-6">
-            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-4">
-              {genreData.animeList.map((anime: Anime) => (
-                <AnimeCard key={anime.animeId} anime={anime} />
+        {animeList.length ? (
+          <>
+            <div className="mt-7 grid grid-cols-3 gap-x-3 gap-y-7 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6">
+              {animeList.map((anime) => (
+                <Link key={anime.animeId} href={`/anime/${anime.animeId}`} className="group">
+                  <div className="relative aspect-[2/3] overflow-hidden rounded-2xl bg-white/[0.06]">
+                    {anime.poster ? (
+                      <Image src={anime.poster} alt={anime.title} fill sizes="180px" className="object-cover transition duration-300 group-hover:scale-105" unoptimized />
+                    ) : (
+                      <div className="flex h-full items-center justify-center px-3 text-center text-xs text-slate-400">Tidak ada poster</div>
+                    )}
+                  </div>
+                  <h2 className="mt-2.5 line-clamp-2 h-[38px] overflow-hidden text-[13px] font-semibold leading-[1.45] text-slate-100">{anime.title}</h2>
+                  {anime.status ? <p className="mt-0.5 line-clamp-1 text-[11px] text-slate-400">{anime.status}</p> : null}
+                </Link>
               ))}
             </div>
-
-            {/* Pagination */}
-            <div className="mt-6">
-              {pagination && (
+            {pagination ? (
+              <div className="mt-8">
                 <Suspense fallback={null}>
                   <PaginationControls pagination={pagination} />
                 </Suspense>
-              )}
-            </div>
-          </div>
-        </div>
-      </main>
-    );
-  } catch {
-    return (
-      <div className="min-h-screen flex items-center justify-center px-4">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold text-red-600 dark:text-red-400 mb-2">Error</h1>
-          <p className="text-slate-600 dark:text-slate-400">Gagal memuat data genre.</p>
-        </div>
+              </div>
+            ) : null}
+          </>
+        ) : (
+          <p className="mt-10 rounded-2xl bg-white/[0.05] px-5 py-6 text-sm text-slate-300">
+            Daftar anime genre ini lagi kosong dari sumbernya. Coba lagi sebentar ya.
+          </p>
+        )}
       </div>
-    );
-  }
+    </main>
+  );
 }

@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { getAnimeDetail, getEpisodeData } from '@/lib/services';
 import type { Episode, AnimeDetail } from '@/types/anime';
 import EpisodePlayerSection from '@/components/episode/EpisodePlayerSection';
@@ -20,14 +21,17 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
 export default async function EpisodePage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   let episode: Episode;
-  let anime: AnimeDetail;
+  let anime: AnimeDetail | null = null;
 
   try {
     episode = await getEpisodeData(id);
     if (!episode) throw new Error('Episode tidak ditemukan');
 
-    anime = await getAnimeDetail(episode.animeId);
-    if (!anime) throw new Error('Anime induk tidak ditemukan');
+    try {
+      anime = await getAnimeDetail(episode.animeId);
+    } catch {
+      anime = null;
+    }
   } catch (error) {
     console.error(error);
     return (
@@ -43,6 +47,27 @@ export default async function EpisodePage({ params }: { params: Promise<{ id: st
   return (
     <main className="min-h-screen bg-slate-50 dark:bg-slate-950 py-6 px-4">
       <div className="max-w-7xl mx-auto space-y-6">
+        <div className="space-y-3">
+          <Link href={`/anime/${episode.animeId}`} className="text-sm font-medium text-sky-500 hover:underline">
+            ← Kembali ke Detail Anime
+          </Link>
+          <div className="flex flex-wrap items-start justify-between gap-3">
+            <h1 className="max-w-3xl text-xl font-bold text-slate-900 dark:text-slate-100 md:text-2xl">{episode.title}</h1>
+            <div className="flex gap-2">
+              {episode.prevEpisode ? (
+                <Link href={`/episode/${episode.prevEpisode.episodeId}`} className="rounded-lg bg-slate-200 px-3.5 py-2 text-[13px] font-semibold text-slate-800 hover:bg-slate-300 dark:bg-slate-800 dark:text-slate-100 dark:hover:bg-slate-700">
+                  ← Prev
+                </Link>
+              ) : null}
+              {episode.nextEpisode ? (
+                <Link href={`/episode/${episode.nextEpisode.episodeId}`} className="rounded-lg bg-sky-500 px-3.5 py-2 text-[13px] font-semibold text-white hover:bg-sky-400">
+                  Next →
+                </Link>
+              ) : null}
+            </div>
+          </div>
+        </div>
+
         {/* Main Content Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-6">
           {/* Left Column: Player & Download */}
@@ -51,9 +76,9 @@ export default async function EpisodePage({ params }: { params: Promise<{ id: st
             <EpisodePlayerSection episode={episode} />
 
             {/* Mobile Episode List */}
-            {anime.episodeList && anime.episodeList.length > 0 && (
+            {anime?.episodeList && anime?.episodeList.length > 0 && (
               <div className="lg:hidden">
-                <EpisodeListMobile episodes={anime.episodeList} />
+                <EpisodeListMobile episodes={anime?.episodeList} />
               </div>
             )}
 
@@ -64,10 +89,10 @@ export default async function EpisodePage({ params }: { params: Promise<{ id: st
           </div>
 
           {/* Right Column: Info & Episode Sidebar (Desktop) */}
-          {anime.episodeList && anime.episodeList.length > 0 && (
+          {anime?.episodeList && anime?.episodeList.length > 0 && (
             <div className="hidden lg:block">
               <EpisodeSidebar
-                episodes={anime.episodeList}
+                episodes={anime?.episodeList}
                 episode={episode}
                 anime={anime}
               />

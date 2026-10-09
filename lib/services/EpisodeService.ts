@@ -1,20 +1,112 @@
-import { ApiResponse, Episode } from "@/types/anime";
 import { API_BASE_URL, API_HEADERS } from "@/lib/config";
-// lib/services/EpisodeService.ts
-export async function getEpisodeData(episodeId: string): Promise<Episode> {
-  const response = await fetch(`${API_BASE_URL}/samehadaku/episode/${episodeId}`, {
-    headers: API_HEADERS,
-    next: { revalidate: 3600 },
-  });
+import type { Episode } from "@/types/anime";
 
-  if (!response.ok) {
+type RawEpisode = {
+  episodeId?: string;
+  title?: string;
+  animeId?: string;
+  poster?: string;
+  releasedOn?: string;
+  defaultEmbed?: string;
+  defaultStreamingUrl?: string;
+  embedList?: string[];
+  serverList?: unknown[];
+  navigation?: { all?: string; next?: string; prev?: string };
+  downloadUrl?: Episode['downloadUrl'];
+  genreList?: Episode['genreList'];
+  synopsis?: Episode['synopsis'];
+};
+
+function textValue(value: unknown): string {
+  if (typeof value === 'string') return value;
+  if (typeof value === 'number') return String(value);
+  return '';
+}
+
+function animeIdFromEpisode(raw: RawEpisode, episodeId: string): string {
+  if (raw.animeId) return raw.animeId;
+  const all = raw.navigation?.all || '';
+  const match = all.match(/\/anime\/([^/]+)\/?$/);
+  if (match) return decodeURIComponent(match[1]);
+  return episodeId
+    .replace(/-episode-\d+(?:-subtitle-indonesia)?$/i, '')
+    .replace(/-subtitle-indonesia$/i, '');
+}
+
+function episodeNavItem(url: string | undefined, fallbackTitle: string) {
+  if (!url) return null;
+  const clean = url.replace(/\/$/, '');
+  const episodeId = decodeURIComponent(clean.split('/').pop() || '');
+  if (!episodeId) return null;
+  return {
+    title: fallbackTitle,
+    episodeId,
+    href: `/samehadaku/episode/${episodeId}`,
+    samehadakuUrl: url,
+  };
+}
+
+async function fetchEpisode(source: 'samehadaku' | 'animekiid', episodeId: string): Promise<RawEpisode | null> {
+  try {
+    const response = await fetch(`${API_BASE_URL}/${source}/episode/${episodeId}`, {
+      headers: API_HEADERS,
+      cache: 'no-store',
+    });
+    if (!response.ok) return null;
+    const result = await response.json();
+    const data = (result.data || null) as RawEpisode | null;
+    return data?.title || data?.defaultEmbed || data?.defaultStreamingUrl ? data : null;
+  } catch {
+    return null;
+  }
+}
+
+export async function getEpisodeData(episodeId: string): Promise<Episode> {
+  const rawEpisode = (await fetchEpisode('samehadaku', episodeId)) || (await fetchEpisode('animekiid', episodeId));
+  if (!rawEpisode) {
     throw new Error("Gagal mengambil data episode anime");
   }
+  const raw = rawEpisode;
+  const embedList = (raw.embedList || []).filter((url) => typeof url === 'string' && /^https?:\/\//.test(url));
+  const defaultStreamingUrl = raw.defaultStreamingUrl || raw.defaultEmbed || embedList[0] || '';
+  const animeId = animeIdFromEpisode(raw, episodeId);
+  const prevEpisode = episodeNavItem(raw.navigation?.prev, 'Sebelumnya');
+  const nextEpisode = episodeNavItem(raw.navigation?.next, 'Berikutnya');
 
-  const result: ApiResponse<Episode> = await response.json();
-  return result.data;
+  return {
+    title: textValue(raw.title),
+    animeId,
+    poster: textValue(raw.poster),
+    releasedOn: textValue(raw.releasedOn),
+    defaultStreamingUrl,
+    hasPrevEpisode: Boolean(prevEpisode),
+    prevEpisode,
+    hasNextEpisode: Boolean(nextEpisode),
+    nextEpisode,
+    synopsis: raw.synopsis || { paragraphs: '', connections: [] },
+    genreList: raw.genreList || [],
+    server: {
+      qualities: embedList.length
+        ? [
+            {
+              title: 'Default',
+              serverList: embedList.map((url, index) => ({
+                title: `Server ${index + 1} Default`,
+                serverId: url,
+                href: url,
+              })),
+            },
+          ]
+        : [],
+    },
+    downloadUrl: raw.downloadUrl || { formats: [] },
+    recomendedEpisodeList: [],
+    movie: { href: '', samehadakuUrl: '', animeList: [] },
+  };
 }
+
 export async function getServerUrl(serverId: string): Promise<string> {
+  if (/^https?:\/\//.test(serverId)) return serverId;
   const response = await fetch(`${API_BASE_URL}/samehadaku/server/${serverId}`, {
     headers: API_HEADERS,
   });
@@ -22,5 +114,5 @@ export async function getServerUrl(serverId: string): Promise<string> {
     throw new Error('Gagal mengambil URL server');
   }
   const result = await response.json();
-  return result.data.url; // Asumsi API mengembalikan { data: { url: '...' } }
+  return result.data.url;
 }

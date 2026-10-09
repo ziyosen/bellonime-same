@@ -3,6 +3,7 @@ import AnimeCard from '@/components/AnimeCard';
 import PaginationControls from '@/components/PaginationControls';
 import { Search, AlertCircle } from 'lucide-react';
 import { Suspense } from 'react';
+import UnifiedSearchSection from '@/components/home/UnifiedSearchSection';
 
 export const dynamic = 'force-dynamic';
 
@@ -118,6 +119,8 @@ export default async function SearchPage({ searchParams }: Props) {
                             )}
                         </div>
                     </div>
+
+                    <UnifiedSearchSection query={query} />
                 </div>
             </main>
         );
