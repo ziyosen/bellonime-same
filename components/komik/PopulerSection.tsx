@@ -38,10 +38,10 @@ export default function PopulerSection() {
           <button
             key={p.key}
             onClick={() => setPeriod(p.key)}
-            className={`rounded-full px-3 py-1.5 text-[11px] font-semibold transition ${
+            className={`rounded-full px-3 py-1.5 text-[11px] font-bold transition ${
               period === p.key
-                ? 'bg-slate-200 text-slate-900'
-                : 'text-slate-400 hover:text-slate-200'
+                ? 'bg-rose-500 text-white'
+                : 'bg-white/10 text-slate-100 hover:bg-white/20'
             }`}
           >
             {p.label}

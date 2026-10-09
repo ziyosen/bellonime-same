@@ -67,11 +67,11 @@ export default function KomikHomePage() {
         <div className="flex items-end justify-between gap-3">
           <div>
             <h1 className="text-2xl font-black tracking-tight sm:text-3xl">Baca Komik</h1>
-            <p className="mt-1 text-sm text-slate-400">Manga, manhwa & manhua sub Indo — tanpa chat, tanpa login, bersih.</p>
+            <p className="mt-1 mb-4 text-sm text-slate-400">Manga, manhwa & manhua sub Indo — tanpa chat, tanpa login, bersih.</p>
           </div>
         </div>
 
-        <form action="komik/search" method="get" className="mt-5 hidden gap-2 md:flex">
+        <form action="komik/search" method="get" className="mt-2 hidden gap-2 md:flex">
           <div className="relative flex-1">
             <input
               name="q"
@@ -102,7 +102,7 @@ export default function KomikHomePage() {
                     <Link
                       key={`${g.id}-${g.name}`}
                       href={`/komik/genre/${g.id}`}
-                      className="shrink-0 rounded-full bg-white/[0.06] px-4 py-2.5 text-[12px] font-semibold text-slate-200 transition hover:bg-rose-500 hover:text-white"
+                      className="shrink-0 rounded-full bg-white/10 px-4 py-2.5 text-[12px] font-bold text-white transition hover:bg-rose-500 hover:text-white"
                     >
                       {g.name}
                     </Link>
@@ -118,7 +118,7 @@ export default function KomikHomePage() {
                   <Link
                     key={c.kind}
                     href={`/komik/${c.kind}`}
-                    className="shrink-0 rounded-full bg-white/[0.06] px-4 py-2.5 text-[12px] font-semibold text-slate-200 transition hover:bg-rose-500 hover:text-white"
+                    className="shrink-0 rounded-full bg-white/10 px-4 py-2.5 text-[12px] font-bold text-white transition hover:bg-rose-500 hover:text-white"
                   >
                     {c.label}
                   </Link>
