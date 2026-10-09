@@ -236,20 +236,6 @@ export default function DonghuaPage() {
               </button>
             </form>
 
-            <section className="mt-7">
-              <h2 className="mb-4 text-lg font-extrabold tracking-tight text-white sm:text-xl">Per Tahun</h2>
-              <div className="flex gap-2 overflow-x-auto pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-                {['2026', '2025', '2024', '2023', '2022', '2021', '2020'].map((year) => (
-                  <Link
-                    key={year}
-                    href={`/donghua/season/${year}`}
-                    className="shrink-0 rounded-full bg-white/[0.06] px-4 py-2.5 text-[12px] font-semibold text-slate-200 transition hover:bg-sky-500 hover:text-white"
-                  >
-                    {year}
-                  </Link>
-                ))}
-              </div>
-            </section>
 
             <Row title="Terbaru" items={latest} />
             <Row title="Sedang Tayang" items={ongoing} />
@@ -274,6 +260,21 @@ export default function DonghuaPage() {
                 </div>
               </section>
             ) : null}
+
+            <section className="mt-7">
+              <h2 className="mb-4 text-lg font-extrabold tracking-tight text-white sm:text-xl">Per Tahun</h2>
+              <div className="flex gap-2 overflow-x-auto pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                {['2026', '2025', '2024', '2023', '2022', '2021', '2020'].map((year) => (
+                  <Link
+                    key={year}
+                    href={`/donghua/season/${year}`}
+                    className="shrink-0 rounded-full bg-white/[0.06] px-4 py-2.5 text-[12px] font-semibold text-slate-200 transition hover:bg-sky-500 hover:text-white"
+                  >
+                    {year}
+                  </Link>
+                ))}
+              </div>
+            </section>
 
             <section className="mt-10">
               <h2 className="mb-4 text-lg font-extrabold tracking-tight text-white sm:text-xl">Daftar A-Z</h2>
