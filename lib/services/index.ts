@@ -15,3 +15,4 @@ export * from './RecentService';
 export * from './ScheduleService';
 export * from './SearchService';
 export * from './ServerService';
+export * from './DonghuaService';
