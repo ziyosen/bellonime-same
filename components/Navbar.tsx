@@ -57,12 +57,20 @@ export default function Navbar() {
     }
   };
 
+  const [komikQuery, setKomikQuery] = useState('');
+  const handleKomikSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (komikQuery.trim()) {
+      router.push(`/komik/search?q=${encodeURIComponent(komikQuery)}`);
+    }
+  };
+
   if (!mounted) return null;
 
   const navItems = [
     { href: '/', icon: <Home size={20} />, label: 'Home' },
     { href: '/donghua', icon: <Tv size={20} />, label: 'Donghua' },
-    { href: '/sumber/westmanga', icon: <BookOpen size={20} />, label: 'Comic' },
+    { href: '/komik', icon: <BookOpen size={20} />, label: 'Comic' },
     { href: '/movies', icon: <Film size={20} />, label: 'Movies' },
   ];
 
@@ -158,7 +166,7 @@ export default function Navbar() {
           initial={{ y: 0 }}
           animate={{ y: isVisible ? 0 : -100 }}
           transition={{ duration: 0.3, ease: 'easeInOut' }}
-          className={`md:hidden fixed top-4 left-4 right-4 z-50 bg-white/90 dark:bg-slate-900/90 backdrop-blur-lg rounded-full shadow-soft-xl border border-slate-200 dark:border-slate-800 px-4 py-2 ${pathname?.startsWith('/donghua') ? 'hidden' : ''}`}
+          className={`md:hidden fixed top-4 left-4 right-4 z-50 bg-white/90 dark:bg-slate-900/90 backdrop-blur-lg rounded-full shadow-soft-xl border border-slate-200 dark:border-slate-800 px-4 py-2 ${pathname?.startsWith('/donghua') || pathname?.startsWith('/komik') ? 'hidden' : ''}`}
         >
           <div className="flex items-center gap-3">
             <Link href="/" className="flex-shrink-0" aria-label="BelloNime">
@@ -210,6 +218,28 @@ export default function Navbar() {
             <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
           </div>
           <button type="submit" className="h-11 shrink-0 rounded-full bg-sky-500 px-4 text-sm font-extrabold text-white shadow-lg transition hover:bg-sky-400">
+            Cari
+          </button>
+        </form>
+      ) : null}
+
+      {/* Komik Top Search (khusus halaman komik, selalu tampil) */}
+      {pathname?.startsWith('/komik') ? (
+        <form
+          onSubmit={handleKomikSearch}
+          className="fixed inset-x-3 top-3 z-50 flex gap-2 md:hidden"
+        >
+          <div className="relative flex-1">
+            <input
+              type="search"
+              placeholder="Cari komik..."
+              value={komikQuery}
+              onChange={(e) => setKomikQuery(e.target.value)}
+              className="h-11 w-full rounded-full bg-slate-900/90 pl-10 pr-4 text-sm text-white placeholder:text-slate-400 shadow-lg outline-none ring-1 ring-white/15 backdrop-blur focus:ring-2 focus:ring-rose-500"
+            />
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
+          </div>
+          <button type="submit" className="h-11 shrink-0 rounded-full bg-rose-500 px-4 text-sm font-extrabold text-white shadow-lg transition hover:bg-rose-400">
             Cari
           </button>
         </form>
