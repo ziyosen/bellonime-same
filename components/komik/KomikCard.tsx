@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { Clock3, Star } from 'lucide-react';
 import { chapterUpdatedLabel, type WestCard } from '@/lib/westmanga';
+import { FlagBadge } from './FlagBadge';
 
 export default function KomikCard({ item }: { item: WestCard }) {
   const lastCh = item.lastChapters?.[0];
@@ -27,8 +28,19 @@ export default function KomikCard({ item }: { item: WestCard }) {
             CH {lastCh.number}
           </span>
         ) : null}
+        {/* bendera negara tepat: JPN/KOR/CHN */}
+        {item.countryId ? (
+          <span className="absolute right-2 top-2 z-10">
+            <FlagBadge country={item.countryId} />
+          </span>
+        ) : null}
+        {(() => { const c = item.color; return (typeof c === 'boolean' ? c : String(c || '').toLowerCase() === 'colored'); })() ? (
+          <span className="absolute bottom-2 right-2 rounded-full bg-amber-400 px-1.5 py-0.5 text-[9px] font-extrabold text-black">
+            COLOR
+          </span>
+        ) : null}
         {item.rating ? (
-          <span className="absolute right-2 top-2 inline-flex items-center gap-0.5 rounded-full bg-black/60 px-1.5 py-0.5 text-[10px] font-bold text-amber-300">
+          <span className="absolute left-2 top-2 inline-flex items-center gap-0.5 rounded-full bg-black/60 px-1.5 py-0.5 text-[10px] font-bold text-amber-300">
             <Star size={10} fill="currentColor" /> {item.rating}
           </span>
         ) : null}
@@ -36,15 +48,14 @@ export default function KomikCard({ item }: { item: WestCard }) {
       <h3 className="mt-2.5 h-[38px] overflow-hidden text-[12px] font-semibold leading-[1.45] text-slate-100 [display:-webkit-box] [-webkit-box-orient:vertical] [-webkit-line-clamp:2] sm:text-[13px]">
         {item.title}
       </h3>
-      <p className="mt-0.5 line-clamp-1 text-[11px] text-slate-400">
+      <div className="mt-1 flex items-center justify-between gap-1">
+        {lastCh?.number ? (
+          <span className="rounded bg-slate-800 px-1.5 py-0.5 text-[10px] font-bold text-slate-200">CH {lastCh.number}</span>
+        ) : <span />}
         {updated ? (
-          <span className="inline-flex items-center gap-1">
-            <Clock3 size={11} /> {updated}
-          </span>
-        ) : (
-          item.status || item.type || 'Komik'
-        )}
-      </p>
+          <span className="rounded bg-slate-800 px-1.5 py-0.5 text-[10px] text-slate-400">{updated}</span>
+        ) : <span />}
+      </div>
     </Link>
   );
 }

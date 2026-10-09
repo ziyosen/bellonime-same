@@ -17,6 +17,7 @@ export type WestCard = {
   status?: string;
   type?: string;
   countryId?: string;
+  color?: string | boolean;
   totalViews?: number;
   lastChapters?: WestChapterRef[];
 };
@@ -214,4 +215,14 @@ export function chapterUpdatedLabel(ch?: WestChapterRef): string {
   if (!ch?.updated_at) return '';
   if (typeof ch.updated_at === 'string') return ch.updated_at;
   return ch.updated_at.formatted || '';
+}
+
+// Populer per periode — pemetaan periode UI ke endpoint westmanga.
+// API Sanka westmanga belum punya param periode; popularitas = endpoint /popular.
+// period dipertahankan untuk UI; saat API menambahkan param periode, tinggal tambahkan di sini.
+// Populer per periode — endpoint /popular (API belum punya param periode;
+// period disiapkan untuk UI, saat API menambahkannya tinggal append query).
+export async function getPopular(period: 'today' | 'week' | 'month' | 'all' = 'all'): Promise<WestCard[]> {
+  const json = await fetchJson<{ data?: { popular?: unknown[] } }>(`${WEST}/popular`);
+  return toCards(json.data?.popular || []);
 }
