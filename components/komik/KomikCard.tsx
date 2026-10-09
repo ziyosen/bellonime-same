@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Clock3, Star } from 'lucide-react';
+import { Flame, Palette } from 'lucide-react';
 import { chapterUpdatedLabel, type WestCard } from '@/lib/westmanga';
 import { FlagBadge } from './FlagBadge';
 
@@ -22,36 +22,30 @@ export default function KomikCard({ item }: { item: WestCard }) {
             {item.title}
           </div>
         )}
-        <span className="absolute inset-x-0 bottom-0 h-14 bg-gradient-to-t from-black/70 to-transparent" />
-        {/* CH pill di atas gambar dihapus: tampil dobel dengan baris CH+waktu di bawah kartu */}
-
-        {/* bendera negara tepat: JPN/KOR/CHN */}
         {item.countryId ? (
           <span className="absolute right-2 top-2 z-10">
-            <FlagBadge country={item.countryId} />
+            <FlagBadge country={item.countryId} size={22} />
           </span>
         ) : null}
-        {(() => { const c = item.color; return (typeof c === 'boolean' ? c : String(c || '').toLowerCase() === 'colored'); })() ? (
-          <span className="absolute bottom-2 right-2 rounded-full bg-amber-400 px-1.5 py-0.5 text-[9px] font-extrabold text-black">
-            COLOR
+        {item.color ? (
+          <span className="absolute bottom-2 left-2 inline-flex items-center gap-1 rounded-md bg-amber-400 px-1.5 py-1 text-[9px] font-black tracking-wide text-slate-900">
+            <Palette size={10} /> COLOR
           </span>
         ) : null}
-        {item.rating ? (
-          <span className="absolute left-2 top-2 inline-flex items-center gap-0.5 rounded-full bg-black/60 px-1.5 py-0.5 text-[10px] font-bold text-amber-300">
-            <Star size={10} fill="currentColor" /> {item.rating}
+        {item.hot ? (
+          <span className="absolute bottom-2 right-2 flex h-6 w-6 items-center justify-center rounded-full bg-rose-500 text-white shadow">
+            <Flame size={13} fill="currentColor" />
           </span>
         ) : null}
       </div>
-      <h3 className="mt-2.5 h-[38px] overflow-hidden text-[12px] font-semibold leading-[1.45] text-slate-100 [display:-webkit-box] [-webkit-box-orient:vertical] [-webkit-line-clamp:2] sm:text-[13px]">
-        {item.title}
-      </h3>
-      <div className="mt-1 flex items-center justify-between gap-1">
-        {lastCh?.number ? (
-          <span className="rounded bg-slate-800 px-1.5 py-0.5 text-[10px] font-bold text-slate-200">CH {lastCh.number}</span>
-        ) : <span />}
-        {updated ? (
-          <span className="rounded bg-slate-800 px-1.5 py-0.5 text-[10px] text-slate-400">{updated}</span>
-        ) : <span />}
+      <h3 className="mt-2.5 line-clamp-1 text-[13px] font-bold text-slate-100">{item.title}</h3>
+      <div className="mt-1.5 flex items-center gap-1.5">
+        <span className="shrink-0 whitespace-nowrap rounded-full bg-white/[0.05] px-2.5 py-1.5 text-[10px] font-extrabold tracking-wide text-slate-200 ring-1 ring-white/10">
+          {lastCh?.number ? `CH ${lastCh.number}` : 'CH -'}
+        </span>
+        <span className="min-w-0 flex-1 truncate whitespace-nowrap rounded-full bg-white/[0.05] px-2.5 py-1.5 text-right text-[10px] font-semibold text-slate-400 ring-1 ring-white/10">
+          {updated || item.status || ''}
+        </span>
       </div>
     </Link>
   );

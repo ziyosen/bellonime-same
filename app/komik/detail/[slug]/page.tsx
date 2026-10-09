@@ -1,6 +1,7 @@
 'use client';
 
 import { use, useEffect, useState } from 'react';
+import KomikTagline from '@/components/komik/KomikTagline';
 import Link from 'next/link';
 import { ArrowLeft, BookOpen, Eye, Star } from 'lucide-react';
 import {
@@ -46,7 +47,8 @@ export default function KomikDetailPageRoute({ params }: { params: Promise<{ slu
 
   return (
     <main className="min-h-screen bg-[#070b12] pb-28 text-white md:pb-12">
-      <div className="mx-auto max-w-5xl px-3 pt-[74px] sm:px-6 md:pt-20 lg:px-8">
+      <div className="mx-auto max-w-5xl px-3 pt-[58px] sm:px-6 md:pt-16 lg:px-8">
+        <KomikTagline />
         <Link href="/komik" className="inline-flex items-center gap-2 text-sm font-semibold text-rose-300 hover:text-rose-200">
           <ArrowLeft size={16} /> Kembali ke Komik
         </Link>
@@ -87,7 +89,7 @@ export default function KomikDetailPageRoute({ params }: { params: Promise<{ slu
                     {chapters.length} chapter
                   </span>
                 </div>
-                {detail.sinopsis ? <p className="mt-4 text-sm leading-6 text-slate-300">{detail.sinopsis}</p> : null}
+                {detail.sinopsis ? <p className="mt-4 whitespace-pre-line text-sm leading-6 text-slate-300">{detail.sinopsis}</p> : null}
                 {firstChapter?.slug ? (
                   <Link
                     href={`/komik/baca/${firstChapter.slug}`}

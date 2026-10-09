@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { ArrowLeft, ChevronLeft, ChevronRight } from 'lucide-react';
 import KomikGrid from '@/components/komik/KomikGrid';
+import KomikTagline from '@/components/komik/KomikTagline';
 import { fetchWestList, fetchWestGenre, fetchWestSearch, type WestCard } from '@/lib/westmanga';
 
 type Mode =
@@ -54,7 +55,8 @@ export default function KomikListPage({
 
   return (
     <main className="min-h-screen bg-[#070b12] pb-28 text-white md:pb-12">
-      <div className="mx-auto max-w-7xl px-3 pt-[74px] sm:px-6 md:pt-20 lg:px-8">
+      <div className="mx-auto max-w-7xl px-3 pt-[58px] sm:px-6 md:pt-16 lg:px-8">
+        <KomikTagline />
         <Link href="/komik" className="inline-flex items-center gap-2 text-sm font-semibold text-rose-300 hover:text-rose-200">
           <ArrowLeft size={16} /> Kembali ke Komik
         </Link>

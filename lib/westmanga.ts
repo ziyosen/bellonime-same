@@ -6,7 +6,7 @@ export type WestChapterRef = {
   number?: number | string;
   slug?: string;
   title?: string;
-  updated_at?: { formatted?: string } | string;
+  updated_at?: { formatted?: string; time?: number } | string;
 };
 
 export type WestCard = {
@@ -17,8 +17,9 @@ export type WestCard = {
   status?: string;
   type?: string;
   countryId?: string;
-  color?: string | boolean;
   totalViews?: number;
+  color?: boolean;
+  hot?: boolean;
   lastChapters?: WestChapterRef[];
 };
 
@@ -67,6 +68,8 @@ function toCard(raw: RawCard): WestCard | null {
     type: raw.content_type ? String(raw.content_type) : undefined,
     countryId: raw.country_id ? String(raw.country_id) : undefined,
     totalViews: typeof raw.total_views === 'number' ? raw.total_views : undefined,
+    color: raw.color === true,
+    hot: raw.hot === true,
     lastChapters: chaptersRaw.map((c) => ({
       id: c.id as number | string | undefined,
       number: c.number as number | string | undefined,
@@ -160,6 +163,24 @@ export async function fetchWestSearch(q: string, page = 1): Promise<WestCard[]> 
   return toCards(json.data);
 }
 
+function cleanHtmlText(value: unknown): string | undefined {
+  if (value === null || value === undefined) return undefined;
+  const text = String(value)
+    .replace(/<br\s*\/?>/gi, '\n')
+    .replace(/<\/p>\s*<p>/gi, '\n\n')
+    .replace(/<[^>]+>/g, '')
+    .replace(/&nbsp;/gi, ' ')
+    .replace(/&amp;/gi, '&')
+    .replace(/&quot;/gi, '"')
+    .replace(/&#0?39;|&#x27;|&apos;/gi, "'")
+    .replace(/&lt;/gi, '<')
+    .replace(/&gt;/gi, '>')
+    .replace(/[ \t]+/g, ' ')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim();
+  return text || undefined;
+}
+
 export async function fetchWestDetail(slug: string): Promise<WestDetail> {
   const json = await fetchJson<{ data?: RawCard }>(`${WEST}/detail/${encodeURIComponent(slug)}`);
   const d = json.data || {};
@@ -169,7 +190,7 @@ export async function fetchWestDetail(slug: string): Promise<WestDetail> {
     title: String(d.title || slug),
     slug: String(d.slug || slug),
     cover: String(d.cover || ''),
-    sinopsis: d.sinopsis ? String(d.sinopsis) : undefined,
+    sinopsis: cleanHtmlText(d.sinopsis),
     alternativeName: d.alternative_name ? String(d.alternative_name) : undefined,
     author: d.author ? String(d.author) : undefined,
     status: d.status ? String(d.status) : undefined,
@@ -213,16 +234,17 @@ export async function fetchWestChapter(slug: string): Promise<WestChapter> {
 
 export function chapterUpdatedLabel(ch?: WestChapterRef): string {
   if (!ch?.updated_at) return '';
+  if (typeof ch.updated_at !== 'string' && typeof ch.updated_at?.time === 'number') {
+    const diff = Math.max(0, Math.floor(Date.now() / 1000) - ch.updated_at.time);
+    if (diff < 60) return 'Baru saja';
+    if (diff < 3600) return `${Math.floor(diff / 60)} mnt`;
+    if (diff < 86400) return `${Math.floor(diff / 3600)} jam`;
+    if (diff < 604800) return `${Math.floor(diff / 86400)} hari`;
+    if (diff < 2592000) return `${Math.floor(diff / 604800)} minggu`;
+    if (diff < 31536000) return `${Math.floor(diff / 2592000)} bln`;
+    return `${Math.floor(diff / 31536000)} thn`;
+  }
   if (typeof ch.updated_at === 'string') return ch.updated_at;
-  return ch.updated_at.formatted || '';
-}
-
-// Populer per periode — endpoint /popular.
-// CATATAN JUJUR: endpoint /comic/westmanga/popular belum mendukung param periode
-// (25 item identik untuk period apa pun), jadi pill filter UI tetap tampil
-// ('Hari ini' aktif default) tapi datanya selalu sepanjang waktu.
-// Saat API menambahkan param periode, tinggal append query di sini.
-export async function getPopular(period: 'today' | 'week' | 'month' | 'all' = 'all'): Promise<WestCard[]> {
-  const json = await fetchJson<{ data?: { popular?: unknown[] } }>(`${WEST}/popular`);
-  return toCards(json.data?.popular || []);
+  const formatted = ch.updated_at.formatted || '';
+  return formatted.replace(/\s+\d{2}:\d{2}$/, '').replace(/(\d{1,2} \w{3}) \d{4}/, '$1');
 }

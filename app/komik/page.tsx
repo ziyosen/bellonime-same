@@ -4,7 +4,9 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { ChevronRight, Search } from 'lucide-react';
 import KomikCard from '@/components/komik/KomikCard';
+import PopulerSection from '@/components/komik/PopulerSection';
 import {
+  fetchWestDetail,
   fetchWestHome,
   fetchWestGenres,
   WEST_CATEGORIES,
@@ -49,7 +51,37 @@ export default function KomikHomePage() {
       try {
         const [h, g] = await Promise.allSettled([fetchWestHome(), fetchWestGenres()]);
         if (!alive) return;
-        if (h.status === 'fulfilled') setHome(h.value);
+        if (h.status === 'fulfilled') {
+          setHome(h.value);
+          // Project Baru dari sumber tidak membawa lastChapters — lengkapi dari detail (maks 6)
+          const need = h.value.newProject.filter((c) => !c.lastChapters?.length).slice(0, 6);
+          for (const card of need) {
+            try {
+              const det = await fetchWestDetail(card.slug);
+              if (!alive) return;
+              const latest = det.chapters?.[0];
+              const countryId = det.countryId;
+              setHome((prev) =>
+                prev
+                  ? {
+                      ...prev,
+                      newProject: prev.newProject.map((c) =>
+                        c.slug === card.slug
+                          ? {
+                              ...c,
+                              countryId: c.countryId || countryId,
+                              lastChapters: latest ? [latest] : c.lastChapters,
+                            }
+                          : c,
+                      ),
+                    }
+                  : prev,
+              );
+            } catch {
+              // biarkan kartu tampil tanpa CH bila detail gagal
+            }
+          }
+        }
         if (g.status === 'fulfilled') setGenres(g.value);
         if (h.status === 'rejected') setError('Sumber komik belum bisa diambil saat ini. Coba lagi sebentar ya.');
       } finally {
@@ -63,15 +95,8 @@ export default function KomikHomePage() {
 
   return (
     <main className="min-h-screen bg-[#070b12] pb-28 text-white md:pb-12">
-      <div className="mx-auto max-w-7xl px-3 pt-[74px] sm:px-6 md:pt-20 lg:px-8">
-        <div className="flex items-end justify-between gap-3">
-          <div>
-            <h1 className="text-2xl font-black tracking-tight sm:text-3xl">Baca Komik</h1>
-            <p className="mt-1 mb-4 text-sm text-slate-400">Manga, manhwa & manhua sub Indo — tanpa chat, tanpa login, bersih.</p>
-          </div>
-        </div>
-
-        <form action="komik/search" method="get" className="mt-2 hidden gap-2 md:flex">
+      <div className="mx-auto max-w-7xl px-3 pt-[58px] sm:px-6 md:pt-16 lg:px-8">
+        <form action="komik/search" method="get" className="mt-5 hidden gap-2 md:flex">
           <div className="relative flex-1">
             <input
               name="q"
@@ -86,6 +111,10 @@ export default function KomikHomePage() {
           </button>
         </form>
 
+        <h1 className="mt-0 bg-gradient-to-r from-rose-300 via-rose-500 to-amber-400 bg-clip-text text-center font-black italic leading-tight tracking-tight text-transparent text-[26px] sm:text-4xl">
+          Baca komik sub Indonesia
+        </h1>
+
         {loading ? (
           <div className="flex min-h-[50vh] items-center justify-center text-sm text-slate-400">Memuat komik...</div>
         ) : error || !home ? (
@@ -94,6 +123,8 @@ export default function KomikHomePage() {
           </div>
         ) : (
           <>
+            <PopulerSection />
+
             {genres.length ? (
               <section className="mt-7">
                 <h2 className="mb-4 text-lg font-extrabold tracking-tight text-white sm:text-xl">Genre</h2>
@@ -111,6 +142,10 @@ export default function KomikHomePage() {
               </section>
             ) : null}
 
+            <Row title="Update Terbaru" items={home.mirrorUpdate} href="/komik/latest" />
+            <Row title="Project Baru" items={home.newProject} href="/komik/projects" />
+            <Row title="Project Update" items={home.projectUpdate} href="/komik/projects" />
+
             <section className="mt-7">
               <h2 className="mb-4 text-lg font-extrabold tracking-tight text-white sm:text-xl">Kategori</h2>
               <div className="flex gap-2 overflow-x-auto pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
@@ -125,11 +160,6 @@ export default function KomikHomePage() {
                 ))}
               </div>
             </section>
-
-            <Row title="Update Terbaru" items={home.mirrorUpdate} href="/komik/latest" />
-            <Row title="Populer" items={home.popular} href="/komik/popular" />
-            <Row title="Project Baru" items={home.newProject} href="/komik/projects" />
-            <Row title="Project Update" items={home.projectUpdate} href="/komik/projects" />
           </>
         )}
       </div>

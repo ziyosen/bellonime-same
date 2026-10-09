@@ -1,6 +1,7 @@
 'use client';
 
 import { use, useEffect, useState } from 'react';
+import KomikTagline from '@/components/komik/KomikTagline';
 import Link from 'next/link';
 import { ArrowLeft, ListOrdered } from 'lucide-react';
 import { fetchWestChapter, type WestChapter } from '@/lib/westmanga';
@@ -36,7 +37,8 @@ export default function KomikBacaPageRoute({ params }: { params: Promise<{ slug:
 
   return (
     <main className="min-h-screen bg-[#05070c] pb-28 text-white md:pb-12">
-      <div className="mx-auto max-w-3xl px-3 pt-[74px] sm:px-6 md:pt-20">
+      <div className="mx-auto max-w-3xl px-3 pt-[58px] sm:px-6 md:pt-16">
+        <KomikTagline />
         <div className="flex flex-wrap items-center gap-2">
           <Link href="/komik" className="inline-flex items-center gap-2 text-sm font-semibold text-rose-300 hover:text-rose-200">
             <ArrowLeft size={16} /> Komik
