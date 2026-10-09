@@ -1,5 +1,5 @@
 export const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_BASE_URL || 'http://194.14.81.69/wajik-anime-api';
+  process.env.NEXT_PUBLIC_API_BASE_URL || 'https://wajik-anime-api-murex.vercel.app';
 
 const isServer = typeof window === 'undefined';
 
