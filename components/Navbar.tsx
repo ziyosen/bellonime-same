@@ -5,6 +5,19 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Home, Sun, Moon, Film, Search, Send, Tv, BookOpen } from 'lucide-react';
+
+// Logo yin-yang custom (SVG murni) — permintaan bos untuk tab Donghua
+function YinYangIcon({ size = 20 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <circle cx="12" cy="12" r="10.5" stroke="currentColor" strokeWidth="1.5" />
+      <path d="M12 1.5a10.5 10.5 0 0 1 0 21 5.25 5.25 0 0 1 0-10.5 5.25 5.25 0 0 0 0-10.5Z" fill="currentColor" />
+      <circle cx="12" cy="6.75" r="1.6" className="fill-white dark:fill-slate-900" />
+      <circle cx="12" cy="17.25" r="1.6" fill="currentColor" />
+    </svg>
+  );
+}
+
 import { useTheme } from 'next-themes';
 
 
@@ -69,9 +82,9 @@ export default function Navbar() {
 
   const navItems = [
     { href: '/', icon: <Home size={20} />, label: 'Home' },
-    { href: '/donghua', icon: <Tv size={20} />, label: 'Donghua' },
+    { href: '/donghua', icon: <YinYangIcon size={20} />, label: 'Donghua' },
     { href: '/komik', icon: <BookOpen size={20} />, label: 'Comic' },
-    { href: '/movies', icon: <Film size={20} />, label: 'Movies' },
+    { href: 'https://cinema.xinquins.de5.net', icon: <Film size={20} />, label: 'Netflix Clone' },
   ];
 
   const desktopNavItems = [
