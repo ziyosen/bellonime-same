@@ -121,6 +121,44 @@ export async function fetchDonghuaList(kind: 'latest' | 'ongoing' | 'completed',
   return dedupeCards(list.map(toCard));
 }
 
+export async function fetchDonghuaListCached(
+  kind: 'latest' | 'ongoing' | 'completed',
+  page = 1,
+): Promise<DonghuaCard[]> {
+  const key = `donghua-list-${kind}-${page}`;
+  try {
+    const raw = localStorage.getItem(key);
+    if (raw) {
+      const parsed = JSON.parse(raw) as { at: number; items: DonghuaCard[] };
+      if (Date.now() - parsed.at < 6 * 60 * 60 * 1000) return parsed.items;
+    }
+  } catch {
+    // abaikan cache rusak
+  }
+  const items = await fetchDonghuaList(kind, page);
+  try {
+    localStorage.setItem(key, JSON.stringify({ at: Date.now(), items }));
+  } catch {
+    // penyimpanan penuh, abaikan
+  }
+  return items;
+}
+
+export async function fetchDonghuaCompletedPages(pages = 10): Promise<DonghuaCard[]> {
+  const all: DonghuaCard[] = [];
+  const batchSize = 3;
+  for (let start = 1; start <= pages; start += batchSize) {
+    const batch: Promise<DonghuaCard[]>[] = [];
+    for (let p = start; p < start + batchSize && p <= pages; p++) {
+      batch.push(fetchDonghuaList('completed', p).catch(() => []));
+    }
+    const results = await Promise.all(batch);
+    for (const r of results) all.push(...r);
+    if (results.every((r) => r.length === 0)) break;
+  }
+  return dedupeCards(all);
+}
+
 export async function fetchDonghuaGenres(): Promise<{ name: string; slug: string }[]> {
   const data = await fetchJson('/anime/donghua/genres');
   const list = (data.data || []) as { name: string; slug: string }[];

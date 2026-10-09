@@ -6,6 +6,7 @@ import { Play, Star, ChevronRight } from 'lucide-react';
 import {
   fetchDonghuaHome,
   fetchDonghuaList,
+  fetchDonghuaCompletedPages,
   fetchDonghuaGenres,
   fetchDonghuaSchedule,
   fetchDonghuaDetail,
@@ -35,15 +36,22 @@ function Card({ item }: { item: DonghuaCard }) {
   );
 }
 
-function Row({ title, items }: { title: string; items: DonghuaCard[] }) {
+function Row({ title, items, limit = 18, href }: { title: string; items: DonghuaCard[]; limit?: number; href?: string }) {
   if (!items.length) return null;
   return (
     <section className="mt-8">
       <div className="mb-4 flex items-center justify-between">
         <h2 className="text-lg font-extrabold tracking-tight text-white sm:text-xl">{title}</h2>
+        {href ? (
+          <Link href={href} className="inline-flex shrink-0 items-center gap-1 text-[12px] font-bold uppercase tracking-wide text-sky-300 hover:text-sky-200">
+            SEMUA <ChevronRight size={14} />
+          </Link>
+        ) : (
+          <span className="text-[12px] font-semibold text-slate-400">{items.length} judul</span>
+        )}
       </div>
       <div className="flex gap-4 overflow-x-auto px-0.5 pb-5 pt-0.5 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-        {items.slice(0, 18).map((item) => (
+        {items.slice(0, limit).map((item) => (
           <Card key={`${title}-${item.slug}`} item={item} />
         ))}
       </div>
@@ -56,10 +64,12 @@ export default function DonghuaPage() {
   const [latestList, setLatestList] = useState<DonghuaCard[]>([]);
   const [ongoing, setOngoing] = useState<DonghuaCard[]>([]);
   const [completed, setCompleted] = useState<DonghuaCard[]>([]);
+  const [completedAll, setCompletedAll] = useState<DonghuaCard[]>([]);
   const [genres, setGenres] = useState<{ name: string; slug: string }[]>([]);
   const [schedule, setSchedule] = useState<{ day: string; list: DonghuaCard[] }[]>([]);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(true);
+
 
   useEffect(() => {
     let alive = true;
@@ -84,6 +94,12 @@ export default function DonghuaPage() {
         if (home.status === 'rejected' && on.status === 'rejected') {
           setError('Sumber Donghua belum bisa diambil saat ini. Coba lagi sebentar ya.');
         }
+        // Completed lengkap: ambil 10 halaman dari sumber, bertahap biar hemat.
+        fetchDonghuaCompletedPages(10)
+          .then((items) => {
+            if (alive && items.length) setCompletedAll(items);
+          })
+          .catch(() => {});
       } finally {
         if (alive) setLoading(false);
       }
@@ -97,11 +113,11 @@ export default function DonghuaPage() {
 
   const posterMap = useMemo(() => {
     const map = new Map<string, string>();
-    for (const item of [...latest, ...latestList, ...ongoing, ...completed]) {
+    for (const item of [...latest, ...latestList, ...ongoing, ...completed, ...completedAll]) {
       if (item.slug && item.poster && !map.has(item.slug)) map.set(item.slug, item.poster);
     }
     return map;
-  }, [latest, latestList, ongoing, completed]);
+  }, [latest, latestList, ongoing, completed, completedAll]);
 
   const [posterOverrides, setPosterOverrides] = useState<Record<string, string>>({});
 
@@ -236,10 +252,9 @@ export default function DonghuaPage() {
               </button>
             </form>
 
-
-            <Row title="Terbaru" items={latest} />
-            <Row title="Sedang Tayang" items={ongoing} />
-            <Row title="Complete / Tamat" items={completed} />
+            <Row title="Terbaru" items={latest} href="/donghua/terbaru" />
+            <Row title="Sedang Tayang" items={ongoing} href="/donghua/ongoing" />
+            <Row title="Complete / Tamat" items={completedAll.length ? completedAll : completed} limit={300} href="/donghua/completed" />
 
             {schedule.length ? (
               <section className="mt-10">
@@ -261,7 +276,7 @@ export default function DonghuaPage() {
               </section>
             ) : null}
 
-            <section className="mt-7">
+            <section className="mt-10">
               <h2 className="mb-4 text-lg font-extrabold tracking-tight text-white sm:text-xl">Per Tahun</h2>
               <div className="flex gap-2 overflow-x-auto pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                 {['2026', '2025', '2024', '2023', '2022', '2021', '2020'].map((year) => (
