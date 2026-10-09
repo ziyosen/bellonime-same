@@ -6,7 +6,7 @@ import { TrendingUp } from 'lucide-react';
 import { Suspense } from 'react';
 
 export const metadata = {
-  title: 'Anime Populer - Bellonime',
+  title: 'Anime Populer - Animekita',
   description: 'Daftar anime paling populer.',
 };
 

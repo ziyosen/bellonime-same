@@ -107,13 +107,13 @@ export default function Navbar() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 gap-8">
             {/* Logo */}
-            <Link href="/" className="flex items-center gap-3 group flex-shrink-0" aria-label="BelloNime">
-              <svg viewBox="0 0 48 34" className="h-9 w-auto drop-shadow-md transition-transform duration-300 group-hover:scale-105" role="img" aria-label="BelloNime">
+            <Link href="/" className="flex items-center gap-3 group flex-shrink-0" aria-label="Animekita">
+              <svg viewBox="0 0 48 34" className="h-9 w-auto drop-shadow-md transition-transform duration-300 group-hover:scale-105" role="img" aria-label="Animekita">
                 <rect x="1" y="1" width="46" height="32" rx="9" fill="#0ea5e9" />
                 <path d="M19 10.5v13c0 .8.9 1.3 1.6.9l10-6.5c.6-.4.6-1.4 0-1.8l-10-6.5c-.7-.4-1.6.1-1.6.9z" fill="#fff" />
               </svg>
               <span className="font-extrabold text-xl tracking-wide">
-                BelloNime
+                Animekita
               </span>
             </Link>
 
@@ -182,8 +182,8 @@ export default function Navbar() {
           className={`md:hidden fixed top-4 left-4 right-4 z-50 bg-white/90 dark:bg-slate-900/90 backdrop-blur-lg rounded-full shadow-soft-xl border border-slate-200 dark:border-slate-800 px-4 py-2 ${pathname?.startsWith('/donghua') || pathname?.startsWith('/komik') ? 'hidden' : ''}`}
         >
           <div className="flex items-center gap-3">
-            <Link href="/" className="flex-shrink-0" aria-label="BelloNime">
-              <svg viewBox="0 0 48 34" className="h-7 w-auto drop-shadow" role="img" aria-label="BelloNime">
+            <Link href="/" className="flex-shrink-0" aria-label="Animekita">
+              <svg viewBox="0 0 48 34" className="h-7 w-auto drop-shadow" role="img" aria-label="Animekita">
                 <rect x="1" y="1" width="46" height="32" rx="9" fill="#0ea5e9" />
                 <path d="M19 10.5v13c0 .8.9 1.3 1.6.9l10-6.5c.6-.4.6-1.4 0-1.8l-10-6.5c-.7-.4-1.6.1-1.6.9z" fill="#fff" />
               </svg>

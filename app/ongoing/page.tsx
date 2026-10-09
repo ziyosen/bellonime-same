@@ -6,7 +6,7 @@ import { Play } from 'lucide-react';
 import { Suspense } from 'react';
 
 export const metadata = {
-  title: 'Sedang Tayang - Bellonime',
+  title: 'Sedang Tayang - Animekita',
   description: 'Daftar anime yang sedang tayang.',
 };
 

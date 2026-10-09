@@ -11,8 +11,8 @@ export async function generateMetadata({ searchParams }: { searchParams: Promise
     const { q } = await searchParams;
     const query = q || '';
     return {
-        title: query ? `Pencarian: ${query} - Bellonime` : 'Pencarian - Bellonime',
-        description: `Hasil pencarian untuk ${query} di Bellonime`,
+        title: query ? `Pencarian: ${query} - Animekita` : 'Pencarian - Animekita',
+        description: `Hasil pencarian untuk ${query} di Animekita`,
     };
 }
 

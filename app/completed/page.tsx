@@ -6,7 +6,7 @@ import { CheckCircle } from 'lucide-react';
 import { Suspense } from 'react';
 
 export const metadata = {
-  title: 'Anime Tamat - Bellonime',
+  title: 'Anime Tamat - Animekita',
   description: 'Daftar anime yang sudah tamat.',
 };
 

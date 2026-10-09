@@ -5,7 +5,7 @@ import type { Genres } from '@/types/anime';
 
 // Fungsi untuk SEO
 export const metadata = {
-  title: 'Daftar Genre - Bellonime',
+  title: 'Daftar Genre - Animekita',
   description: 'Jelajahi semua genre anime yang tersedia.',
 };
 

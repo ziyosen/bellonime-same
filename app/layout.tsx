@@ -5,7 +5,7 @@ import { ThemeProvider } from '@/components/ThemeProvider';
 import { Suspense } from 'react';
 
 export const metadata: Metadata = {
-  title: 'Bellonime',
+  title: 'Animekita',
   description: 'Platform untuk streaming anime favoritmu',
 };
 

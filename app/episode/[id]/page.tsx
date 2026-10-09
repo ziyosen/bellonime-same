@@ -11,7 +11,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   try {
     const { id } = await params;
     const episode: Episode = await getEpisodeData(id);
-    return { title: `${episode.title} - Bellonime` };
+    return { title: `${episode.title} - Animekita` };
   } catch {
     return { title: 'Episode Tidak Ditemukan' };
   }

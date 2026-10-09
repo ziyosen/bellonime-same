@@ -1,6 +1,6 @@
 
 // types/anime.ts
-// Definisikan tipe data untuk Anime sesuai dengan struktur API Bellonime
+// Definisikan tipe data untuk Anime sesuai dengan struktur API Animekita
 
 export interface ApiResponse<T> {
     statusCode: number;

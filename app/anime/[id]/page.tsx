@@ -33,7 +33,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
     const { id } = await params;
     const anime = await getAnimeDetail(id);
     return {
-      title: `${anime.english} - Bellonime`,
+      title: `${anime.english} - Animekita`,
       description: anime.synopsis?.paragraphs.slice(0, 160),
     };
   } catch {
