@@ -23,11 +23,8 @@ export default function KomikCard({ item }: { item: WestCard }) {
           </div>
         )}
         <span className="absolute inset-x-0 bottom-0 h-14 bg-gradient-to-t from-black/70 to-transparent" />
-        {lastCh?.number ? (
-          <span className="absolute bottom-2 left-2 rounded-full bg-rose-500 px-2 py-0.5 text-[10px] font-extrabold text-white">
-            CH {lastCh.number}
-          </span>
-        ) : null}
+        {/* CH pill di atas gambar dihapus: tampil dobel dengan baris CH+waktu di bawah kartu */}
+
         {/* bendera negara tepat: JPN/KOR/CHN */}
         {item.countryId ? (
           <span className="absolute right-2 top-2 z-10">

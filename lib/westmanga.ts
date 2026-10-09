@@ -217,11 +217,11 @@ export function chapterUpdatedLabel(ch?: WestChapterRef): string {
   return ch.updated_at.formatted || '';
 }
 
-// Populer per periode — pemetaan periode UI ke endpoint westmanga.
-// API Sanka westmanga belum punya param periode; popularitas = endpoint /popular.
-// period dipertahankan untuk UI; saat API menambahkan param periode, tinggal tambahkan di sini.
-// Populer per periode — endpoint /popular (API belum punya param periode;
-// period disiapkan untuk UI, saat API menambahkannya tinggal append query).
+// Populer per periode — endpoint /popular.
+// CATATAN JUJUR: endpoint /comic/westmanga/popular belum mendukung param periode
+// (25 item identik untuk period apa pun), jadi pill filter UI tetap tampil
+// ('Hari ini' aktif default) tapi datanya selalu sepanjang waktu.
+// Saat API menambahkan param periode, tinggal append query di sini.
 export async function getPopular(period: 'today' | 'week' | 'month' | 'all' = 'all'): Promise<WestCard[]> {
   const json = await fetchJson<{ data?: { popular?: unknown[] } }>(`${WEST}/popular`);
   return toCards(json.data?.popular || []);
