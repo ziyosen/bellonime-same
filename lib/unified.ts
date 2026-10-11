@@ -56,7 +56,7 @@ async function fetchOwnLatest(): Promise<UnifiedItem[]> {
   try {
     const response = await fetch(`${API_BASE_URL}/katalog/terbaru?page=1`, {
       headers: API_HEADERS,
-      cache: 'no-store',
+      next: { revalidate: 300 }, // cache 5 menit — balik ke home instan
     });
     if (!response.ok) return [];
     const json = await response.json();
@@ -84,7 +84,7 @@ async function fetchOwnSearch(q: string): Promise<UnifiedItem[]> {
     const url = new URL(`${API_BASE_URL}/katalog/search`);
     url.searchParams.set('q', q);
     url.searchParams.set('page', '1');
-    const response = await fetch(url.toString(), { headers: API_HEADERS, cache: 'no-store' });
+    const response = await fetch(url.toString(), { headers: API_HEADERS, next: { revalidate: 300 } });
     if (!response.ok) return [];
     const json = await response.json();
     const list: OwnCatalogItem[] = json?.data?.animeList || [];

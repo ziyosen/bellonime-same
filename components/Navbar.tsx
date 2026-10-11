@@ -108,10 +108,10 @@ export default function Navbar() {
           <div className="flex items-center justify-between h-16 gap-8">
             {/* Logo */}
             <Link href="/" className="flex items-center gap-3 group flex-shrink-0" aria-label="NimeKita">
-              <svg viewBox="0 0 24 24" className="h-9 w-9 text-accent drop-shadow-md transition-transform duration-300 group-hover:scale-105" fill="currentColor" role="img" aria-label="NimeKita">
+              <svg viewBox="0 0 24 24" className="h-9 w-9 text-orange-500 drop-shadow-md transition-transform duration-300 group-hover:scale-105" fill="currentColor" role="img" aria-label="NimeKita">
                 <path d="M4 3h16a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zm3 2v2h2V5H7zm8 0v2h2V5h-2zM7 19v2h2v-2H7zm8 0v2h2v-2h-2zM10 9.5v5l4.5-2.5L10 9.5z" />
               </svg>
-              <span className="font-extrabold text-xl tracking-wide text-slate-800 dark:text-white">Nime<span className="text-accent">Kita</span></span>
+              <span className="font-extrabold text-xl tracking-wide text-slate-800 dark:text-white">Nime<span className="text-orange-500">Kita</span></span>
             </Link>
 
             {/* Desktop Search */}
@@ -183,7 +183,7 @@ export default function Navbar() {
               <svg viewBox="0 0 24 24" className="h-7 w-7 text-accent drop-shadow" fill="currentColor" role="img" aria-label="NimeKita">
                 <path d="M4 3h16a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zm3 2v2h2V5H7zm8 0v2h2V5h-2zM7 19v2h2v-2H7zm8 0v2h2v-2h-2zM10 9.5v5l4.5-2.5L10 9.5z" />
               </svg>
-              <span className="font-extrabold text-base tracking-wide whitespace-nowrap text-slate-800 dark:text-white">Nime<span className="text-accent">Kita</span></span>
+              <span className="font-extrabold text-base tracking-wide whitespace-nowrap text-slate-800 dark:text-white">Nime<span className="text-orange-500">Kita</span></span>
             </Link>
 
             {pathname?.startsWith('/donghua') ? (
@@ -215,8 +215,14 @@ export default function Navbar() {
       {pathname?.startsWith('/donghua') ? (
         <form
           onSubmit={handleDonghuaSearch}
-          className="fixed inset-x-3 top-3 z-50 flex gap-2 md:hidden"
+          className="fixed inset-x-3 top-3 z-50 flex gap-2 items-center md:hidden"
         >
+          <Link href="/" className="flex items-center gap-1.5 flex-shrink-0" aria-label="NimeKita">
+            <svg viewBox="0 0 24 24" className="h-8 w-8 text-orange-500 drop-shadow" fill="currentColor" role="img" aria-label="NimeKita">
+              <path d="M4 3h16a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zm3 2v2h2V5H7zm8 0v2h2V5h-2zM7 19v2h2v-2H7zm8 0v2h2v-2h-2zM10 9.5v5l4.5-2.5L10 9.5z" />
+            </svg>
+            <span className="font-extrabold text-sm tracking-wide whitespace-nowrap text-white">Nime<span className="text-orange-500">Kita</span></span>
+          </Link>
           <div className="relative flex-1">
             <input
               type="search"
@@ -237,8 +243,14 @@ export default function Navbar() {
       {pathname?.startsWith('/komik') ? (
         <form
           onSubmit={handleKomikSearch}
-          className="fixed inset-x-3 top-3 z-50 flex gap-2 md:hidden"
+          className="fixed inset-x-3 top-3 z-50 flex gap-2 items-center md:hidden"
         >
+          <Link href="/" className="flex items-center gap-1.5 flex-shrink-0" aria-label="NimeKita">
+            <svg viewBox="0 0 24 24" className="h-8 w-8 text-orange-500 drop-shadow" fill="currentColor" role="img" aria-label="NimeKita">
+              <path d="M4 3h16a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zm3 2v2h2V5H7zm8 0v2h2V5h-2zM7 19v2h2v-2H7zm8 0v2h2v-2h-2zM10 9.5v5l4.5-2.5L10 9.5z" />
+            </svg>
+            <span className="font-extrabold text-sm tracking-wide whitespace-nowrap text-white">Nime<span className="text-orange-500">Kita</span></span>
+          </Link>
           <div className="relative flex-1">
             <input
               type="search"
