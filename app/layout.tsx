@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import Navbar from '@/components/Navbar';
+import SiteFooter from '@/components/SiteFooter';
 import { ThemeProvider } from '@/components/ThemeProvider';
 import { Suspense } from 'react';
 
@@ -27,6 +28,7 @@ export default function RootLayout({
             <Navbar />
           </Suspense>
           {children}
+          <SiteFooter />
         </ThemeProvider>
       </body>
     </html>
