@@ -3,6 +3,8 @@ import Link from 'next/link';
 import { ChevronRight, Play, Star } from 'lucide-react';
 import { fetchUnifiedLatest, type UnifiedItem } from '@/lib/unified';
 import { getCompletedData, getGenresData, getMoviesData, getOngoingData, getPopularData, getScheduleData } from '@/lib/services';
+import { getRanking, type RankItem } from '@/lib/ranking';
+import RankingSection from '@/components/home/RankingSection';
 import type { Anime } from '@/types/anime';
 
 function RowCard({ item }: { item: { title: string; poster: string; href: string; score?: string; meta?: string; episodes?: string } }) {
@@ -63,7 +65,7 @@ function toItem(anime: Anime) {
 }
 
 export default async function ZonaHome() {
-  const [latest, popularResult, ongoingResult, completedResult, moviesResult, scheduleResult, genresResult] = await Promise.allSettled([
+  const [latest, popularResult, ongoingResult, completedResult, moviesResult, scheduleResult, genresResult, rankingResult] = await Promise.allSettled([
     fetchUnifiedLatest(),
     getPopularData(1),
     getOngoingData(1),
@@ -71,6 +73,7 @@ export default async function ZonaHome() {
     getMoviesData(1),
     getScheduleData(),
     getGenresData(),
+    getRanking(),
   ]);
 
   const latestItems: UnifiedItem[] = latest.status === 'fulfilled'
@@ -85,6 +88,8 @@ export default async function ZonaHome() {
     ? scheduleResult.value.days.filter((day) => day.animeList.length > 0).slice(0, 7)
     : [];
   const genres = genresResult.status === 'fulfilled' ? genresResult.value.data.genreList : [];
+  const ranking = rankingResult.status === 'fulfilled' ? rankingResult.value : {};
+  const rankingData = ranking as Record<string, RankItem[]>;
 
   return (
     <>
@@ -141,6 +146,9 @@ export default async function ZonaHome() {
       {ongoing.length ? <Row title="Sedang Tayang" href="/ongoing">{ongoing.map((item) => <RowCard key={item.href} item={item} />)}</Row> : null}
       {completed.length ? <Row title="Complete / Tamat" href="/completed">{completed.map((item) => <RowCard key={item.href} item={item} />)}</Row> : null}
       {movies.length ? <Row title="Movies" href="/movies">{movies.map((item) => <RowCard key={item.href} item={item} />)}</Row> : null}
+
+      {/* Ranking & Trending — di ATAS Jadwal Rilis (urutan: Ranking → Jadwal Rilis) */}
+      <RankingSection data={rankingData} />
 
       {scheduleDays.length ? (
         <section className="mt-10">
