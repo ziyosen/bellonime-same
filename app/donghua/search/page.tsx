@@ -36,7 +36,7 @@ function SearchInner() {
   }, [query]);
 
   return (
-    <main className="min-h-screen bg-[#070b12] pb-28 text-white md:pb-12">
+    <main className="min-h-screen bg-black pb-28 text-white md:pb-12">
       <div className="mx-auto max-w-[1500px] px-3 pt-[74px] sm:px-6 md:pt-20 lg:px-8">
         <Link href="/donghua" className="inline-flex items-center gap-2 text-sm font-semibold text-orange-300 hover:text-orange-200">
           <ArrowLeft size={16} /> Kembali ke Donghua
@@ -63,7 +63,7 @@ function SearchInner() {
 
 export default function DonghuaSearchPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-[#070b12]" />}>
+    <Suspense fallback={<div className="min-h-screen bg-black" />}>
       <SearchInner />
     </Suspense>
   );

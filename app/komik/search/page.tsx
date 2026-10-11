@@ -14,7 +14,7 @@ export default function KomikSearchPageRoute() {
   return (
     <Suspense
       fallback={
-        <main className="flex min-h-screen items-center justify-center bg-[#070b12] text-sm text-slate-400">
+        <main className="flex min-h-screen items-center justify-center bg-black text-sm text-slate-400">
           Memuat pencarian...
         </main>
       }
