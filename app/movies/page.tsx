@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { Suspense } from 'react';
-import { getMoviesData } from '@/lib/services';
+import { getSankaMovies } from '@/lib/services/SankaMoviesService';
 import PaginationControls from '@/components/PaginationControls';
 
 export const metadata = {
@@ -13,15 +13,16 @@ export default async function MoviesPage({ searchParams }: { searchParams: Promi
   const { page: pageParam } = await searchParams;
   const page = Number(pageParam) || 1;
 
-  let movies: Awaited<ReturnType<typeof getMoviesData>> | null = null;
-  try {
-    movies = await getMoviesData(page);
-  } catch {
-    movies = null;
-  }
-
-  const animeList = movies?.data?.animeList || [];
-  const pagination = movies?.pagination;
+  const movies = await getSankaMovies(page);
+  const animeList = movies.animeList;
+  const pagination = {
+    currentPage: movies.currentPage,
+    hasPrevPage: movies.hasPrev,
+    prevPage: movies.hasPrev ? movies.currentPage - 1 : null,
+    hasNextPage: movies.hasNext,
+    nextPage: movies.hasNext ? movies.currentPage + 1 : null,
+    totalPages: movies.hasNext ? movies.currentPage + 1 : movies.currentPage,
+  };
 
   return (
     <main className="min-h-screen bg-[#070b12] pb-28 pt-[84px] text-white md:pb-12 md:pt-24">
@@ -32,7 +33,7 @@ export default async function MoviesPage({ searchParams }: { searchParams: Promi
           <>
             <div className="mt-7 grid grid-cols-3 gap-x-3 gap-y-7 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6">
               {animeList.map((anime) => (
-                <Link key={anime.animeId} href={`/anime/${anime.animeId}`} className="group">
+                <Link key={anime.slug} href={`/anime/${anime.slug}`} className="group">
                   <div className="relative aspect-[2/3] overflow-hidden rounded-2xl bg-white/[0.06]">
                     {anime.poster ? (
                       <Image src={anime.poster} alt={anime.title} fill sizes="180px" className="object-cover transition duration-300 group-hover:scale-105" unoptimized />
@@ -42,7 +43,7 @@ export default async function MoviesPage({ searchParams }: { searchParams: Promi
                     <span className="absolute left-2 top-2 rounded-full bg-violet-500 px-2 py-1 text-[10px] font-extrabold text-white">Movie</span>
                   </div>
                   <h2 className="mt-2.5 line-clamp-2 h-[38px] overflow-hidden text-[13px] font-semibold leading-[1.45] text-slate-100">{anime.title}</h2>
-                  {anime.status ? <p className="mt-0.5 line-clamp-1 text-[11px] text-slate-400">{anime.status}</p> : null}
+                  {anime.releaseDate ? <p className="mt-0.5 line-clamp-1 text-[11px] text-slate-400">{anime.releaseDate}</p> : null}
                 </Link>
               ))}
             </div>
