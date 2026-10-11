@@ -176,7 +176,7 @@ export default function Navbar() {
         >
           <div className="flex items-center gap-3">
             <Link href="/" className="flex items-center gap-2 flex-shrink-0" aria-label="NimeKita">
-              <svg viewBox="0 0 24 24" className="h-7 w-7 text-accent drop-shadow" fill="currentColor" role="img" aria-label="NimeKita">
+              <svg viewBox="0 0 24 24" className="h-7 w-7 text-orange-500 drop-shadow" fill="currentColor" role="img" aria-label="NimeKita">
                 <path d="M4 3h16a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zm3 2v2h2V5H7zm8 0v2h2V5h-2zM7 19v2h2v-2H7zm8 0v2h2v-2h-2zM10 9.5v5l4.5-2.5L10 9.5z" />
               </svg>
               <span className="font-extrabold text-base tracking-wide whitespace-nowrap text-slate-800 dark:text-white">Nime<span className="text-orange-500">Kita</span></span>
@@ -282,7 +282,7 @@ export default function Navbar() {
                   target={isExternal ? '_blank' : '_self'}
                   rel={isExternal ? 'noopener noreferrer' : ''}
                   className={`flex flex-col items-center gap-0.5 px-4 py-1.5 rounded-2xl transition-all ${isActive
-                    ? 'bg-slate-200/80 dark:bg-slate-700/70 text-accent'
+                    ? 'bg-slate-200/80 dark:bg-slate-700/70 text-orange-500'
                     : 'text-slate-400 dark:text-slate-500'
                     }`}
                 >
