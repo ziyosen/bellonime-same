@@ -73,7 +73,7 @@ export default function EpisodePlayerSection({ episode }: { episode: Episode }) 
           <Clapperboard size={16} className="text-slate-500 dark:text-slate-400" />
           <h2 className="text-sm font-bold text-slate-900 dark:text-slate-100">Server Nonton</h2>
           {activeServer ? (
-            <span className="rounded-full bg-sky-500/10 px-2.5 py-1 text-[11px] font-semibold text-sky-500">
+            <span className="rounded-full bg-orange-500/10 px-2.5 py-1 text-[11px] font-semibold text-orange-500">
               {activeServer.title.replace(/\s+Default$/i, '')}
             </span>
           ) : null}
@@ -88,7 +88,7 @@ export default function EpisodePlayerSection({ episode }: { episode: Episode }) 
                   onClick={() => handleServerChange(server)}
                   className={`rounded-lg px-3.5 py-2 text-[13px] font-semibold transition ${
                     isActive
-                      ? 'bg-sky-500 text-white'
+                      ? 'bg-orange-500 text-white'
                       : 'bg-slate-100 text-slate-700 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700'
                   }`}
                 >

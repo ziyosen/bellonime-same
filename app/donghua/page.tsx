@@ -22,12 +22,12 @@ function Card({ item }: { item: DonghuaCard }) {
           // eslint-disable-next-line @next/next/no-img-element
           <img src={item.poster} alt={item.title} className="h-full w-full object-cover transition duration-300 group-hover:scale-105" loading="lazy" />
         ) : (
-          <div className="flex h-full items-center justify-center bg-gradient-to-br from-sky-900 via-slate-900 to-slate-950 px-3 text-center">
+          <div className="flex h-full items-center justify-center bg-gradient-to-br from-orange-900 via-slate-900 to-slate-950 px-3 text-center">
             <span className="text-[13px] font-extrabold leading-snug text-slate-200">{item.title}</span>
           </div>
         )}
         {item.episodeLabel ? (
-          <span className="absolute bottom-2 left-2 rounded-full bg-sky-500 px-2 py-1 text-[10px] font-extrabold text-white">{item.episodeLabel}</span>
+          <span className="absolute bottom-2 left-2 rounded-full bg-orange-500 px-2 py-1 text-[10px] font-extrabold text-white">{item.episodeLabel}</span>
         ) : null}
       </div>
       <h3 className="mt-2.5 line-clamp-2 h-[38px] overflow-hidden text-[13px] font-semibold leading-[1.45] text-slate-100">{item.title}</h3>
@@ -43,7 +43,7 @@ function Row({ title, items, limit = 18, href }: { title: string; items: Donghua
       <div className="mb-4 flex items-center justify-between">
         <h2 className="text-lg font-extrabold tracking-tight text-white sm:text-xl">{title}</h2>
         {href ? (
-          <Link href={href} className="inline-flex shrink-0 items-center gap-1 text-[12px] font-bold uppercase tracking-wide text-sky-300 hover:text-sky-200">
+          <Link href={href} className="inline-flex shrink-0 items-center gap-1 text-[12px] font-bold uppercase tracking-wide text-orange-300 hover:text-orange-200">
             SEMUA <ChevronRight size={14} />
           </Link>
         ) : (
@@ -194,7 +194,7 @@ export default function DonghuaPage() {
 
   return (
     <main className="min-h-screen bg-[#070b12] pb-28 text-white md:pb-12">
-      <div className="mx-auto max-w-7xl px-3 pt-0 sm:px-6 md:pt-16 lg:px-8">
+      <div className="mx-auto max-w-[1500px] px-3 pt-0 sm:px-6 md:pt-16 lg:px-8">
         {loading ? (
           <div className="flex min-h-[40vh] items-center justify-center pt-24 text-sm text-slate-400">Memuat Donghua...</div>
         ) : error ? (
@@ -209,11 +209,11 @@ export default function DonghuaPage() {
                     <img src={hero.poster} alt={hero.title} className="absolute inset-0 h-full w-full object-cover object-top opacity-60" />
                   ) : null}
                   <div className="absolute inset-0 bg-gradient-to-t from-[#070b12] via-[#070b12]/45 to-transparent" />
-                  <div className="absolute inset-x-0 bottom-0 mx-auto max-w-7xl px-3 pb-6 pt-24 sm:px-6 lg:px-8">
-                    <span className="rounded-full bg-sky-500 px-3 py-1 text-[11px] font-extrabold uppercase tracking-wider text-white">Donghua Terbaru</span>
+                  <div className="absolute inset-x-0 bottom-0 mx-auto max-w-[1500px] px-3 pb-6 pt-24 sm:px-6 lg:px-8">
+                    <span className="rounded-full bg-orange-500 px-3 py-1 text-[11px] font-extrabold uppercase tracking-wider text-white">Donghua Terbaru</span>
                     <h1 className="mt-3 max-w-2xl text-[27px] font-black leading-[1.15] text-white sm:text-5xl sm:leading-tight">{hero.title}</h1>
                     <p className="mt-2 text-sm text-slate-300">{hero.episodeLabel ? `${hero.episodeLabel} baru saja rilis` : 'Donghua terbaru hari ini'}</p>
-                    <Link href={`/donghua/${hero.slug}`} className="mt-5 inline-flex items-center gap-2 rounded-full bg-sky-500 px-6 py-3 text-sm font-extrabold text-white shadow-lg shadow-sky-500/25 transition hover:bg-sky-400">
+                    <Link href={`/donghua/${hero.slug}`} className="mt-5 inline-flex items-center gap-2 rounded-full bg-orange-500 px-6 py-3 text-sm font-extrabold text-white shadow-lg shadow-orange-500/25 transition hover:bg-orange-400">
                       <Play size={17} fill="currentColor" /> Tonton Sekarang
                     </Link>
                   </div>
@@ -231,7 +231,7 @@ export default function DonghuaPage() {
                     <Link
                       key={genre.slug}
                       href={`/donghua/genre/${genre.slug}`}
-                      className="shrink-0 rounded-full bg-white/[0.06] px-4 py-2.5 text-[12px] font-semibold text-slate-200 transition hover:bg-sky-500 hover:text-white"
+                      className="shrink-0 rounded-full bg-white/[0.06] px-4 py-2.5 text-[12px] font-semibold text-slate-200 transition hover:bg-orange-500 hover:text-white"
                     >
                       {genre.name}
                     </Link>
@@ -245,9 +245,9 @@ export default function DonghuaPage() {
                 name="q"
                 type="search"
                 placeholder="Cari donghua..."
-                className="h-12 flex-1 rounded-full bg-white/[0.06] px-5 text-sm text-white placeholder:text-slate-400 outline-none ring-sky-500 focus:ring-2"
+                className="h-12 flex-1 rounded-full bg-white/[0.06] px-5 text-sm text-white placeholder:text-slate-400 outline-none ring-orange-500 focus:ring-2"
               />
-              <button type="submit" className="h-12 rounded-full bg-sky-500 px-5 text-sm font-extrabold text-white transition hover:bg-sky-400">
+              <button type="submit" className="h-12 rounded-full bg-orange-500 px-5 text-sm font-extrabold text-white transition hover:bg-orange-400">
                 Cari
               </button>
             </form>
@@ -264,7 +264,7 @@ export default function DonghuaPage() {
                 <div className="space-y-5">
                   {schedule.map((day) => (
                     <div key={day.day}>
-                      <h3 className="mb-2 text-sm font-extrabold uppercase tracking-wide text-sky-300">{day.day}</h3>
+                      <h3 className="mb-2 text-sm font-extrabold uppercase tracking-wide text-orange-300">{day.day}</h3>
                       <div className="flex gap-4 overflow-x-auto px-0.5 pb-4 pt-0.5 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                         {day.list.slice(0, 12).map((item) => (
                           <Card key={`${day.day}-${item.slug}`} item={withPoster(item)} />
@@ -283,7 +283,7 @@ export default function DonghuaPage() {
                   <Link
                     key={year}
                     href={`/donghua/season/${year}`}
-                    className="shrink-0 rounded-full bg-white/[0.06] px-4 py-2.5 text-[12px] font-semibold text-slate-200 transition hover:bg-sky-500 hover:text-white"
+                    className="shrink-0 rounded-full bg-white/[0.06] px-4 py-2.5 text-[12px] font-semibold text-slate-200 transition hover:bg-orange-500 hover:text-white"
                   >
                     {year}
                   </Link>
@@ -298,7 +298,7 @@ export default function DonghuaPage() {
                   <Link
                     key={letter}
                     href={`/donghua/az/${letter.toLowerCase()}`}
-                    className="flex aspect-square items-center justify-center rounded-xl bg-white/[0.06] text-[13px] font-extrabold text-slate-200 transition hover:bg-sky-500 hover:text-white"
+                    className="flex aspect-square items-center justify-center rounded-xl bg-white/[0.06] text-[13px] font-extrabold text-slate-200 transition hover:bg-orange-500 hover:text-white"
                   >
                     {letter}
                   </Link>

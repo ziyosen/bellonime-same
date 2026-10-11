@@ -24,7 +24,7 @@ function Row({ title, items, href }: { title: string; items: WestCard[]; href?: 
         {href ? (
           <Link
             href={href}
-            className="inline-flex shrink-0 items-center gap-1 text-[12px] font-bold uppercase tracking-wide text-rose-300 hover:text-rose-200"
+            className="inline-flex shrink-0 items-center gap-1 text-[12px] font-bold uppercase tracking-wide text-orange-300 hover:text-orange-200"
           >
             SEMUA <ChevronRight size={14} />
           </Link>
@@ -95,23 +95,23 @@ export default function KomikHomePage() {
 
   return (
     <main className="min-h-screen bg-[#070b12] pb-28 text-white md:pb-12">
-      <div className="mx-auto max-w-7xl px-3 pt-[58px] sm:px-6 md:pt-16 lg:px-8">
+      <div className="mx-auto max-w-[1500px] px-3 pt-[58px] sm:px-6 md:pt-16 lg:px-8">
         <form action="komik/search" method="get" className="mt-5 hidden gap-2 md:flex">
           <div className="relative flex-1">
             <input
               name="q"
               type="search"
               placeholder="Cari komik..."
-              className="h-12 w-full rounded-full bg-white/[0.06] pl-11 pr-5 text-sm text-white placeholder:text-slate-400 outline-none ring-rose-500 focus:ring-2"
+              className="h-12 w-full rounded-full bg-white/[0.06] pl-11 pr-5 text-sm text-white placeholder:text-slate-400 outline-none ring-orange-500 focus:ring-2"
             />
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={17} />
           </div>
-          <button type="submit" className="h-12 rounded-full bg-rose-500 px-5 text-sm font-extrabold text-white transition hover:bg-rose-400">
+          <button type="submit" className="h-12 rounded-full bg-orange-500 px-5 text-sm font-extrabold text-white transition hover:bg-orange-400">
             Cari
           </button>
         </form>
 
-        <h1 className="mt-0 bg-gradient-to-r from-rose-300 via-rose-500 to-amber-400 bg-clip-text text-center font-black italic leading-tight tracking-tight text-transparent text-[26px] sm:text-4xl">
+        <h1 className="mt-0 bg-gradient-to-r from-orange-300 via-orange-500 to-amber-400 bg-clip-text text-center font-black italic leading-tight tracking-tight text-transparent text-[26px] sm:text-4xl">
           Baca komik sub Indonesia
         </h1>
 
@@ -133,7 +133,7 @@ export default function KomikHomePage() {
                     <Link
                       key={`${g.id}-${g.name}`}
                       href={`/komik/genre/${g.id}`}
-                      className="shrink-0 rounded-full bg-white/10 px-4 py-2.5 text-[12px] font-bold text-white transition hover:bg-rose-500 hover:text-white"
+                      className="shrink-0 rounded-full bg-white/10 px-4 py-2.5 text-[12px] font-bold text-white transition hover:bg-orange-500 hover:text-white"
                     >
                       {g.name}
                     </Link>
@@ -153,7 +153,7 @@ export default function KomikHomePage() {
                   <Link
                     key={c.kind}
                     href={`/komik/${c.kind}`}
-                    className="shrink-0 rounded-full bg-white/10 px-4 py-2.5 text-[12px] font-bold text-white transition hover:bg-rose-500 hover:text-white"
+                    className="shrink-0 rounded-full bg-white/10 px-4 py-2.5 text-[12px] font-bold text-white transition hover:bg-orange-500 hover:text-white"
                   >
                     {c.label}
                   </Link>

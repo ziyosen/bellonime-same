@@ -46,9 +46,9 @@ export default async function EpisodePage({ params }: { params: Promise<{ id: st
 
   return (
     <main className="min-h-screen bg-slate-50 dark:bg-slate-950 py-6 px-4">
-      <div className="max-w-7xl mx-auto space-y-6">
+      <div className="max-w-[1500px] mx-auto space-y-6">
         <div className="space-y-3">
-          <Link href={`/anime/${episode.animeId}`} className="text-sm font-medium text-sky-500 hover:underline">
+          <Link href={`/anime/${episode.animeId}`} className="text-sm font-medium text-orange-500 hover:underline">
             ← Kembali ke Detail Anime
           </Link>
           <div className="flex flex-wrap items-start justify-between gap-3">
@@ -60,7 +60,7 @@ export default async function EpisodePage({ params }: { params: Promise<{ id: st
                 </Link>
               ) : null}
               {episode.nextEpisode ? (
-                <Link href={`/episode/${episode.nextEpisode.episodeId}`} className="rounded-lg bg-sky-500 px-3.5 py-2 text-[13px] font-semibold text-white hover:bg-sky-400">
+                <Link href={`/episode/${episode.nextEpisode.episodeId}`} className="rounded-lg bg-orange-500 px-3.5 py-2 text-[13px] font-semibold text-white hover:bg-orange-400">
                   Next →
                 </Link>
               ) : null}

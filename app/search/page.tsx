@@ -28,7 +28,7 @@ export default async function SearchPage({ searchParams }: Props) {
     if (!query) {
         return (
             <main className="min-h-screen bg-slate-50 dark:bg-slate-950 py-6 px-4">
-                <div className="max-w-7xl mx-auto flex items-center justify-center min-h-[50vh]">
+                <div className="max-w-[1500px] mx-auto flex items-center justify-center min-h-[50vh]">
                     <div className="text-center space-y-4">
                         <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-400">
                             <Search size={32} />
@@ -53,7 +53,7 @@ export default async function SearchPage({ searchParams }: Props) {
         if (!searchData || searchData.animeList.length === 0) {
             return (
                 <main className="min-h-screen bg-slate-50 dark:bg-slate-950 py-6 px-4">
-                    <div className="max-w-7xl mx-auto space-y-6">
+                    <div className="max-w-[1500px] mx-auto space-y-6">
                         <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-soft-lg border border-slate-200 dark:border-slate-800 p-6">
                             <div className="flex items-center gap-3">
                                 <div className="p-3 bg-accent/10 dark:bg-accent/20 rounded-xl">
@@ -88,7 +88,7 @@ export default async function SearchPage({ searchParams }: Props) {
 
         return (
             <main className="min-h-screen bg-slate-50 dark:bg-slate-950 py-6 px-4">
-                <div className="max-w-7xl mx-auto space-y-6">
+                <div className="max-w-[1500px] mx-auto space-y-6">
                     <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-soft-lg border border-slate-200 dark:border-slate-800 p-6">
                         <div className="flex items-center gap-3">
                             <div className="p-3 bg-accent/10 dark:bg-accent/20 rounded-xl">

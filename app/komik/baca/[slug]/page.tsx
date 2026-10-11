@@ -40,13 +40,13 @@ export default function KomikBacaPageRoute({ params }: { params: Promise<{ slug:
       <div className="mx-auto max-w-3xl px-3 pt-[58px] sm:px-6 md:pt-16">
         <KomikTagline />
         <div className="flex flex-wrap items-center gap-2">
-          <Link href="/komik" className="inline-flex items-center gap-2 text-sm font-semibold text-rose-300 hover:text-rose-200">
+          <Link href="/komik" className="inline-flex items-center gap-2 text-sm font-semibold text-orange-300 hover:text-orange-200">
             <ArrowLeft size={16} /> Komik
           </Link>
           {seriesSlug !== slug ? (
             <Link
               href={`/komik/detail/${seriesSlug}`}
-              className="inline-flex items-center gap-2 rounded-full bg-white/[0.06] px-4 py-2 text-[12px] font-bold text-slate-200 transition hover:bg-rose-500 hover:text-white"
+              className="inline-flex items-center gap-2 rounded-full bg-white/[0.06] px-4 py-2 text-[12px] font-bold text-slate-200 transition hover:bg-orange-500 hover:text-white"
             >
               <ListOrdered size={14} /> Daftar Chapter
             </Link>
@@ -63,7 +63,7 @@ export default function KomikBacaPageRoute({ params }: { params: Promise<{ slug:
           <>
             <h1 className="mt-5 text-xl font-black leading-tight sm:text-2xl">
               {chapter.seriesTitle || 'Baca Komik'}
-              {chapter.number ? <span className="text-rose-300"> — Chapter {chapter.number}</span> : null}
+              {chapter.number ? <span className="text-orange-300"> — Chapter {chapter.number}</span> : null}
             </h1>
             {!chapter.images.length ? (
               <div className="mx-auto mt-10 max-w-md rounded-3xl bg-white/[0.05] p-6 text-center text-sm text-slate-300">
@@ -80,7 +80,7 @@ export default function KomikBacaPageRoute({ params }: { params: Promise<{ slug:
             {seriesSlug !== slug ? (
               <Link
                 href={`/komik/detail/${seriesSlug}`}
-                className="mt-6 inline-flex h-11 items-center gap-2 rounded-full bg-rose-500 px-5 text-sm font-extrabold text-white transition hover:bg-rose-400"
+                className="mt-6 inline-flex h-11 items-center gap-2 rounded-full bg-orange-500 px-5 text-sm font-extrabold text-white transition hover:bg-orange-400"
               >
                 <ListOrdered size={16} /> Kembali ke Daftar Chapter
               </Link>

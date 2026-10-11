@@ -37,11 +37,11 @@ export default function DonghuaEpisodePage() {
     <main className="min-h-screen bg-[#070b12] pb-28 text-white md:pb-12">
       <div className="mx-auto max-w-6xl px-3 pt-[74px] sm:px-6 md:pt-20 lg:px-8">
         {detailSlug ? (
-          <Link href={`/donghua/${detailSlug}`} className="inline-flex items-center gap-2 text-sm font-semibold text-sky-300 hover:text-sky-200">
+          <Link href={`/donghua/${detailSlug}`} className="inline-flex items-center gap-2 text-sm font-semibold text-orange-300 hover:text-orange-200">
             <ArrowLeft size={16} /> Kembali ke detail
           </Link>
         ) : (
-          <Link href="/donghua" className="inline-flex items-center gap-2 text-sm font-semibold text-sky-300 hover:text-sky-200">
+          <Link href="/donghua" className="inline-flex items-center gap-2 text-sm font-semibold text-orange-300 hover:text-orange-200">
             <ArrowLeft size={16} /> Kembali ke Donghua
           </Link>
         )}
@@ -56,12 +56,12 @@ export default function DonghuaEpisodePage() {
 
             <div className="mt-4 flex items-center gap-2">
               {episode.navigation?.previous_episode ? (
-                <Link href={`/donghua/episode/${episode.navigation.previous_episode.slug}`} className="inline-flex items-center gap-1 rounded-full bg-white/[0.06] px-4 py-2 text-[12px] font-bold text-slate-100 transition hover:bg-sky-500">
+                <Link href={`/donghua/episode/${episode.navigation.previous_episode.slug}`} className="inline-flex items-center gap-1 rounded-full bg-white/[0.06] px-4 py-2 text-[12px] font-bold text-slate-100 transition hover:bg-orange-500">
                   <ChevronLeft size={14} /> Sebelumnya
                 </Link>
               ) : null}
               {episode.navigation?.next_episode ? (
-                <Link href={`/donghua/episode/${episode.navigation.next_episode.slug}`} className="inline-flex items-center gap-1 rounded-full bg-white/[0.06] px-4 py-2 text-[12px] font-bold text-slate-100 transition hover:bg-sky-500">
+                <Link href={`/donghua/episode/${episode.navigation.next_episode.slug}`} className="inline-flex items-center gap-1 rounded-full bg-white/[0.06] px-4 py-2 text-[12px] font-bold text-slate-100 transition hover:bg-orange-500">
                   Berikutnya <ChevronRight size={14} />
                 </Link>
               ) : null}
@@ -95,7 +95,7 @@ export default function DonghuaEpisodePage() {
                       key={`${server.name}-${server.url}`}
                       onClick={() => setActiveUrl(server.url)}
                       className={`rounded-full px-4 py-2 text-[12px] font-bold transition ${
-                        activeUrl === server.url ? 'bg-sky-500 text-white' : 'bg-white/[0.06] text-slate-200 hover:bg-sky-500 hover:text-white'
+                        activeUrl === server.url ? 'bg-orange-500 text-white' : 'bg-white/[0.06] text-slate-200 hover:bg-orange-500 hover:text-white'
                       }`}
                     >
                       {server.name}

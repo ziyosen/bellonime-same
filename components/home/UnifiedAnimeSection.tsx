@@ -14,7 +14,7 @@ export default async function UnifiedAnimeSection() {
         <h2 className="text-[26px] font-semibold leading-tight tracking-tight sm:text-3xl">
           New Update Anime
         </h2>
-        <Link href="/jadwal" className="shrink-0 text-sm font-semibold text-sky-400 hover:text-sky-300">
+        <Link href="/jadwal" className="shrink-0 text-sm font-semibold text-orange-400 hover:text-orange-300">
           Lihat Jadwal &gt;
         </Link>
       </div>
@@ -33,7 +33,7 @@ export default async function UnifiedAnimeSection() {
                 />
               ) : null}
               <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
-              <span className="absolute left-0 top-3 rounded-r-full bg-sky-500 px-3 py-1 text-[12px] font-bold leading-none text-white shadow">
+              <span className="absolute left-0 top-3 rounded-r-full bg-orange-500 px-3 py-1 text-[12px] font-bold leading-none text-white shadow">
                 New
               </span>
               {(item.score || item.meta) && (

@@ -56,7 +56,7 @@ export default async function AnimeDetailPage({ params }: { params: Promise<{ id
   if (!anime) {
     return (
       <main className="min-h-screen py-6 px-4">
-        <div className="max-w-7xl mx-auto">
+        <div className="max-w-[1500px] mx-auto">
           <p className="text-center text-slate-600 dark:text-slate-400">Anime tidak ditemukan</p>
         </div>
       </main>
@@ -83,7 +83,7 @@ export default async function AnimeDetailPage({ params }: { params: Promise<{ id
 
         {/* Hero Content */}
         <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
-          <div className="max-w-7xl mx-auto">
+          <div className="max-w-[1500px] mx-auto">
             <h1 className="text-3xl md:text-5xl font-bold text-slate-900 dark:text-white mb-2">
               {anime.english}
             </h1>
@@ -159,7 +159,7 @@ export default async function AnimeDetailPage({ params }: { params: Promise<{ id
                       const bn = Number(String(`${b.title} ${b.episodeId}`).match(/episode[-\s]*(\d+)/i)?.[1] || 0);
                       return an - bn;
                     })[0].episodeId}`}
-                    className="inline-flex items-center gap-2 rounded-xl bg-sky-500 px-5 py-3 text-sm font-bold text-white shadow hover:bg-sky-400"
+                    className="inline-flex items-center gap-2 rounded-xl bg-orange-500 px-5 py-3 text-sm font-bold text-white shadow hover:bg-orange-400"
                   >
                     <PlayCircle size={18} />
                     Tonton Episode Pertama

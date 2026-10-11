@@ -33,7 +33,7 @@ export default function KomikCard({ item }: { item: WestCard }) {
           </span>
         ) : null}
         {item.hot ? (
-          <span className="absolute bottom-2 right-2 flex h-6 w-6 items-center justify-center rounded-full bg-rose-500 text-white shadow">
+          <span className="absolute bottom-2 right-2 flex h-6 w-6 items-center justify-center rounded-full bg-orange-500 text-white shadow">
             <Flame size={13} fill="currentColor" />
           </span>
         ) : null}

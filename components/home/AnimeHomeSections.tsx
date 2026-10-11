@@ -7,7 +7,7 @@ function SectionHeader({ title, href }: { title: string; href: string }) {
   return (
     <div className="mb-4 flex items-center justify-between gap-4">
       <h2 className="text-[22px] font-semibold leading-tight tracking-tight text-white sm:text-[26px]">{title}</h2>
-      <Link href={href} className="shrink-0 text-sm font-semibold text-sky-400 hover:text-sky-300">
+      <Link href={href} className="shrink-0 text-sm font-semibold text-orange-400 hover:text-orange-300">
         Lihat Semua &gt;
       </Link>
     </div>
@@ -81,7 +81,7 @@ export default async function AnimeHomeSections() {
           <div className="space-y-5">
             {scheduleDays.map((day) => (
               <div key={day.day}>
-                <h3 className="mb-3 text-sm font-bold uppercase tracking-wide text-sky-300">{day.day}</h3>
+                <h3 className="mb-3 text-sm font-bold uppercase tracking-wide text-orange-300">{day.day}</h3>
                 <div className="flex gap-3 overflow-x-auto pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                   {day.animeList.slice(0, 12).map((anime) => (
                     <Link key={anime.animeId} href={`/anime/${anime.animeId}`} className="group w-[104px] shrink-0">

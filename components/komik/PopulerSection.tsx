@@ -37,7 +37,7 @@ export default function PopulerSection() {
         <h2 className="text-lg font-extrabold tracking-tight text-white sm:text-xl">Populer</h2>
         <Link
           href={`/komik/${(PERIODS.find((p) => p.key === period) || PERIODS[0]).endpoint}`}
-          className="inline-flex shrink-0 items-center gap-1 text-[12px] font-bold uppercase tracking-wide text-rose-300 hover:text-rose-200"
+          className="inline-flex shrink-0 items-center gap-1 text-[12px] font-bold uppercase tracking-wide text-orange-300 hover:text-orange-200"
         >
           SEMUA <ChevronRight size={14} />
         </Link>
@@ -51,7 +51,7 @@ export default function PopulerSection() {
             onClick={() => setPeriod(p.key)}
             className={`rounded-full px-3 py-1.5 text-[11px] font-bold transition ${
               period === p.key
-                ? 'bg-rose-500 text-white shadow-lg shadow-rose-500/25'
+                ? 'bg-orange-500 text-white shadow-lg shadow-orange-500/25'
                 : 'text-slate-400 hover:text-slate-200'
             }`}
           >

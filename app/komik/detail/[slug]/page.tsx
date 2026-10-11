@@ -49,7 +49,7 @@ export default function KomikDetailPageRoute({ params }: { params: Promise<{ slu
     <main className="min-h-screen bg-[#070b12] pb-28 text-white md:pb-12">
       <div className="mx-auto max-w-5xl px-3 pt-[58px] sm:px-6 md:pt-16 lg:px-8">
         <KomikTagline />
-        <Link href="/komik" className="inline-flex items-center gap-2 text-sm font-semibold text-rose-300 hover:text-rose-200">
+        <Link href="/komik" className="inline-flex items-center gap-2 text-sm font-semibold text-orange-300 hover:text-orange-200">
           <ArrowLeft size={16} /> Kembali ke Komik
         </Link>
 
@@ -93,7 +93,7 @@ export default function KomikDetailPageRoute({ params }: { params: Promise<{ slu
                 {firstChapter?.slug ? (
                   <Link
                     href={`/komik/baca/${firstChapter.slug}`}
-                    className="mt-5 inline-flex h-11 items-center gap-2 rounded-full bg-rose-500 px-5 text-sm font-extrabold text-white transition hover:bg-rose-400"
+                    className="mt-5 inline-flex h-11 items-center gap-2 rounded-full bg-orange-500 px-5 text-sm font-extrabold text-white transition hover:bg-orange-400"
                   >
                     <BookOpen size={16} /> Baca Chapter Pertama
                   </Link>
@@ -124,7 +124,7 @@ export default function KomikDetailPageRoute({ params }: { params: Promise<{ slu
                     <Link
                       key={`${g.id}-${g.name}`}
                       href={`/komik/genre/${g.id}`}
-                      className="rounded-full bg-white/[0.06] px-4 py-2 text-[12px] font-semibold text-slate-200 transition hover:bg-rose-500 hover:text-white"
+                      className="rounded-full bg-white/[0.06] px-4 py-2 text-[12px] font-semibold text-slate-200 transition hover:bg-orange-500 hover:text-white"
                     >
                       {g.name}
                     </Link>
@@ -138,7 +138,7 @@ export default function KomikDetailPageRoute({ params }: { params: Promise<{ slu
                 <h2 className="text-lg font-extrabold tracking-tight text-white sm:text-xl">Daftar Chapter</h2>
                 <button
                   onClick={() => setAscending((v) => !v)}
-                  className="rounded-full bg-white/[0.06] px-3.5 py-2 text-[12px] font-bold text-slate-200 transition hover:bg-rose-500 hover:text-white"
+                  className="rounded-full bg-white/[0.06] px-3.5 py-2 text-[12px] font-bold text-slate-200 transition hover:bg-orange-500 hover:text-white"
                 >
                   Urutan: {ascending ? 'Terlama' : 'Terbaru'}
                 </button>
@@ -155,7 +155,7 @@ export default function KomikDetailPageRoute({ params }: { params: Promise<{ slu
                         key={ch.slug}
                         href={`/komik/baca/${ch.slug}`}
                         title={chapterUpdatedLabel(ch) || undefined}
-                        className="flex h-11 items-center justify-center rounded-xl bg-white/[0.06] text-[13px] font-extrabold text-slate-100 transition hover:bg-rose-500 hover:text-white"
+                        className="flex h-11 items-center justify-center rounded-xl bg-white/[0.06] text-[13px] font-extrabold text-slate-100 transition hover:bg-orange-500 hover:text-white"
                       >
                         {ch.number ?? ch.title ?? 'Ch'}
                       </Link>

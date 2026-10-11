@@ -55,9 +55,9 @@ export default function KomikListPage({
 
   return (
     <main className="min-h-screen bg-[#070b12] pb-28 text-white md:pb-12">
-      <div className="mx-auto max-w-7xl px-3 pt-[58px] sm:px-6 md:pt-16 lg:px-8">
+      <div className="mx-auto max-w-[1500px] px-3 pt-[58px] sm:px-6 md:pt-16 lg:px-8">
         <KomikTagline />
-        <Link href="/komik" className="inline-flex items-center gap-2 text-sm font-semibold text-rose-300 hover:text-rose-200">
+        <Link href="/komik" className="inline-flex items-center gap-2 text-sm font-semibold text-orange-300 hover:text-orange-200">
           <ArrowLeft size={16} /> Kembali ke Komik
         </Link>
         <h1 className="mt-4 text-2xl font-black sm:text-3xl">{title}</h1>
@@ -83,7 +83,7 @@ export default function KomikListPage({
           <button
             onClick={() => setPage((p) => Math.max(1, p - 1))}
             disabled={page <= 1}
-            className="inline-flex h-10 items-center gap-1 rounded-full bg-white/[0.06] px-4 text-[13px] font-bold text-slate-200 transition enabled:hover:bg-rose-500 enabled:hover:text-white disabled:opacity-40"
+            className="inline-flex h-10 items-center gap-1 rounded-full bg-white/[0.06] px-4 text-[13px] font-bold text-slate-200 transition enabled:hover:bg-orange-500 enabled:hover:text-white disabled:opacity-40"
           >
             <ChevronLeft size={14} /> Prev
           </button>
@@ -92,7 +92,7 @@ export default function KomikListPage({
               key={p}
               onClick={() => setPage(p)}
               className={`h-10 w-10 rounded-full text-[13px] font-extrabold transition ${
-                p === page ? 'bg-rose-500 text-white' : 'bg-white/[0.06] text-slate-200 hover:bg-rose-500 hover:text-white'
+                p === page ? 'bg-orange-500 text-white' : 'bg-white/[0.06] text-slate-200 hover:bg-orange-500 hover:text-white'
               }`}
             >
               {p}
@@ -101,7 +101,7 @@ export default function KomikListPage({
           <button
             onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
             disabled={page >= totalPages}
-            className="inline-flex h-10 items-center gap-1 rounded-full bg-white/[0.06] px-4 text-[13px] font-bold text-slate-200 transition enabled:hover:bg-rose-500 enabled:hover:text-white disabled:opacity-40"
+            className="inline-flex h-10 items-center gap-1 rounded-full bg-white/[0.06] px-4 text-[13px] font-bold text-slate-200 transition enabled:hover:bg-orange-500 enabled:hover:text-white disabled:opacity-40"
           >
             Next <ChevronRight size={14} />
           </button>

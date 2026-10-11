@@ -25,7 +25,7 @@ export default async function MoviesPage({ searchParams }: { searchParams: Promi
 
   return (
     <main className="min-h-screen bg-[#070b12] pb-28 pt-[84px] text-white md:pb-12 md:pt-24">
-      <div className="mx-auto max-w-7xl px-3 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-[1500px] px-3 sm:px-6 lg:px-8">
         <h1 className="text-2xl font-black tracking-tight sm:text-3xl">Movies</h1>
 
         {animeList.length ? (

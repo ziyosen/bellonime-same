@@ -17,7 +17,7 @@ export default async function SumberItemPage({
 
   return (
     <main className="mx-auto max-w-6xl px-4 pb-28 pt-6 sm:px-6 lg:px-8">
-      <Link href={`/sumber/${source.slug}`} className="text-sm text-sky-500 hover:underline">
+      <Link href={`/sumber/${source.slug}`} className="text-sm text-orange-500 hover:underline">
         ← Kembali ke {source.label}
       </Link>
 
@@ -34,7 +34,7 @@ export default async function SumberItemPage({
               </div>
             ) : null}
             <div>
-              <div className="text-xs font-semibold uppercase tracking-wide text-sky-500">{source.badge}</div>
+              <div className="text-xs font-semibold uppercase tracking-wide text-orange-500">{source.badge}</div>
               <h1 className="mt-2 text-2xl font-bold">{detail.title || decodedId}</h1>
               <p className="mt-2 break-all text-xs text-slate-400">Endpoint detail: {detail.endpoint}</p>
               {detail.paragraphs.slice(0, 5).map((paragraph, idx) => (
@@ -50,7 +50,7 @@ export default async function SumberItemPage({
                       href={link.url}
                       target="_blank"
                       rel="noreferrer"
-                      className="rounded-full border border-slate-300 px-3 py-1.5 text-xs font-semibold hover:border-sky-400 hover:text-sky-500 dark:border-slate-700"
+                      className="rounded-full border border-slate-300 px-3 py-1.5 text-xs font-semibold hover:border-orange-400 hover:text-orange-500 dark:border-slate-700"
                     >
                       {link.label}
                     </a>
@@ -81,7 +81,7 @@ export default async function SumberItemPage({
                   <Link
                     key={`${item.id}-${item.title}`}
                     href={`/sumber/${source.slug}/item/${encodeURIComponent(item.id)}`}
-                    className="rounded-xl border border-slate-200 bg-white p-3 text-sm font-semibold shadow-sm hover:border-sky-400 dark:border-slate-800 dark:bg-slate-900"
+                    className="rounded-xl border border-slate-200 bg-white p-3 text-sm font-semibold shadow-sm hover:border-orange-400 dark:border-slate-800 dark:bg-slate-900"
                   >
                     {item.title}
                     {item.meta ? <span className="mt-1 block text-xs font-normal text-slate-400">{item.meta}</span> : null}

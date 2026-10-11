@@ -40,8 +40,8 @@ export default function DonghuaGenrePage() {
 
   return (
     <main className="min-h-screen bg-[#070b12] pb-28 text-white md:pb-12">
-      <div className="mx-auto max-w-7xl px-3 pt-[74px] sm:px-6 md:pt-20 lg:px-8">
-        <Link href="/donghua" className="inline-flex items-center gap-2 text-sm font-semibold text-sky-300 hover:text-sky-200">
+      <div className="mx-auto max-w-[1500px] px-3 pt-[74px] sm:px-6 md:pt-20 lg:px-8">
+        <Link href="/donghua" className="inline-flex items-center gap-2 text-sm font-semibold text-orange-300 hover:text-orange-200">
           <ArrowLeft size={16} /> Kembali ke Donghua
         </Link>
         <h1 className="mt-4 text-2xl font-black sm:text-3xl">{formatGenreName(slug)}</h1>
@@ -66,7 +66,7 @@ export default function DonghuaGenrePage() {
                     <div className="flex h-full items-center justify-center px-3 text-center text-xs text-slate-400">Tidak ada poster</div>
                   )}
                   {item.episodeLabel ? (
-                    <span className="absolute bottom-2 left-2 rounded-full bg-sky-500 px-2 py-1 text-[10px] font-extrabold text-white">{item.episodeLabel}</span>
+                    <span className="absolute bottom-2 left-2 rounded-full bg-orange-500 px-2 py-1 text-[10px] font-extrabold text-white">{item.episodeLabel}</span>
                   ) : null}
                 </div>
                 <h2 className="mt-2.5 line-clamp-2 h-[38px] overflow-hidden text-[13px] font-semibold leading-[1.45] text-slate-100">{item.title}</h2>

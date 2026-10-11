@@ -41,8 +41,8 @@ export default function DonghuaListPage({
 
   return (
     <main className="min-h-screen bg-[#070b12] pb-28 text-white md:pb-12">
-      <div className="mx-auto max-w-7xl px-3 pt-[74px] sm:px-6 md:pt-20 lg:px-8">
-        <Link href="/donghua" className="inline-flex items-center gap-2 text-sm font-semibold text-sky-300 hover:text-sky-200">
+      <div className="mx-auto max-w-[1500px] px-3 pt-[74px] sm:px-6 md:pt-20 lg:px-8">
+        <Link href="/donghua" className="inline-flex items-center gap-2 text-sm font-semibold text-orange-300 hover:text-orange-200">
           <ArrowLeft size={16} /> Kembali ke Donghua
         </Link>
         <h1 className="mt-4 text-2xl font-black sm:text-3xl">{title}</h1>
@@ -68,7 +68,7 @@ export default function DonghuaListPage({
           <button
             onClick={() => setPage((p) => Math.max(1, p - 1))}
             disabled={page <= 1}
-            className="inline-flex h-10 items-center gap-1 rounded-full bg-white/[0.06] px-4 text-[13px] font-bold text-slate-200 transition enabled:hover:bg-sky-500 enabled:hover:text-white disabled:opacity-40"
+            className="inline-flex h-10 items-center gap-1 rounded-full bg-white/[0.06] px-4 text-[13px] font-bold text-slate-200 transition enabled:hover:bg-orange-500 enabled:hover:text-white disabled:opacity-40"
           >
             <ChevronLeft size={14} /> Prev
           </button>
@@ -77,7 +77,7 @@ export default function DonghuaListPage({
               key={p}
               onClick={() => setPage(p)}
               className={`h-10 w-10 rounded-full text-[13px] font-extrabold transition ${
-                p === page ? 'bg-sky-500 text-white' : 'bg-white/[0.06] text-slate-200 hover:bg-sky-500 hover:text-white'
+                p === page ? 'bg-orange-500 text-white' : 'bg-white/[0.06] text-slate-200 hover:bg-orange-500 hover:text-white'
               }`}
             >
               {p}
@@ -86,7 +86,7 @@ export default function DonghuaListPage({
           <button
             onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
             disabled={page >= totalPages}
-            className="inline-flex h-10 items-center gap-1 rounded-full bg-white/[0.06] px-4 text-[13px] font-bold text-slate-200 transition enabled:hover:bg-sky-500 enabled:hover:text-white disabled:opacity-40"
+            className="inline-flex h-10 items-center gap-1 rounded-full bg-white/[0.06] px-4 text-[13px] font-bold text-slate-200 transition enabled:hover:bg-orange-500 enabled:hover:text-white disabled:opacity-40"
           >
             Next <ChevronRight size={14} />
           </button>

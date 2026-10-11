@@ -33,7 +33,7 @@ export default function AppError({
             reset();
             window.location.reload();
           }}
-          className="mt-5 rounded-full bg-sky-500 px-6 py-3 text-sm font-extrabold text-white transition hover:bg-sky-400"
+          className="mt-5 rounded-full bg-orange-500 px-6 py-3 text-sm font-extrabold text-white transition hover:bg-orange-400"
         >
           Muat Ulang
         </button>

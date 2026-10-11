@@ -13,7 +13,7 @@ export default async function TerbaruPage() {
 
   return (
     <main className="min-h-screen bg-[#070b12] pb-28 pt-[84px] text-white md:pb-12 md:pt-24">
-      <div className="mx-auto max-w-7xl px-3 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-[1500px] px-3 sm:px-6 lg:px-8">
         <h1 className="text-2xl font-black tracking-tight sm:text-3xl">Terbaru</h1>
 
         {items.length ? (
@@ -26,7 +26,7 @@ export default async function TerbaruPage() {
                   ) : (
                     <div className="flex h-full items-center justify-center px-3 text-center text-xs text-slate-400">Tidak ada poster</div>
                   )}
-                  <span className="absolute left-2 top-2 rounded-full bg-sky-500 px-2 py-1 text-[10px] font-extrabold text-white">New</span>
+                  <span className="absolute left-2 top-2 rounded-full bg-orange-500 px-2 py-1 text-[10px] font-extrabold text-white">New</span>
                   {item.score ? (
                     <span className="absolute right-2 top-2 inline-flex items-center gap-1 rounded-full bg-black/65 px-2 py-1 text-[10px] font-bold text-amber-300">
                       <Star size={10} fill="currentColor" /> {item.score}

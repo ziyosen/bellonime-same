@@ -104,7 +104,7 @@ export default function Navbar() {
           : 'bg-white dark:bg-slate-900'
           }`}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-[1500px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 gap-8">
             {/* Logo */}
             <Link href="/" className="flex items-center gap-3 group flex-shrink-0" aria-label="Animekita">
@@ -226,11 +226,11 @@ export default function Navbar() {
               placeholder="Cari donghua..."
               value={donghuaQuery}
               onChange={(e) => setDonghuaQuery(e.target.value)}
-              className="h-11 w-full rounded-full bg-slate-900/90 pl-10 pr-4 text-sm text-white placeholder:text-slate-400 shadow-lg outline-none ring-1 ring-white/15 backdrop-blur focus:ring-2 focus:ring-sky-500"
+              className="h-11 w-full rounded-full bg-slate-900/90 pl-10 pr-4 text-sm text-white placeholder:text-slate-400 shadow-lg outline-none ring-1 ring-white/15 backdrop-blur focus:ring-2 focus:ring-orange-500"
             />
             <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
           </div>
-          <button type="submit" className="h-11 shrink-0 rounded-full bg-sky-500 px-4 text-sm font-extrabold text-white shadow-lg transition hover:bg-sky-400">
+          <button type="submit" className="h-11 shrink-0 rounded-full bg-orange-500 px-4 text-sm font-extrabold text-white shadow-lg transition hover:bg-orange-400">
             Cari
           </button>
         </form>
@@ -248,11 +248,11 @@ export default function Navbar() {
               placeholder="Cari komik..."
               value={komikQuery}
               onChange={(e) => setKomikQuery(e.target.value)}
-              className="h-11 w-full rounded-full bg-slate-900/90 pl-10 pr-4 text-sm text-white placeholder:text-slate-400 shadow-lg outline-none ring-1 ring-white/15 backdrop-blur focus:ring-2 focus:ring-rose-500"
+              className="h-11 w-full rounded-full bg-slate-900/90 pl-10 pr-4 text-sm text-white placeholder:text-slate-400 shadow-lg outline-none ring-1 ring-white/15 backdrop-blur focus:ring-2 focus:ring-orange-500"
             />
             <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
           </div>
-          <button type="submit" className="h-11 shrink-0 rounded-full bg-rose-500 px-4 text-sm font-extrabold text-white shadow-lg transition hover:bg-rose-400">
+          <button type="submit" className="h-11 shrink-0 rounded-full bg-orange-500 px-4 text-sm font-extrabold text-white shadow-lg transition hover:bg-orange-400">
             Cari
           </button>
         </form>

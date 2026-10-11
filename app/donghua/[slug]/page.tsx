@@ -37,7 +37,7 @@ export default function DonghuaDetailPage() {
   return (
     <main className="min-h-screen bg-[#070b12] pb-28 text-white md:pb-12">
       <div className="mx-auto max-w-6xl px-3 pt-[74px] sm:px-6 md:pt-20 lg:px-8">
-        <Link href="/donghua" className="inline-flex items-center gap-2 text-sm font-semibold text-sky-300 hover:text-sky-200">
+        <Link href="/donghua" className="inline-flex items-center gap-2 text-sm font-semibold text-orange-300 hover:text-orange-200">
           <ArrowLeft size={16} /> Kembali ke Donghua
         </Link>
 
@@ -71,7 +71,7 @@ export default function DonghuaDetailPage() {
                 {episodes.length ? (
                   <Link
                     href={`/donghua/episode/${episodes[0].slug}`}
-                    className="mt-5 inline-flex items-center gap-2 rounded-full bg-sky-500 px-6 py-3 text-sm font-extrabold text-white shadow-lg shadow-sky-500/25 transition hover:bg-sky-400"
+                    className="mt-5 inline-flex items-center gap-2 rounded-full bg-orange-500 px-6 py-3 text-sm font-extrabold text-white shadow-lg shadow-orange-500/25 transition hover:bg-orange-400"
                   >
                     <Play size={17} fill="currentColor" /> Tonton Episode Pertama
                   </Link>
@@ -113,7 +113,7 @@ export default function DonghuaDetailPage() {
                 <h2 className="text-lg font-extrabold text-white">Daftar Episode</h2>
                 <button
                   onClick={() => setAscending((v) => !v)}
-                  className="rounded-full bg-white/[0.06] px-4 py-2 text-[12px] font-bold text-slate-200 transition hover:bg-sky-500 hover:text-white"
+                  className="rounded-full bg-white/[0.06] px-4 py-2 text-[12px] font-bold text-slate-200 transition hover:bg-orange-500 hover:text-white"
                 >
                   Urutan: {ascending ? 'Terlama' : 'Terbaru'}
                 </button>
@@ -124,7 +124,7 @@ export default function DonghuaDetailPage() {
                   <Link
                     key={ep.slug}
                     href={`/donghua/episode/${ep.slug}`}
-                    className="rounded-xl bg-white/[0.06] px-2 py-3 text-center text-[13px] font-bold text-slate-100 transition hover:bg-sky-500 hover:text-white"
+                    className="rounded-xl bg-white/[0.06] px-2 py-3 text-center text-[13px] font-bold text-slate-100 transition hover:bg-orange-500 hover:text-white"
                   >
                     {ep.episode_number || ep.episode}
                   </Link>

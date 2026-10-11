@@ -19,7 +19,7 @@ export default async function UnifiedSearchSection({ query }: { query: string })
               {item.poster ? (
                 <Image src={item.poster} alt={item.title} fill className="object-cover" unoptimized />
               ) : null}
-              <div className="absolute left-0 top-3 rounded-r-full bg-sky-500 px-3 py-1 text-[11px] font-bold leading-none text-white shadow">
+              <div className="absolute left-0 top-3 rounded-r-full bg-orange-500 px-3 py-1 text-[11px] font-bold leading-none text-white shadow">
                 New
               </div>
             </div>

@@ -18,13 +18,13 @@ export default async function SumberSourcePage({
   const { items, message } = await fetchSankaItems(source, q.trim());
 
   return (
-    <main className="mx-auto max-w-7xl px-4 pb-28 pt-6 sm:px-6 lg:px-8">
-      <Link href="/sumber" className="text-sm text-sky-500 hover:underline">
+    <main className="mx-auto max-w-[1500px] px-4 pb-28 pt-6 sm:px-6 lg:px-8">
+      <Link href="/sumber" className="text-sm text-orange-500 hover:underline">
         ← Semua sumber
       </Link>
       <div className="mt-3 flex flex-wrap items-end justify-between gap-4">
         <div>
-          <div className="text-xs font-semibold uppercase tracking-wide text-sky-500">{source.badge}</div>
+          <div className="text-xs font-semibold uppercase tracking-wide text-orange-500">{source.badge}</div>
           <h1 className="mt-1 text-2xl font-bold">{source.label}</h1>
         </div>
         <form className="flex gap-2" action={`/sumber/${source.slug}`}>
@@ -34,7 +34,7 @@ export default async function SumberSourcePage({
             placeholder={`Cari di ${source.label}...`}
             className="w-64 rounded-full border border-slate-300 bg-white px-4 py-2 text-sm dark:border-slate-700 dark:bg-slate-900"
           />
-          <button className="rounded-full bg-sky-500 px-4 py-2 text-sm font-semibold text-white">Cari</button>
+          <button className="rounded-full bg-orange-500 px-4 py-2 text-sm font-semibold text-white">Cari</button>
         </form>
       </div>
 
@@ -56,7 +56,7 @@ export default async function SumberSourcePage({
               </div>
             ) : null}
             <div className="p-3">
-              <Link href={`/sumber/${source.slug}/item/${encodeURIComponent(item.id)}`} className="hover:text-sky-500">
+              <Link href={`/sumber/${source.slug}/item/${encodeURIComponent(item.id)}`} className="hover:text-orange-500">
                 <h2 className="line-clamp-2 text-sm font-semibold">{item.title}</h2>
               </Link>
               {item.meta ? <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">{item.meta}</p> : null}

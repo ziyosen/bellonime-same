@@ -25,7 +25,7 @@ function RowCard({ item }: { item: { title: string; poster: string; href: string
           </span>
         ) : null}
         {episodeLabel ? (
-          <span className="absolute bottom-2 left-2 rounded-full bg-sky-500 px-2 py-1 text-[10px] font-extrabold text-white">{episodeLabel}</span>
+          <span className="absolute bottom-2 left-2 rounded-full bg-orange-500 px-2 py-1 text-[10px] font-extrabold text-white">{episodeLabel}</span>
         ) : null}
       </div>
       <h3 className="mt-2.5 line-clamp-2 h-[38px] overflow-hidden text-[13px] font-semibold leading-[1.45] text-slate-100">{item.title}</h3>
@@ -39,7 +39,7 @@ function Row({ title, href, children }: { title: string; href: string; children:
     <section className="mt-9">
       <div className="mb-4 flex items-center justify-between gap-4">
         <h2 className="text-lg font-extrabold tracking-tight text-white sm:text-xl">{title}</h2>
-        <Link href={href} className="inline-flex shrink-0 items-center gap-1 text-[12px] font-bold uppercase tracking-wide text-sky-300 hover:text-sky-200">
+        <Link href={href} className="inline-flex shrink-0 items-center gap-1 text-[12px] font-bold uppercase tracking-wide text-orange-300 hover:text-orange-200">
           Semua <ChevronRight size={14} />
         </Link>
       </div>
@@ -95,11 +95,11 @@ export default async function ZonaHome() {
               <Image src={hero.poster} alt={hero.title} fill priority sizes="100vw" className="object-cover object-top opacity-60" unoptimized />
             ) : null}
             <div className="absolute inset-0 bg-gradient-to-t from-[#070b12] via-[#070b12]/45 to-transparent" />
-            <div className="absolute inset-x-0 bottom-0 mx-auto max-w-7xl px-3 pb-6 pt-24 sm:px-6 lg:px-8">
-              <span className="rounded-full bg-sky-500 px-3 py-1 text-[11px] font-extrabold uppercase tracking-wider text-white">New Update</span>
+            <div className="absolute inset-x-0 bottom-0 mx-auto max-w-[1500px] px-3 pb-6 pt-24 sm:px-6 lg:px-8">
+              <span className="rounded-full bg-orange-500 px-3 py-1 text-[11px] font-extrabold uppercase tracking-wider text-white">New Update</span>
               <h1 className="mt-3 max-w-2xl text-[27px] font-black leading-[1.15] text-white sm:text-5xl sm:leading-tight">{hero.title}</h1>
               <p className="mt-2 text-sm text-slate-300">{hero.meta || 'Anime terbaru hari ini'}</p>
-              <Link href={hero.href} className="mt-5 inline-flex items-center gap-2 rounded-full bg-sky-500 px-6 py-3 text-sm font-extrabold text-white shadow-lg shadow-sky-500/25 transition hover:bg-sky-400">
+              <Link href={hero.href} className="mt-5 inline-flex items-center gap-2 rounded-full bg-orange-500 px-6 py-3 text-sm font-extrabold text-white shadow-lg shadow-orange-500/25 transition hover:bg-orange-400">
                 <Play size={17} fill="currentColor" /> Tonton Sekarang
               </Link>
             </div>
@@ -111,7 +111,7 @@ export default async function ZonaHome() {
         <section className="mt-7">
           <div className="mb-4 flex items-center justify-between gap-4">
             <h2 className="text-lg font-extrabold tracking-tight text-white sm:text-xl">Genre</h2>
-            <Link href="/genres" className="inline-flex shrink-0 items-center gap-1 text-[12px] font-bold uppercase tracking-wide text-sky-300 hover:text-sky-200">
+            <Link href="/genres" className="inline-flex shrink-0 items-center gap-1 text-[12px] font-bold uppercase tracking-wide text-orange-300 hover:text-orange-200">
               Semua <ChevronRight size={14} />
             </Link>
           </div>
@@ -120,7 +120,7 @@ export default async function ZonaHome() {
               <Link
                 key={genre.genreId}
                 href={`/genres/${genre.genreId}`}
-                className="shrink-0 rounded-full bg-white/[0.06] px-4 py-2.5 text-[12px] font-semibold text-slate-200 transition hover:bg-sky-500 hover:text-white"
+                className="shrink-0 rounded-full bg-white/[0.06] px-4 py-2.5 text-[12px] font-semibold text-slate-200 transition hover:bg-orange-500 hover:text-white"
               >
                 {genre.title}
               </Link>
@@ -146,7 +146,7 @@ export default async function ZonaHome() {
         <section className="mt-10">
           <div className="mb-4 flex items-center justify-between">
             <h2 className="text-lg font-extrabold tracking-tight text-white sm:text-xl">Jadwal Rilis</h2>
-            <Link href="/jadwal" className="inline-flex items-center gap-1 text-[12px] font-bold uppercase tracking-wide text-sky-300 hover:text-sky-200">
+            <Link href="/jadwal" className="inline-flex items-center gap-1 text-[12px] font-bold uppercase tracking-wide text-orange-300 hover:text-orange-200">
               Semua <ChevronRight size={14} />
             </Link>
           </div>
