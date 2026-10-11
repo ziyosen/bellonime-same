@@ -45,7 +45,9 @@ const cache = new Map<string, { at: number; data: unknown }>();
 async function fetchJson<T>(url: string): Promise<T> {
   const hit = cache.get(url);
   if (hit && Date.now() - hit.at < 60_000) return hit.data as T;
-  const res = await fetch(url, { headers: { Accept: 'application/json' } });
+  // Cache-buster: CF di API Sanka cache max-age 1 tahun (age bisa 3+ hari) — tanpa buster, web kita dapat data basi.
+  const bust = url.includes('?') ? `${url}&_=${Date.now()}` : `${url}?_=${Date.now()}`;
+  const res = await fetch(bust, { headers: { Accept: 'application/json', 'Cache-Control': 'no-cache' } });
   if (!res.ok) throw new Error(`Sumber menjawab ${res.status}`);
   const data = (await res.json()) as T;
   cache.set(url, { at: Date.now(), data });

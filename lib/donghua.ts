@@ -52,7 +52,8 @@ async function fetchJson(path: string) {
   const cached = jsonCache.get(path);
   if (cached && Date.now() - cached.at < 60_000) return cached.promise;
   const promise = (async () => {
-    const res = await fetch(`${SANKA_BASE}${path}`, { cache: 'no-store' });
+    const bust = path.includes('?') ? `${path}&_=${Date.now()}` : `${path}?_=${Date.now()}`;
+    const res = await fetch(`${SANKA_BASE}${bust}`, { cache: 'no-store' });
     if (!res.ok) throw new Error(`Sumber menjawab ${res.status}`);
     return res.json();
   })();

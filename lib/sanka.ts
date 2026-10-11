@@ -153,8 +153,9 @@ function collect(value: unknown, out: SankaItem[], seen: Set<string>) {
 export async function fetchSankaItems(source: SankaSource, q = ''): Promise<{ items: SankaItem[]; message: string }> {
   const path = q && source.search ? source.search(q) : source.home;
   try {
-    const response = await fetch(`${SANKA_BASE}${path}`, {
-      headers: { Accept: 'application/json', 'User-Agent': 'Mozilla/5.0' },
+    const bust = path.includes('?') ? `${path}&_=${Date.now()}` : `${path}?_=${Date.now()}`;
+    const response = await fetch(`${SANKA_BASE}${bust}`, {
+      headers: { Accept: 'application/json', 'User-Agent': 'Mozilla/5.0', 'Cache-Control': 'no-cache' },
       next: { revalidate: 300 }, // cache 5 menit — balik ke home instan (klaim review Muse, sebelumnya masih no-store)
       signal: AbortSignal.timeout(3000), // fail fast: sumber luar dari IP datacenter sering CF-blocked & ngantung lama
     });
@@ -265,8 +266,9 @@ function detailCandidates(source: SankaSource, id: string): string[] {
 export async function fetchSankaDetail(source: SankaSource, id: string): Promise<SankaDetail | null> {
   for (const path of detailCandidates(source, id)) {
     try {
-      const response = await fetch(`${SANKA_BASE}${path}`, {
-        headers: { Accept: 'application/json', 'User-Agent': 'Mozilla/5.0' },
+      const bust2 = path.includes('?') ? `${path}&_=${Date.now()}` : `${path}?_=${Date.now()}`;
+      const response = await fetch(`${SANKA_BASE}${bust2}`, {
+        headers: { Accept: 'application/json', 'User-Agent': 'Mozilla/5.0', 'Cache-Control': 'no-cache' },
         cache: 'no-store',
       });
       if (!response.ok) continue;
