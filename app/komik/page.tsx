@@ -8,6 +8,7 @@ import PopulerSection from '@/components/komik/PopulerSection';
 import {
   fetchWestDetail,
   fetchWestHome,
+  fetchWestList,
   fetchWestGenres,
   WEST_CATEGORIES,
   type WestCard,
@@ -43,13 +44,14 @@ export default function KomikHomePage() {
   const [home, setHome] = useState<WestHome | null>(null);
   const [genres, setGenres] = useState<WestGenre[]>([]);
   const [error, setError] = useState('');
+  const [latestItems, setLatestItems] = useState<WestCard[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     let alive = true;
     (async () => {
       try {
-        const [h, g] = await Promise.allSettled([fetchWestHome(), fetchWestGenres()]);
+        const [h, g, l] = await Promise.allSettled([fetchWestHome(), fetchWestGenres(), fetchWestList('latest', 1)]);
         if (!alive) return;
         if (h.status === 'fulfilled') {
           setHome(h.value);
@@ -83,6 +85,7 @@ export default function KomikHomePage() {
           }
         }
         if (g.status === 'fulfilled') setGenres(g.value);
+        if (l.status === 'fulfilled' && l.value.length) setLatestItems(l.value.slice(0, 15));
         if (h.status === 'rejected') setError('Sumber komik belum bisa diambil saat ini. Coba lagi sebentar ya.');
       } finally {
         if (alive) setLoading(false);
@@ -142,7 +145,7 @@ export default function KomikHomePage() {
               </section>
             ) : null}
 
-            <Row title="Update Terbaru" items={home.mirrorUpdate} href="/komik/latest" />
+            <Row title="Update Terbaru" items={latestItems.length ? latestItems : home.mirrorUpdate} href="/komik/latest" />
             <Row title="Project Baru" items={home.newProject} href="/komik/projects" />
             <Row title="Project Update" items={home.projectUpdate} href="/komik/projects" />
 
