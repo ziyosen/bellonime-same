@@ -108,9 +108,8 @@ export default function Navbar() {
           <div className="flex items-center justify-between h-16 gap-8">
             {/* Logo */}
             <Link href="/" className="flex items-center gap-3 group flex-shrink-0" aria-label="NimeKita">
-              <svg viewBox="0 0 48 34" className="h-9 w-auto drop-shadow-md transition-transform duration-300 group-hover:scale-105" role="img" aria-label="NimeKita">
-                <rect x="1" y="1" width="46" height="32" rx="9" fill="#0ea5e9" />
-                <path d="M19 10.5v13c0 .8.9 1.3 1.6.9l10-6.5c.6-.4.6-1.4 0-1.8l-10-6.5c-.7-.4-1.6.1-1.6.9z" fill="#fff" />
+              <svg viewBox="0 0 24 24" className="h-9 w-9 text-accent drop-shadow-md transition-transform duration-300 group-hover:scale-105" fill="currentColor" role="img" aria-label="NimeKita">
+                <path d="M4 3h16a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zm3 2v2h2V5H7zm8 0v2h2V5h-2zM7 19v2h2v-2H7zm8 0v2h2v-2h-2zM10 9.5v5l4.5-2.5L10 9.5z" />
               </svg>
               <span className="font-extrabold text-xl tracking-wide text-slate-800 dark:text-white">Nime<span className="text-accent">Kita</span></span>
             </Link>
@@ -181,9 +180,8 @@ export default function Navbar() {
         >
           <div className="flex items-center gap-3">
             <Link href="/" className="flex items-center gap-2 flex-shrink-0" aria-label="NimeKita">
-              <svg viewBox="0 0 48 34" className="h-7 w-auto drop-shadow" role="img" aria-label="NimeKita">
-                <rect x="1" y="1" width="46" height="32" rx="9" fill="#0ea5e9" />
-                <path d="M19 10.5v13c0 .8.9 1.3 1.6.9l10-6.5c.6-.4.6-1.4 0-1.8l-10-6.5c-.7-.4-1.6.1-1.6.9z" fill="#fff" />
+              <svg viewBox="0 0 24 24" className="h-7 w-7 text-accent drop-shadow" fill="currentColor" role="img" aria-label="NimeKita">
+                <path d="M4 3h16a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zm3 2v2h2V5H7zm8 0v2h2V5h-2zM7 19v2h2v-2H7zm8 0v2h2v-2h-2zM10 9.5v5l4.5-2.5L10 9.5z" />
               </svg>
               <span className="font-extrabold text-base tracking-wide whitespace-nowrap text-slate-800 dark:text-white">Nime<span className="text-accent">Kita</span></span>
             </Link>
