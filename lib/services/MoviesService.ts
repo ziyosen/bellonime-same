@@ -6,5 +6,5 @@ import type { ApiResponse, Movies } from '@/types/anime';
  * Sumber tidak ditampilkan ke user — tampil sebagai satu list movie.
  */
 export async function getMoviesData(page?: number): Promise<ApiResponse<Movies>> {
-  return getUnionMovies(2);
+  return getUnionMovies();
 }

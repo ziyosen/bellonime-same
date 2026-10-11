@@ -36,9 +36,10 @@ function slugVariants(animeId: string): string[] {
   return [...new Set(variants)];
 }
 
-async function fetchDetail(source: 'samehadaku' | 'animekiid', animeId: string): Promise<RawAnimeDetail | null> {
+async function fetchDetail(source: 'samehadaku' | 'animekiid' | 'sanka', animeId: string): Promise<RawAnimeDetail | null> {
   try {
-    const response = await fetch(`${API_BASE_URL}/${source}/anime/${animeId}`, {
+    const base = source === 'sanka' ? 'https://www.sankavollerei.web.id/anime' : API_BASE_URL;
+    const response = await fetch(`${base}/${source === 'sanka' ? 'samehadaku' : source}/anime/${animeId}`, {
       headers: API_HEADERS,
       cache: 'no-store',
     });
@@ -62,6 +63,9 @@ export async function getAnimeDetail(animeId: string): Promise<AnimeDetail> {
       rawDetail = await fetchDetail('animekiid', variant);
       if (rawDetail) break;
     }
+  }
+  if (!rawDetail) {
+    rawDetail = await fetchDetail('sanka', animeId);
   }
   if (!rawDetail) {
     throw new Error('Gagal mengambil detail anime');

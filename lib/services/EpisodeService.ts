@@ -46,9 +46,10 @@ function episodeNavItem(url: string | undefined, fallbackTitle: string) {
   };
 }
 
-async function fetchEpisode(source: 'samehadaku' | 'animekiid', episodeId: string): Promise<RawEpisode | null> {
+async function fetchEpisode(source: 'samehadaku' | 'animekiid' | 'sanka', episodeId: string): Promise<RawEpisode | null> {
   try {
-    const response = await fetch(`${API_BASE_URL}/${source}/episode/${episodeId}`, {
+    const base = source === 'sanka' ? 'https://www.sankavollerei.web.id/anime' : API_BASE_URL;
+    const response = await fetch(`${base}/samehadaku/episode/${episodeId}`, {
       headers: API_HEADERS,
       cache: 'no-store',
     });
@@ -62,7 +63,7 @@ async function fetchEpisode(source: 'samehadaku' | 'animekiid', episodeId: strin
 }
 
 export async function getEpisodeData(episodeId: string): Promise<Episode> {
-  const rawEpisode = (await fetchEpisode('samehadaku', episodeId)) || (await fetchEpisode('animekiid', episodeId));
+  const rawEpisode = (await fetchEpisode('samehadaku', episodeId)) || (await fetchEpisode('animekiid', episodeId)) || (await fetchEpisode('sanka', episodeId));
   if (!rawEpisode) {
     throw new Error("Gagal mengambil data episode anime");
   }
@@ -107,9 +108,15 @@ export async function getEpisodeData(episodeId: string): Promise<Episode> {
 
 export async function getServerUrl(serverId: string): Promise<string> {
   if (/^https?:\/\//.test(serverId)) return serverId;
-  const response = await fetch(`${API_BASE_URL}/samehadaku/server/${serverId}`, {
+  let response = await fetch(`${API_BASE_URL}/samehadaku/server/${serverId}`, {
     headers: API_HEADERS,
   });
+  if (!response.ok) {
+    // Fallback: server Sanka (movie Sanka-only pakai serverId format Sanka)
+    response = await fetch(`https://www.sankavollerei.web.id/anime/samehadaku/server/${serverId}`, {
+      headers: API_HEADERS,
+    });
+  }
   if (!response.ok) {
     throw new Error('Gagal mengambil URL server');
   }
