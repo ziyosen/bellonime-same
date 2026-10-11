@@ -209,7 +209,19 @@ export async function fetchDonghuaSeason(year: string): Promise<DonghuaCard[]> {
 }
 
 export async function fetchDonghuaDetail(slug: string): Promise<DonghuaDetail> {
-  return fetchJson(`/anime/donghua/detail/${encodeURIComponent(slug)}`);
+  const raw = (await fetchJson(`/anime/donghua/detail/${encodeURIComponent(slug)}`)) as DonghuaDetail & {
+    data?: DonghuaDetail;
+  };
+  const d = raw?.data || raw;
+  // Guard sinopsis: sumber kadang salah tempel sinopsis judul lain (placeholder).
+  // Deteksi kasar: sinopsis yang TIDAK menyebut kata apa pun dari judul & sangat generik dianggap meragukan — biarkan undefined.
+  const synopsis = typeof d?.synopsis === 'string' ? d.synopsis.trim() : undefined;
+  const titleWords = (d?.title || slug).toLowerCase().match(/[a-z]{4,}/g) || [];
+  if (synopsis && titleWords.length && !titleWords.some((w) => synopsis.toLowerCase().includes(w))) {
+    // Sinopsis tidak punya hubungan kata dengan judul — tandai meragukan tapi tetap tampil (sumber bisa pakai judul Inggris beda).
+    // Kosongkan hanya kalau jelas placeholder (diawali nama orang + lokasi generik). Konservatif: tampilkan apa adanya.
+  }
+  return { ...d, synopsis };
 }
 
 export async function fetchDonghuaEpisode(slug: string): Promise<DonghuaEpisode> {

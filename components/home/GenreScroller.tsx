@@ -5,6 +5,7 @@ import useEmblaCarousel from 'embla-carousel-react';
 import Link from 'next/link';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import type { GenresLink } from '../../types/anime';
+import { labelGenre } from '@/lib/genre';
 import GenreScrollerSkeleton from './GenreScrollerSkeleton';
 
 export default function GenreScroller({ genres, isLoading }: { genres: GenresLink[], isLoading?: boolean }) {
@@ -49,6 +50,7 @@ export default function GenreScroller({ genres, isLoading }: { genres: GenresLin
         </button>
       )}
 
+      <div className="pointer-events-none absolute inset-y-0 right-0 z-[5] w-16 bg-gradient-to-l from-[#0b0b0f] to-transparent dark:from-[#0b0b0f]" aria-hidden />
       <div className="overflow-hidden" ref={emblaRef}>
         <div className="flex gap-2">
           {genres.map((genre) => (
@@ -57,7 +59,7 @@ export default function GenreScroller({ genres, isLoading }: { genres: GenresLin
               key={genre.genreId}
               className="flex-shrink-0 px-4 py-2 border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-800 rounded-full text-sm font-medium transition-all hover:bg-accent hover:text-white hover:border-accent"
             >
-              {genre.title}
+              {labelGenre(genre.title)}
             </Link>
           ))}
         </div>

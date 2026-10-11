@@ -47,7 +47,7 @@ export default function EpisodePlayerSection({ episode }: { episode: Episode }) 
 
   return (
     <div className="space-y-3">
-      <section className="relative aspect-video w-full overflow-hidden rounded-xl bg-black shadow-lg">
+      <section className="relative mx-auto aspect-video w-full max-w-[900px] overflow-hidden rounded-xl bg-black shadow-lg">
         {isLoading && (
           <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/80">
             <div className="text-sm font-medium text-white">Mengganti server...</div>

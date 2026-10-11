@@ -95,7 +95,7 @@ export default async function AnimeHomeSections() {
                           </span>
                         ) : null}
                       </div>
-                      <p className="mt-2 line-clamp-2 text-xs font-medium leading-snug text-slate-100">{anime.title}</p>
+                      <p className="mt-2 line-clamp-2 break-words text-xs font-medium leading-snug text-slate-100">{anime.title}</p>
                     </Link>
                   ))}
                 </div>

@@ -154,12 +154,16 @@ export default async function AnimeDetailPage({ params }: { params: Promise<{ id
               <SectionWrapper isLoaded={isLoaded}>
                 <div className="flex flex-wrap items-center gap-3">
                   <Link
-                    href={`/episode/${[...anime.episodeList].sort((a, b) => {
-                      const an = Number(String(`${a.title} ${a.episodeId}`).match(/episode[-\s]*(\d+)/i)?.[1] || 0);
-                      const bn = Number(String(`${b.title} ${b.episodeId}`).match(/episode[-\s]*(\d+)/i)?.[1] || 0);
-                      return an - bn;
-                    })[0].episodeId}`}
-                    className="inline-flex items-center gap-2 rounded-xl bg-orange-500 px-5 py-3 text-sm font-bold text-white shadow hover:bg-orange-400"
+                    href={`/episode/${(() => {
+                      const first = [...anime.episodeList].sort((a, b) => {
+                        const an = Number(String(`${a.title} ${a.episodeId}`).match(/episode[-\s]*(\d+)/i)?.[1] || Number.MAX_SAFE_INTEGER);
+                        const bn = Number(String(`${b.title} ${b.episodeId}`).match(/episode[-\s]*(\d+)/i)?.[1] || Number.MAX_SAFE_INTEGER);
+                        return an - bn;
+                      })[0];
+                      return first?.episodeId || anime.episodeList[0]?.episodeId || '';
+                    })()}`}
+                    prefetch={false}
+                    className="inline-flex items-center gap-2 rounded-xl bg-orange-500 px-5 py-3 text-sm font-bold text-white shadow hover:bg-orange-400 active:scale-[0.98] transition-transform"
                   >
                     <PlayCircle size={18} />
                     Tonton Episode Pertama

@@ -48,7 +48,7 @@ export default async function UnifiedAnimeSection() {
                 </span>
               )}
             </div>
-            <h3 className="mt-2 line-clamp-2 min-h-[2.5rem] text-[13px] font-medium leading-snug text-slate-100">
+            <h3 className="mt-2 line-clamp-2 min-h-[2.5rem] break-words text-[13px] font-medium leading-snug text-slate-100">
               {item.title}
             </h3>
           </Link>

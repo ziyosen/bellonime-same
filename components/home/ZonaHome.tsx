@@ -28,7 +28,7 @@ function RowCard({ item }: { item: { title: string; poster: string; href: string
           <span className="absolute bottom-2 left-2 rounded-full bg-orange-500 px-2 py-1 text-[10px] font-extrabold text-white">{episodeLabel}</span>
         ) : null}
       </div>
-      <h3 className="mt-2.5 line-clamp-2 h-[38px] overflow-hidden text-[13px] font-semibold leading-[1.45] text-slate-100">{item.title}</h3>
+      <h3 className="mt-2.5 line-clamp-2 h-[38px] overflow-hidden break-words text-[13px] font-semibold leading-[1.45] text-slate-100">{item.title}</h3>
       {item.meta ? <p className="mt-0.5 line-clamp-1 text-[11px] text-slate-400">{item.meta}</p> : null}
     </Link>
   );
@@ -89,12 +89,12 @@ export default async function ZonaHome() {
   return (
     <>
       {hero ? (
-        <section className="relative -mx-3 overflow-hidden sm:-mx-6 lg:-mx-8">
+        <section className="relative left-1/2 w-screen -translate-x-1/2 overflow-hidden">
           <div className="relative min-h-[430px] sm:min-h-[420px]">
             {hero.poster ? (
               <Image src={hero.poster} alt={hero.title} fill priority sizes="100vw" className="object-cover object-top opacity-60" unoptimized />
             ) : null}
-            <div className="absolute inset-0 bg-gradient-to-t from-[#070b12] via-[#070b12]/45 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#0b0b0f] via-[#0b0b0f]/45 to-transparent" />
             <div className="absolute inset-x-0 bottom-0 mx-auto max-w-[1500px] px-3 pb-6 pt-24 sm:px-6 lg:px-8">
               <span className="rounded-full bg-orange-500 px-3 py-1 text-[11px] font-extrabold uppercase tracking-wider text-white">New Update</span>
               <h1 className="mt-3 max-w-2xl text-[27px] font-black leading-[1.15] text-white sm:text-5xl sm:leading-tight">{hero.title}</h1>
