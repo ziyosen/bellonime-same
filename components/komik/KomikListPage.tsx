@@ -54,7 +54,7 @@ export default function KomikListPage({
   }, [page, title]);
 
   return (
-    <main className="min-h-screen bg-[#070b12] pb-28 text-white md:pb-12">
+    <main className="min-h-screen bg-black pb-28 text-white md:pb-12">
       <div className="mx-auto max-w-[1500px] px-3 pt-[58px] sm:px-6 md:pt-16 lg:px-8">
         <KomikTagline />
         <Link href="/komik" className="inline-flex items-center gap-2 text-sm font-semibold text-orange-300 hover:text-orange-200">
