@@ -1,0 +1,17 @@
+name: Deploy ke Vercel
+on:
+  push:
+    branches: [main]
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Trigger Vercel deployment
+        run: |
+          COMMIT=$(git rev-parse HEAD)
+          curl -sS -X POST \
+            "https://api.vercel.com/v13/deployments?skipAutoDetectionChanged=1&teamId=${{ secrets.VERCEL_TEAM_ID }}" \
+            -H "Authorization: Bearer ${{ secrets.VERCEL_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            -d "{\"name\":\"bellonime-ui\",\"project\":\"prj_FZi7w8z6Bh2vbqwfrhn5X6xyztww\",\"gitSource\":{\"type\":\"github\",\"ref\":\"main\",\"org\":\"ziyosen\",\"repo\":\"bellonime-same\",\"commitId\":\"$COMMIT\"}}"
