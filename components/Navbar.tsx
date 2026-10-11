@@ -41,12 +41,8 @@ export default function Navbar() {
       // Desktop background logic
       setScrolled(currentScrollY > 20);
 
-      // Mobile hide/show logic
-      if (currentScrollY > lastScrollY.current && currentScrollY > 50) {
-        setIsVisible(false);
-      } else {
-        setIsVisible(true);
-      }
+      // Mobile: navbar selalu tampil (permintaan bos — gak boleh lenyap saat scroll)
+      setIsVisible(true);
 
       lastScrollY.current = currentScrollY;
     };
