@@ -57,7 +57,6 @@ export default function EpisodePlayerSection({ episode }: { episode: Episode }) 
           <iframe
             key={activeStreamUrl}
             src={activeStreamUrl}
-            sandbox="allow-scripts allow-same-origin allow-presentation allow-forms"
             referrerPolicy="no-referrer-when-downgrade"
             allowFullScreen
             className="absolute inset-0 z-0 h-full w-full"
