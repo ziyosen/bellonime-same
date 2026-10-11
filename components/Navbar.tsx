@@ -107,14 +107,12 @@ export default function Navbar() {
         <div className="max-w-[1500px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 gap-8">
             {/* Logo */}
-            <Link href="/" className="flex items-center gap-3 group flex-shrink-0" aria-label="Animekita">
-              <svg viewBox="0 0 48 34" className="h-9 w-auto drop-shadow-md transition-transform duration-300 group-hover:scale-105" role="img" aria-label="Animekita">
+            <Link href="/" className="flex items-center gap-3 group flex-shrink-0" aria-label="NimeKita">
+              <svg viewBox="0 0 48 34" className="h-9 w-auto drop-shadow-md transition-transform duration-300 group-hover:scale-105" role="img" aria-label="NimeKita">
                 <rect x="1" y="1" width="46" height="32" rx="9" fill="#0ea5e9" />
                 <path d="M19 10.5v13c0 .8.9 1.3 1.6.9l10-6.5c.6-.4.6-1.4 0-1.8l-10-6.5c-.7-.4-1.6.1-1.6.9z" fill="#fff" />
               </svg>
-              <span className="font-extrabold text-xl tracking-wide">
-                Animekita
-              </span>
+              <span className="font-extrabold text-xl tracking-wide text-slate-800 dark:text-white">Nime<span className="text-accent">Kita</span></span>
             </Link>
 
             {/* Desktop Search */}
@@ -182,12 +180,12 @@ export default function Navbar() {
           className={`md:hidden fixed top-4 left-4 right-4 z-50 bg-white/90 dark:bg-slate-900/90 backdrop-blur-lg rounded-full shadow-soft-xl border border-slate-200 dark:border-slate-800 px-4 py-2 ${pathname?.startsWith('/donghua') || pathname?.startsWith('/komik') ? 'hidden' : ''}`}
         >
           <div className="flex items-center gap-3">
-            <Link href="/" className="flex items-center gap-2 flex-shrink-0" aria-label="Animekita">
-              <svg viewBox="0 0 48 34" className="h-7 w-auto drop-shadow" role="img" aria-label="Animekita">
+            <Link href="/" className="flex items-center gap-2 flex-shrink-0" aria-label="NimeKita">
+              <svg viewBox="0 0 48 34" className="h-7 w-auto drop-shadow" role="img" aria-label="NimeKita">
                 <rect x="1" y="1" width="46" height="32" rx="9" fill="#0ea5e9" />
                 <path d="M19 10.5v13c0 .8.9 1.3 1.6.9l10-6.5c.6-.4.6-1.4 0-1.8l-10-6.5c-.7-.4-1.6.1-1.6.9z" fill="#fff" />
               </svg>
-              <span className="font-extrabold text-base tracking-wide text-slate-800 dark:text-slate-100 whitespace-nowrap">NimeKita</span>
+              <span className="font-extrabold text-base tracking-wide whitespace-nowrap text-slate-800 dark:text-white">Nime<span className="text-accent">Kita</span></span>
             </Link>
 
             {pathname?.startsWith('/donghua') ? (
@@ -277,24 +275,18 @@ export default function Navbar() {
                   href={item.href}
                   target={isExternal ? '_blank' : '_self'}
                   rel={isExternal ? 'noopener noreferrer' : ''}
-                  className={`flex flex-col items-center space-y-1 px-3 py-2 rounded-xl transition-all ${isActive
-                    ? 'text-accent'
-                    : 'text-slate-500 dark:text-slate-400'
+                  className={`flex flex-col items-center gap-0.5 px-4 py-1.5 rounded-2xl transition-all ${isActive
+                    ? 'bg-slate-200/80 dark:bg-slate-700/70 text-accent'
+                    : 'text-slate-400 dark:text-slate-500'
                     }`}
                 >
                   <motion.div
-                    whileTap={{ scale: 0.9 }}
-                    className="relative"
+                    whileTap={{ scale: 0.92 }}
+                    className="relative flex flex-col items-center"
                   >
                     {item.icon}
-                    {isActive && (
-                      <motion.div
-                        layoutId="mobile-indicator"
-                        className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-1 h-1 bg-accent rounded-full"
-                      />
-                    )}
+                    <span className="text-[10px] font-semibold">{item.label}</span>
                   </motion.div>
-                  <span className="text-[10px] font-medium">{item.label}</span>
                 </Link>
               );
             })}
