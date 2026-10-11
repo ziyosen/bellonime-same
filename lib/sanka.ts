@@ -156,6 +156,7 @@ export async function fetchSankaItems(source: SankaSource, q = ''): Promise<{ it
     const response = await fetch(`${SANKA_BASE}${path}`, {
       headers: { Accept: 'application/json', 'User-Agent': 'Mozilla/5.0' },
       cache: 'no-store',
+      signal: AbortSignal.timeout(3000), // fail fast: sumber luar dari IP datacenter sering CF-blocked & ngantung lama
     });
     const json = await response.json().catch(() => null);
     if (!response.ok || !json) {
