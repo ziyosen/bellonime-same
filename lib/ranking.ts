@@ -13,6 +13,7 @@ export type RankItem = {
   img: string;
   url: string;
   genres: string[];
+  rating?: string;
   animeId: string;
 };
 
@@ -29,16 +30,20 @@ function parseRanking(html: string): Record<string, RankItem[]> {
     if (!m) continue;
     const seg = m[1];
     const items: RankItem[] = [];
-    for (const li of seg.matchAll(/<li><div class="ctr">(\d+)<\/div>([\s\S]*?)<\/li>/g)) {
-      const b = li[2];
+    for (const part of seg.split('<li><div class="ctr">').slice(1)) {
+      const rankNum = part.match(/^(\d+)/)?.[1];
+      if (!rankNum) continue;
+      const b = part.split('</li>')[0];
+      const li = [null, rankNum, b] as unknown as RegExpMatchArray;
       const url = b.match(/href="([^"]+)"/)?.[1] || '';
       const img = b.match(/data-src="([^"]+)"/)?.[1] || '';
       const title = b.match(/alt="([^"]+)"/)?.[1] || '';
       const gen = b.match(/<b>Genres<\/b>:([\s\S]*?)<\/span>/)?.[1] || '';
       const genres = [...gen.matchAll(/>([^<>]+)<\/a>/g)].map((g) => g[1].trim());
+      const rating = b.match(/numscore">([\d.]+)</)?.[1];
       // animeId dari slug URL: /anime/<slug>/
       const animeId = url.match(/\/anime\/([^/]+)\/?/)?.[1] || '';
-      items.push({ rank: Number(li[1]), title, img, url, genres, animeId });
+      items.push({ rank: Number(li[1]), title, img, url, genres, rating, animeId });
     }
     out[rng] = items;
   }

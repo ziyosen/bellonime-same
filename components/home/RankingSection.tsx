@@ -76,7 +76,11 @@ export default function RankingSection({ data }: { data: Record<string, RankItem
                   <p className="mt-0.5 truncate text-[11px] text-slate-400">{it.genres.join(', ')}</p>
                 ) : null}
               </div>
-              <Star size={14} className="shrink-0 text-slate-500" />
+              {it.rating ? (
+                <span className="shrink-0 text-[12px] font-bold text-orange-400">{it.rating}</span>
+              ) : (
+                <Star size={14} className="shrink-0 text-slate-500" />
+              )}
             </Link>
           </li>
         ))}
