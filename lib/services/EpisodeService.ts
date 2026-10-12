@@ -11,6 +11,7 @@ type RawEpisode = {
   defaultStreamingUrl?: string;
   embedList?: string[];
   serverList?: unknown[];
+  server?: { qualities?: { title?: string; serverList?: { title?: string; serverId?: string; href?: string }[] }[] };
   navigation?: { all?: string; next?: string; prev?: string };
   downloadUrl?: Episode['downloadUrl'];
   genreList?: Episode['genreList'];
@@ -98,7 +99,14 @@ export async function getEpisodeData(episodeId: string): Promise<Episode> {
               })),
             },
           ]
-        : [],
+        : (raw.server?.qualities || []).map((q: { title?: string; serverList?: { title?: string; serverId?: string; href?: string }[] }) => ({
+            title: q.title || 'Default',
+            serverList: (q.serverList || []).map((srv: { title?: string; serverId?: string; href?: string }) => ({
+              title: srv.title || 'Server',
+              serverId: srv.serverId || srv.href || '',
+              href: srv.href || srv.serverId || '',
+            })),
+          })).filter((q: { serverList: unknown[] }) => q.serverList.length),
     },
     downloadUrl: raw.downloadUrl || { formats: [] },
     recomendedEpisodeList: [],
